@@ -1,0 +1,42 @@
+.join-screen {
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.join-screen .logo {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.join-screen h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.join-screen p {
+  text-align: center;
+  color: var(--gray);
+  font-size: 0.9rem;
+}
+
+.join-screen .card {
+  background: var(--light);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.join-screen .card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.room-code-highlight {
+  color: var(--green);
+  font-weight: 700;
+}

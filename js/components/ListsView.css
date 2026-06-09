@@ -1,0 +1,52 @@
+.lists-view {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.new-list-row {
+  display: flex;
+  gap: 8px;
+}
+
+.list-card {
+  background: var(--light);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.list-card:hover {
+  box-shadow: var(--shadow);
+}
+
+.list-card .list-icon { font-size: 1.6rem; }
+
+.list-card .list-info { flex: 1; }
+
+.list-card .list-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.list-card .list-meta {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+.list-card .list-arrow {
+  color: var(--gray);
+  font-size: 1.1rem;
+}
+
+.lists-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}

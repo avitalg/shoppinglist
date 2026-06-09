@@ -1,4 +1,5 @@
 import { Component } from "react";
+import "./ErrorBoundary.css";
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -13,24 +14,10 @@ export default class ErrorBoundary extends Component {
   render() {
     if (this.state.error) {
       return (
-        <div style={{
-          padding: "40px 24px",
-          textAlign: "center",
-          maxWidth: 480,
-          margin: "0 auto",
-          background: "#fff",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 12,
-        }}>
-          <div style={{ fontSize: "3rem" }}>⚠️</div>
-          <h2 style={{ fontSize: "1.3rem", color: "#111827" }}>Something went wrong</h2>
-          <p style={{ color: "#6b7280", fontSize: "0.9rem" }}>
-            {this.state.error.message}
-          </p>
+        <div className="error-boundary">
+          <div className="error-boundary__icon">⚠️</div>
+          <h2 className="error-boundary__title">Something went wrong</h2>
+          <p className="error-boundary__message">{this.state.error.message}</p>
           <button
             className="btn btn-gray"
             onClick={() => this.setState({ error: null })}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./HistoryView.css";
 import { db, collection, onSnapshot, query, orderBy } from "../firebase.js";
 import { formatDate } from "../utils.js";
 

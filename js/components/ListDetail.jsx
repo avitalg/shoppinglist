@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import "./ListDetail.css";
 import {
   db, doc, onSnapshot, updateDoc, setDoc, collection, runTransaction, increment,
 } from "../firebase.js";

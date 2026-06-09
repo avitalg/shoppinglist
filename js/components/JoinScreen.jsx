@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./JoinScreen.css";
 import { db, doc, setDoc, getDoc, serverTimestamp } from "../firebase.js";
 import { genCode } from "../utils.js";
 

@@ -1,0 +1,27 @@
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 100vh;
+  padding: 40px 24px;
+  text-align: center;
+  background: var(--white);
+}
+
+.error-boundary__icon {
+  font-size: 3rem;
+}
+
+.error-boundary__title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.error-boundary__message {
+  font-size: 0.9rem;
+  color: var(--gray);
+  max-width: 320px;
+}
