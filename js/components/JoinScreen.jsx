@@ -64,7 +64,7 @@ export default function JoinScreen({ onJoin }) {
   return (
     <div className="join-screen">
       <div className="logo">🛒</div>
-      <h2>FamilyCart</h2>
+      <h2>GrocerieShop</h2>
       <p>Shop together in real time. Share one list, everyone sees every change.</p>
 
       <div className="card">

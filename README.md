@@ -1,4 +1,4 @@
-# FamilyCart
+# GrocerieShop
 
 A real-time collaborative shopping list app for families. Anyone in the room can add, check off, and manage items — changes appear instantly on every device.
 
