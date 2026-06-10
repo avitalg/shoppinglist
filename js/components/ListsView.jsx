@@ -51,7 +51,7 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
     }
   }
 
-  const active   = lists.filter(l => !l.status || l.status === "active");
+  const active   = lists.filter(l => l.status == null || l.status === "active");
   const archived = lists.filter(l => l.status === "archived");
   const uncheckedCount = list => (list.items || []).filter(i => !i.checked).length;
 

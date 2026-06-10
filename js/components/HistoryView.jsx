@@ -6,8 +6,10 @@ import { formatDate } from "../utils.js";
 export default function HistoryView({ session, onBack }) {
   const [lists,    setLists]   = useState([]);
   const [expanded, setExpanded] = useState(null);
+  const [loading,  setLoading]  = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const q = query(
       collection(db, "rooms", session.roomId, "lists"),
       orderBy("createdAt", "desc")
@@ -18,6 +20,7 @@ export default function HistoryView({ session, onBack }) {
           .map(d => ({ id: d.id, ...d.data() }))
           .filter(l => l.status === "archived")
       );
+      setLoading(false);
     });
   }, [session.roomId]);
 
@@ -33,7 +36,14 @@ export default function HistoryView({ session, onBack }) {
       </div>
 
       <div className="history-view">
-        {lists.length === 0 && (
+        {loading && (
+          <div className="loading-state">
+            <div className="loading-spinner" />
+            <p>Loading history…</p>
+          </div>
+        )}
+
+        {!loading && lists.length === 0 && (
           <div className="empty-state">
             <div className="icon">📂</div>
             <p>No archived lists yet.</p>
