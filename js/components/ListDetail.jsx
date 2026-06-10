@@ -15,13 +15,13 @@ import { CATEGORIES, CATEGORY_BY_ID, DEFAULT_CATEGORY, detectCategory } from "..
 function ItemRow({ item, onToggle, onDelete }) {
   return (
     <div className="item-row">
-      <div
+      <button
         className={`item-check ${item.checked ? "checked" : ""}`}
         onClick={() => onToggle(item.id)}
         role="checkbox"
         aria-checked={item.checked}
-        tabIndex={0}
-        onKeyDown={e => e.key === " " && onToggle(item.id)}
+        aria-label={item.checked ? "Uncheck item" : "Check item"}
+        type="button"
       />
       <div className="item-body">
         <div className={`item-text ${item.checked ? "checked" : ""}`}>{item.text}</div>

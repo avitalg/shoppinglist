@@ -8,17 +8,25 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
   const [newName, setNewName] = useState("");
   const [busy,    setBusy]    = useState(false);
   const [error,   setError]   = useState("");
+  const [loading, setLoading] = useState(true);
 
   // Subscribe to all lists in this room, newest first
   useEffect(() => {
+    setLoading(true);
     const q = query(
       collection(db, "rooms", session.roomId, "lists"),
       orderBy("createdAt", "desc")
     );
     return onSnapshot(
       q,
-      snap => setLists(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
-      () => setError("Lost connection. Please refresh."),
+      snap => {
+        setLists(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        setLoading(false);
+      },
+      () => {
+        setError("Lost connection. Please refresh.");
+        setLoading(false);
+      },
     );
   }, [session.roomId]);
 
@@ -71,7 +79,14 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
           </button>
         </div>
 
-        {active.length > 0 && <p className="section-title">Active lists</p>}
+        {loading && (
+          <div className="loading-state">
+            <div className="loading-spinner" />
+            <p>Loading lists…</p>
+          </div>
+        )}
+
+        {!loading && active.length > 0 && <p className="section-title">Active lists</p>}
 
         {active.map(list => {
           const uc = uncheckedCount(list);
@@ -95,7 +110,7 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
 
         {error && <p className="error-msg">{error}</p>}
 
-        {active.length === 0 && (
+        {!loading && !error && active.length === 0 && (
           <div className="empty-state">
             <div className="icon">📋</div>
             <p>No lists yet. Create one above!</p>
