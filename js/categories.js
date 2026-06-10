@@ -5,7 +5,7 @@
  *   id       — stable key stored on items in Firestore
  *   label    — display name
  *   icon     — emoji shown in section headers
- *   color    — CSS custom-property name (defined in FamilyCart.css)
+ *   color    — CSS custom-property name (defined in global.css)
  *   keywords — lowercase substrings that map items to this category
  *              (multi-word phrases should be listed alongside single words;
  *               longer phrases win automatically at detection time)
