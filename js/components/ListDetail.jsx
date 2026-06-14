@@ -249,6 +249,12 @@ export default function ListDetail({ list, session, onBack }) {
   /** Toggle the checked state of an item by id. */
   async function toggleCheck(id) {
     setError("");
+    // Flip immediately so the UI responds on tap, not after the Firestore
+    // round-trip. If the transaction fails, toggle back to revert.
+    setLiveList(prev => ({
+      ...prev,
+      items: (prev.items || []).map(i => i.id === id ? { ...i, checked: !i.checked } : i),
+    }));
     try {
       await runTransaction(db, async tx => {
         const snap = await tx.get(listRef);
@@ -259,6 +265,11 @@ export default function ListDetail({ list, session, onBack }) {
         tx.update(listRef, { items });
       });
     } catch (err) {
+      // Revert the optimistic update
+      setLiveList(prev => ({
+        ...prev,
+        items: (prev.items || []).map(i => i.id === id ? { ...i, checked: !i.checked } : i),
+      }));
       setError("Failed to update item.");
     }
   }
@@ -338,7 +349,7 @@ export default function ListDetail({ list, session, onBack }) {
     <div className="list-detail">
       {/* Header */}
       <div className="header">
-        <button className="back-btn" onClick={onBack}>‹</button>
+        <button className="back-btn" onClick={onBack}>←</button>
         {editingName ? (
           <input
             ref={nameRef}
@@ -394,7 +405,7 @@ export default function ListDetail({ list, session, onBack }) {
         {suggestions.length > 0 && (
           <div className="suggestions">
             {suggestions.map(s => (
-              <div key={s} className="suggestion-item" onMouseDown={() => addItem(s)}>
+              <div key={s} className="suggestion-item" onPointerDown={() => addItem(s)}>
                 <span className="suggestion-cat-icon">{detectCategory(s).icon}</span>
                 {s}
               </div>

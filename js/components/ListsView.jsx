@@ -103,7 +103,7 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
                   {list.createdAt ? ` · ${formatDate(list.createdAt)}` : ""}
                 </div>
               </div>
-              <span className="list-arrow">›</span>
+              <span className="list-arrow">→</span>
             </div>
           );
         })}

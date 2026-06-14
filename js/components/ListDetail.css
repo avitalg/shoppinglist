@@ -98,14 +98,24 @@
 .item-delete {
   background: none;
   border: none;
-  color: var(--border);
+  color: #9ca3af;
   cursor: pointer;
   font-size: 1rem;
-  padding: 2px 4px;
+  /* Minimum 44×44px tap target for iOS */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
   transition: color 0.15s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.item-delete:hover { color: var(--red); }
+.item-delete:hover,
+.item-delete:active { color: var(--red); }
 
 /* ── Add Bar ───────────────────────────────────────────────────────────────── */
 .add-bar {
@@ -177,9 +187,16 @@
   padding: 10px 14px;
   cursor: pointer;
   font-size: 0.9rem;
+  /* 44px minimum height for touch targets */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.suggestion-item:hover { background: var(--light); }
+.suggestion-item:hover,
+.suggestion-item:active { background: var(--light); }
 
 .suggestion-cat-icon { margin-right: 6px; }
 
@@ -200,9 +217,13 @@
   cursor: pointer;
   text-align: left;
   color: var(--text);
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.category-header:hover { opacity: 0.8; }
+.category-header:hover,
+.category-header:active { opacity: 0.8; }
 
 .category-icon {
   font-size: 1.1rem;
@@ -275,7 +296,9 @@
   cursor: pointer;
   color: var(--text);
   transition: border-color 0.15s, background 0.15s;
-  min-height: 36px;
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .category-pill.active {

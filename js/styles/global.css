@@ -109,6 +109,8 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.15s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn:active   { opacity: 0.8; }
@@ -127,7 +129,8 @@ input[type="text"] {
   border: 1.5px solid var(--border);
   border-radius: 10px;
   padding: 10px 14px;
-  font-size: 0.95rem;
+  /* 1rem = 16px — keeps iOS Safari from auto-zooming on focus */
+  font-size: 1rem;
   outline: none;
   transition: border-color 0.15s;
 }
@@ -172,6 +175,8 @@ input[type="text"]:focus {
   align-items: center;
   gap: 6px;
   min-width: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .header .rename-hint {
@@ -195,9 +200,19 @@ input[type="text"]:focus {
   background: none;
   border: none;
   color: var(--white);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  font-weight: 300;
   cursor: pointer;
-  padding: 0 4px;
+  /* 44×44px minimum tap target (Apple HIG requirement) */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-left: -8px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .header .room-tag {

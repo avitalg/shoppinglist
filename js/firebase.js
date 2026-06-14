@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
   collection,
   doc,
   setDoc,
@@ -34,7 +36,19 @@ if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
 }
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+
+// persistentLocalCache stores all Firestore data in IndexedDB so the app
+// works offline — reads return cached data, writes are queued and auto-synced
+// when the connection is restored.
+// persistentMultipleTabManager allows multiple browser tabs to safely share
+// the same local cache without conflicts.
+// Falls back silently to memory cache if IndexedDB is unavailable
+// (e.g. iOS private browsing).
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+});
 
 export {
   collection,
