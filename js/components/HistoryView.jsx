@@ -31,7 +31,7 @@ export default function HistoryView({ session, onBack }) {
   return (
     <div>
       <div className="header">
-        <button className="back-btn" onClick={onBack}>‹</button>
+        <button className="back-btn" onClick={onBack}>←</button>
         <h1>List History</h1>
       </div>
 

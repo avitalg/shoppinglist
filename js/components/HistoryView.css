@@ -31,6 +31,8 @@
   padding: 14px 16px;
   margin-bottom: 10px;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .archive-card h4 {
