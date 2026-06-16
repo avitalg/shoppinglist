@@ -55,13 +55,29 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
   const archived = lists.filter(l => l.status === "archived");
   const uncheckedCount = list => (list.items || []).filter(i => !i.checked).length;
 
+  function shareRoom() {
+    const spaceName = session.roomName || session.roomId;
+    const text =
+      `You're invited to join "${spaceName}" on GrocerieShop! 🛒\n\n` +
+      `Room code: ${session.roomId}\n` +
+      `Open the app: https://www.grocerieshop.tech/\n\n` +
+      `We can share shopping lists in real time!`;
+
+    if (navigator.share) {
+      navigator.share({ title: `Join ${spaceName} on GrocerieShop`, text }).catch(() => {});
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    }
+  }
+
   return (
     <div>
       <div className="header">
         <span style={{ fontSize: "1.4rem" }}>🛒</span>
-        <h1>GrocerieShop</h1>
-        <span className="name-tag">{session.name}</span>
-        <span className="room-tag">{session.roomId}</span>
+        <div className="header-room-info">
+          <h1>{session.roomName || "GrocerieShop"}</h1>
+          <span className="room-code-tag">{session.roomId}</span>
+        </div>
       </div>
 
       <div className="lists-view">
@@ -120,6 +136,9 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
         <div className="lists-footer">
           <button className="btn btn-gray" onClick={onHistory} style={{ flex: 1 }}>
             📂 List History{archived.length > 0 ? ` (${archived.length})` : ""}
+          </button>
+          <button className="btn btn-green" onClick={shareRoom} title="Invite family to this room">
+            📤
           </button>
           <button className="btn btn-gray" onClick={onLeave} title="Leave room">
             🚪

@@ -44,6 +44,10 @@ export default function App() {
   }
 
   function handleLeave() {
+    LS.set("fc_last_room", {
+      roomId:   session.roomId,
+      roomName: session.roomName || session.roomId,
+    });
     LS.set("fc_session", null);
     setSession(null);
   }

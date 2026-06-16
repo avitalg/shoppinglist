@@ -219,7 +219,6 @@ export default function ListDetail({ list, session, onBack }) {
           assignedTo: assignTo.trim(),
           category:   resolvedCategory,
           checked:    false,
-          addedBy:    session.name,
         };
         tx.update(listRef, { items: [...currentItems, newItem] });
       });
@@ -307,6 +306,41 @@ export default function ListDetail({ list, session, onBack }) {
   }
 
   /** Archive the list and return to the lists view. */
+  /** Share the list via the native share sheet or WhatsApp fallback. */
+  function shareList() {
+    const unchecked = items.filter(i => !i.checked);
+    const checked   = items.filter(i =>  i.checked);
+
+    let text = `🛒 ${liveList.name}\n\n`;
+
+    if (unchecked.length > 0) {
+      groupByCategory(unchecked).forEach(({ category: cat, items: catItems }) => {
+        text += `${cat.icon} ${cat.label}:\n`;
+        catItems.forEach(item => {
+          text += `  • ${item.text}`;
+          if (item.note)       text += ` (${item.note})`;
+          if (item.assignedTo) text += ` → ${item.assignedTo}`;
+          text += "\n";
+        });
+        text += "\n";
+      });
+    }
+
+    if (checked.length > 0) {
+      text += `✓ Already got (${checked.length}):\n`;
+      checked.forEach(item => { text += `  ✓ ${item.text}\n`; });
+      text += "\n";
+    }
+
+    text += `Shared via GrocerieShop 🛒`;
+
+    if (navigator.share) {
+      navigator.share({ title: liveList.name, text }).catch(() => {});
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    }
+  }
+
   async function archiveList() {
     setError("");
     try {
@@ -371,6 +405,7 @@ export default function ListDetail({ list, session, onBack }) {
         {checked.length > 0 && (
           <button className="btn btn-gray btn-sm" onClick={clearChecked}>Clear ✓</button>
         )}
+        <button className="btn btn-gray btn-sm" onClick={shareList} title="Share list">📤</button>
         <button className="btn btn-gray btn-sm" onClick={archiveList}>Archive</button>
       </div>
 

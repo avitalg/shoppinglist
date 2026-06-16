@@ -1,29 +1,49 @@
 import { useState } from "react";
 import "./JoinScreen.css";
 import { db, doc, setDoc, getDoc, serverTimestamp } from "../firebase.js";
-import { genCode } from "../utils.js";
+import { genCode, LS } from "../utils.js";
 
 export default function JoinScreen({ onJoin }) {
-  const [name,    setName]    = useState("");
-  const [code,    setCode]    = useState("");
-  const [newCode, setNewCode] = useState(genCode);
-  const [error,   setError]   = useState("");
-  const [busy,    setBusy]    = useState(false);
+  const [lastRoom,  setLastRoom]  = useState(() => LS.get("fc_last_room", null));
+  const [spaceName, setSpaceName] = useState("");
+  const [code,      setCode]      = useState("");
+  const [newCode,   setNewCode]   = useState(genCode);
+  const [error,     setError]     = useState("");
+  const [busy,      setBusy]      = useState(false);
+
+  async function handleQuickRejoin() {
+    setBusy(true);
+    setError("");
+
+    try {
+      const snap = await getDoc(doc(db, "rooms", lastRoom.roomId));
+      if (!snap.exists()) {
+        setError("This room no longer exists.");
+        setLastRoom(null);
+        LS.set("fc_last_room", null);
+        return;
+      }
+      onJoin({ roomId: lastRoom.roomId, roomName: lastRoom.roomName });
+    } catch {
+      setError("Failed to connect. Check your internet connection.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function handleJoin() {
-    if (!name.trim())            return setError("Enter your name");
-    if (code.trim().length < 4)  return setError("Enter a valid room code");
+    if (code.trim().length < 4) return setError("Enter a valid room code");
 
     setBusy(true);
     setError("");
 
     try {
-      const roomId  = code.trim().toUpperCase();
-      const snap    = await getDoc(doc(db, "rooms", roomId));
+      const roomId = code.trim().toUpperCase();
+      const snap   = await getDoc(doc(db, "rooms", roomId));
 
       if (!snap.exists()) return setError("Room not found. Double-check the code.");
 
-      onJoin({ roomId, name: name.trim() });
+      onJoin({ roomId, roomName: snap.data().name || roomId });
     } catch {
       setError("Failed to connect. Check your internet connection.");
     } finally {
@@ -32,7 +52,7 @@ export default function JoinScreen({ onJoin }) {
   }
 
   async function handleCreate() {
-    if (!name.trim()) return setError("Enter your name");
+    if (!spaceName.trim()) return setError("Enter a family space name");
 
     setBusy(true);
     setError("");
@@ -48,12 +68,11 @@ export default function JoinScreen({ onJoin }) {
       }
 
       await setDoc(doc(db, "rooms", code), {
-        name:      `${name.trim()}'s Family`,
+        name:      spaceName.trim(),
         createdAt: serverTimestamp(),
-        members:   [name.trim()],
       });
 
-      onJoin({ roomId: code, name: name.trim() });
+      onJoin({ roomId: code, roomName: spaceName.trim() });
     } catch (err) {
       setError(err.message || "Failed to create room. Please try again.");
     } finally {
@@ -67,42 +86,69 @@ export default function JoinScreen({ onJoin }) {
       <h2>GrocerieShop</h2>
       <p>Shop together in real time. Share one list, everyone sees every change.</p>
 
-      <div className="card">
-        <h3>Join an existing room</h3>
-        <input
-          type="text"
-          placeholder="Your name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && handleJoin()}
-        />
-        <div className="input-row">
-          <input
-            type="text"
-            placeholder="Room code"
-            value={code}
-            onChange={e => setCode(e.target.value.toUpperCase())}
-            onKeyDown={e => e.key === "Enter" && handleJoin()}
-            style={{ textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700 }}
-          />
-          <button className="btn btn-green" onClick={handleJoin} disabled={busy}>
-            Join
+      {lastRoom && (
+        <div className="quick-rejoin-card">
+          <div className="quick-rejoin-header">
+            <span className="quick-rejoin-icon">👋</span>
+            <div>
+              <div className="quick-rejoin-title">Welcome back!</div>
+              <div className="quick-rejoin-room">{lastRoom.roomName}</div>
+            </div>
+            <span className="quick-rejoin-code">{lastRoom.roomId}</span>
+          </div>
+          <button className="btn btn-green btn-full" onClick={handleQuickRejoin} disabled={busy}>
+            Rejoin {lastRoom.roomName}
+          </button>
+          <button
+            className="quick-rejoin-dismiss"
+            onClick={() => { setLastRoom(null); LS.set("fc_last_room", null); }}
+          >
+            Sign in to a different room
           </button>
         </div>
-      </div>
+      )}
 
-      <div className="or-divider">or</div>
+      {!lastRoom && (
+        <>
+          <div className="card">
+            <h3>Join an existing room</h3>
+            <div className="input-row">
+              <input
+                type="text"
+                placeholder="Room code"
+                value={code}
+                onChange={e => setCode(e.target.value.toUpperCase())}
+                onKeyDown={e => e.key === "Enter" && handleJoin()}
+                style={{ textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700 }}
+              />
+              <button className="btn btn-green" onClick={handleJoin} disabled={busy}>
+                Join
+              </button>
+            </div>
+          </div>
 
-      <div className="card">
-        <h3>Create a new room</h3>
-        <p style={{ fontSize: ".82rem", color: "var(--gray)" }}>
-          Share this code with your family:{" "}
-          <strong className="room-code-highlight">{newCode}</strong>
-        </p>
-        <button className="btn btn-outline btn-full" onClick={handleCreate} disabled={busy}>
-          Create room as {name.trim() || "…"}
-        </button>
-      </div>
+          <div className="or-divider">or</div>
+
+          <div className="card">
+            <h3>Create a new room</h3>
+            <input
+              type="text"
+              placeholder="Family space name (e.g. The Glazers)"
+              value={spaceName}
+              onChange={e => setSpaceName(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && handleCreate()}
+            />
+            <p className="input-hint">The name of your family shopping space</p>
+            <p className="room-code-preview">
+              Your room code: <strong className="room-code-highlight">{newCode}</strong>
+              <span> — share this with your family</span>
+            </p>
+            <button className="btn btn-outline btn-full" onClick={handleCreate} disabled={busy}>
+              Create space
+            </button>
+          </div>
+        </>
+      )}
 
       {error && <p className="error-msg">{error}</p>}
     </div>

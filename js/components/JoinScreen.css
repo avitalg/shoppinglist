@@ -40,3 +40,84 @@
   color: var(--green);
   font-weight: 700;
 }
+
+/* ── Quick Rejoin Card ──────────────────────────────────────────────────────── */
+.quick-rejoin-card {
+  background: #f0fdf4;
+  border: 1.5px solid var(--green);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quick-rejoin-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quick-rejoin-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.quick-rejoin-title {
+  font-size: 0.8rem;
+  color: var(--green-d);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.quick-rejoin-room {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.quick-rejoin-code {
+  margin-left: auto;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--green-d);
+  background: rgba(34, 197, 94, 0.12);
+  padding: 4px 10px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.quick-rejoin-dismiss {
+  background: none;
+  border: none;
+  color: var(--gray);
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: underline;
+  padding: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.input-hint {
+  font-size: 0.75rem;
+  color: var(--gray);
+  margin-top: -4px;
+}
+
+.room-code-preview {
+  font-size: 0.82rem;
+  color: var(--gray);
+  padding: 8px 12px;
+  background: var(--white);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.room-code-preview span {
+  color: var(--gray);
+  font-weight: 400;
+}
