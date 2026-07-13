@@ -126,29 +126,27 @@ function parseSpokenItems(phrase) {
  * @param {{ onInterim: (t:string)=>void, onFinal: (items:string[])=>void, onError: (msg:string)=>void }} handlers
  */
 function useVoiceInput({ onInterim, onFinal, onError, lang }) {
-  const recRef    = useRef(null);
+  const recRef      = useRef(null);
+  const activeRef   = useRef(false);   // true while the user wants to keep recording
   const [listening, setListening] = useState(false);
   const supported = typeof window !== "undefined" &&
     !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
-  // Keep latest callbacks in a ref so the recognition handler never closes over stale state
+  // Keep latest callbacks in a ref so handlers never close over stale state
   const cbRef = useRef({ onInterim, onFinal, onError });
   useEffect(() => { cbRef.current = { onInterim, onFinal, onError }; });
 
-  // Keep latest lang in a ref so toggle() always uses the current value
+  // Keep latest lang in a ref
   const langRef = useRef(lang);
   useEffect(() => { langRef.current = lang; }, [lang]);
 
-  function toggle() {
-    if (listening) {
-      recRef.current?.stop();
-      return;
-    }
+  function startRec() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     const rec = new SR();
-    rec.continuous      = true;
-    rec.interimResults  = true;
-    rec.lang            = langRef.current || "he-IL";
+    // continuous:true is unreliable on iOS Safari — we restart manually in onend instead
+    rec.continuous     = false;
+    rec.interimResults = true;
+    rec.lang           = langRef.current || "he-IL";
 
     rec.onresult = (e) => {
       let interim = "";
@@ -165,20 +163,43 @@ function useVoiceInput({ onInterim, onFinal, onError, lang }) {
     };
 
     rec.onerror = (e) => {
-      setListening(false);
-      // "aborted" fires on iOS Safari when recognition stops normally — not a real error
-      if (e.error !== "aborted") cbRef.current.onError(e.error);
+      // "aborted" and "no-speech" are normal end conditions on iOS — not real errors
+      if (e.error !== "aborted" && e.error !== "no-speech") {
+        activeRef.current = false;
+        setListening(false);
+        cbRef.current.onError(e.error);
+      }
     };
 
-    rec.onend = () => setListening(false);
+    rec.onend = () => {
+      // Auto-restart while the user hasn't tapped stop — required for iOS
+      if (activeRef.current) {
+        startRec();
+      } else {
+        setListening(false);
+      }
+    };
 
     rec.start();
     recRef.current = rec;
+  }
+
+  function toggle() {
+    if (activeRef.current) {
+      activeRef.current = false;
+      recRef.current?.stop();
+      return;
+    }
+    activeRef.current = true;
     setListening(true);
+    startRec();
   }
 
   // Stop recognition if component unmounts while listening
-  useEffect(() => () => recRef.current?.stop(), []);
+  useEffect(() => () => {
+    activeRef.current = false;
+    recRef.current?.stop();
+  }, []);
 
   return { listening, supported, toggle };
 }
