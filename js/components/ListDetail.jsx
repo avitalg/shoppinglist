@@ -166,7 +166,8 @@ function useVoiceInput({ onInterim, onFinal, onError, lang }) {
 
     rec.onerror = (e) => {
       setListening(false);
-      cbRef.current.onError(e.error);
+      // "aborted" fires on iOS Safari when recognition stops normally — not a real error
+      if (e.error !== "aborted") cbRef.current.onError(e.error);
     };
 
     rec.onend = () => setListening(false);
