@@ -4,6 +4,7 @@ import {
   db, doc, onSnapshot, updateDoc, setDoc, collection, runTransaction, increment,
 } from "../firebase.js";
 import { CATEGORIES, CATEGORY_BY_ID, DEFAULT_CATEGORY, detectCategory } from "../categories.js";
+import { LS } from "../utils.js";
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -103,6 +104,84 @@ function groupByCategory(items) {
     .filter(group => group.items.length > 0);
 }
 
+// ── Voice input hook ──────────────────────────────────────────────────────────
+
+const FILLER_RE = /^(add|please|i need|i want|put|get|buy)\s+/i;
+
+const VOICE_LANGS = [
+  { code: "he-IL", label: "עב" },
+  { code: "en-US", label: "EN" },
+];
+
+/** Split a spoken phrase into individual item names. */
+function parseSpokenItems(phrase) {
+  return phrase
+    .split(/,\s*|\s+and\s+/i)
+    .map(s => s.replace(FILLER_RE, "").trim())
+    .filter(Boolean);
+}
+
+/**
+ * Wraps the Web Speech API.
+ * @param {{ onInterim: (t:string)=>void, onFinal: (items:string[])=>void, onError: (msg:string)=>void }} handlers
+ */
+function useVoiceInput({ onInterim, onFinal, onError, lang }) {
+  const recRef    = useRef(null);
+  const [listening, setListening] = useState(false);
+  const supported = typeof window !== "undefined" &&
+    !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+
+  // Keep latest callbacks in a ref so the recognition handler never closes over stale state
+  const cbRef = useRef({ onInterim, onFinal, onError });
+  useEffect(() => { cbRef.current = { onInterim, onFinal, onError }; });
+
+  // Keep latest lang in a ref so toggle() always uses the current value
+  const langRef = useRef(lang);
+  useEffect(() => { langRef.current = lang; }, [lang]);
+
+  function toggle() {
+    if (listening) {
+      recRef.current?.stop();
+      return;
+    }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new SR();
+    rec.continuous      = true;
+    rec.interimResults  = true;
+    rec.lang            = langRef.current || "he-IL";
+
+    rec.onresult = (e) => {
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const result = e.results[i];
+        if (result.isFinal) {
+          const items = parseSpokenItems(result[0].transcript);
+          if (items.length) cbRef.current.onFinal(items);
+        } else {
+          interim += result[0].transcript;
+        }
+      }
+      cbRef.current.onInterim(interim);
+    };
+
+    rec.onerror = (e) => {
+      setListening(false);
+      cbRef.current.onError(e.error);
+    };
+
+    rec.onend = () => setListening(false);
+
+    rec.start();
+    recRef.current = rec;
+    setListening(true);
+  }
+
+  // Stop recognition if component unmounts while listening
+  useEffect(() => () => recRef.current?.stop(), []);
+
+  return { listening, supported, toggle };
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function ListDetail({ list, session, onBack }) {
@@ -118,9 +197,26 @@ export default function ListDetail({ list, session, onBack }) {
   const [nameDraft,    setNameDraft]    = useState(list.name);
   const [dupWarning,   setDupWarning]   = useState(false);
   const [error,        setError]        = useState("");
+  const [voiceLang,    setVoiceLang]    = useState(() => LS.get("fc_voice_lang", "he-IL"));
 
   const inputRef = useRef(null);
   const nameRef  = useRef(null);
+
+  function cycleVoiceLang() {
+    const next = voiceLang === "he-IL" ? "en-US" : "he-IL";
+    setVoiceLang(next);
+    LS.set("fc_voice_lang", next);
+  }
+
+  const voice = useVoiceInput({
+    onInterim: (interim) => { if (interim) setText(interim); },
+    onFinal:   (items)   => {
+      setText("");
+      items.forEach(item => addItem(item));
+    },
+    onError:   (msg)     => setError(`Microphone error: ${msg}`),
+    lang:      voiceLang,
+  });
   const listRef  = doc(db, "rooms", session.roomId, "lists", list.id);
   const histRef  = collection(db, "rooms", session.roomId, "itemHistory");
 
@@ -405,8 +501,8 @@ export default function ListDetail({ list, session, onBack }) {
         {checked.length > 0 && (
           <button className="btn btn-gray btn-sm" onClick={clearChecked}>Clear ✓</button>
         )}
-        <button className="btn btn-gray btn-sm" onClick={shareList} title="Share list">📤</button>
-        <button className="btn btn-gray btn-sm" onClick={archiveList}>Archive</button>
+        <button className="btn btn-gray btn-sm" onClick={shareList} title="Share list">↗</button>
+        <button className="btn btn-gray btn-sm" onClick={archiveList} title="Archive list">📦</button>
       </div>
 
       {error && (
@@ -458,11 +554,35 @@ export default function ListDetail({ list, session, onBack }) {
           <input
             ref={inputRef}
             type="text"
-            placeholder="Add item…"
+            placeholder={voice.listening ? "Listening…" : "Add item…"}
             value={text}
             onChange={e => { setText(e.target.value); setDupWarning(false); }}
             onKeyDown={e => e.key === "Enter" && addItem()}
+            readOnly={voice.listening}
           />
+          {voice.supported && (
+            <button
+              type="button"
+              className="lang-toggle"
+              onClick={cycleVoiceLang}
+              disabled={voice.listening}
+              title="Switch recording language"
+              aria-label="Switch recording language"
+            >
+              {VOICE_LANGS.find(l => l.code === voiceLang)?.label}
+            </button>
+          )}
+          {voice.supported && (
+            <button
+              type="button"
+              className={`mic-btn ${voice.listening ? "listening" : ""}`}
+              onClick={voice.toggle}
+              aria-label={voice.listening ? "Stop recording" : "Record items"}
+              title={voice.listening ? "Stop recording" : "Speak items to add them"}
+            >
+              🎙
+            </button>
+          )}
           <button className="btn btn-green" onClick={() => addItem()}>+</button>
         </div>
 
