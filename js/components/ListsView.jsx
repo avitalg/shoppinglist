@@ -5,7 +5,10 @@ import { formatDate } from "../utils.js";
 
 export default function ListsView({ session, onOpen, onHistory, onLeave }) {
   const [lists,   setLists]   = useState([]);
-  const [newName, setNewName] = useState("");
+  const [newName, setNewName] = useState(() => {
+    const d = new Date();
+    return d.toLocaleDateString("he-IL", { day: "numeric", month: "numeric", year: "numeric" });
+  });
   const [busy,    setBusy]    = useState(false);
   const [error,   setError]   = useState("");
   const [loading, setLoading] = useState(true);
@@ -43,7 +46,7 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
         createdAt: serverTimestamp(),
         items:     [],
       });
-      setNewName("");
+      setNewName(new Date().toLocaleDateString("he-IL", { day: "numeric", month: "numeric", year: "numeric" }));
     } catch {
       setError("Failed to create list. Please try again.");
     } finally {
