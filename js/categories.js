@@ -11,12 +11,12 @@
  *               longer phrases win automatically at detection time)
  */
 
-/** @typedef {{ id: string, label: string, icon: string, color: string, keywords: string[] }} Category */
+/** @typedef {{ id: string, label: string, labelEn: string, icon: string, color: string, keywords: string[] }} Category */
 
 /** @type {Category[]} Ordered as they appear in a typical supermarket layout. */
 export const CATEGORIES = [
   {
-    id: "produce", label: "Produce", icon: "🥦", color: "--cat-produce",
+    id: "produce", label: "ירקות ופירות", labelEn: "Produce", icon: "🥦", color: "--cat-produce",
     keywords: [
       // English
       "apple", "banana", "orange", "grape", "lemon", "lime", "mango", "peach",
@@ -35,7 +35,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "meat", label: "Meat & Fish", icon: "🥩", color: "--cat-meat",
+    id: "meat", label: "בשר ודגים", labelEn: "Meat & Fish", icon: "🥩", color: "--cat-meat",
     keywords: [
       // English
       "chicken", "beef", "pork", "lamb", "turkey", "steak", "ground", "bacon",
@@ -47,7 +47,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "dairy", label: "Dairy & Eggs", icon: "🧀", color: "--cat-dairy",
+    id: "dairy", label: "חלב וביצים", labelEn: "Dairy & Eggs", icon: "🧀", color: "--cat-dairy",
     keywords: [
       // English
       "milk", "cheese", "butter", "cream", "yogurt", "egg",
@@ -60,7 +60,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "bakery", label: "Bakery", icon: "🥖", color: "--cat-bakery",
+    id: "bakery", label: "מאפייה", labelEn: "Bakery", icon: "🥖", color: "--cat-bakery",
     keywords: [
       // English
       "bread", "roll", "bun", "bagel", "muffin", "croissant", "cake", "cookie",
@@ -71,7 +71,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "pantry", label: "Pantry", icon: "🥫", color: "--cat-pantry",
+    id: "pantry", label: "מזווה", labelEn: "Pantry", icon: "🥫", color: "--cat-pantry",
     keywords: [
       // English
       "rice", "pasta", "noodle", "oat", "cereal", "flour", "sugar", "salt",
@@ -89,7 +89,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "frozen", label: "Frozen", icon: "❄️", color: "--cat-frozen",
+    id: "frozen", label: "קפוא", labelEn: "Frozen", icon: "❄️", color: "--cat-frozen",
     keywords: [
       // English
       "frozen", "ice cream", "gelato", "sorbet",
@@ -100,7 +100,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "beverages", label: "Beverages", icon: "🧃", color: "--cat-beverages",
+    id: "beverages", label: "משקאות", labelEn: "Beverages", icon: "🧃", color: "--cat-beverages",
     keywords: [
       // English
       "water", "juice", "soda", "coffee", "tea", "beer", "wine", "kombucha",
@@ -112,7 +112,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "snacks", label: "Snacks & Sweets", icon: "🍬", color: "--cat-snacks",
+    id: "snacks", label: "חטיפים", labelEn: "Snacks & Sweets", icon: "🍬", color: "--cat-snacks",
     keywords: [
       // English
       "chip", "crisp", "pretzel", "popcorn", "chocolate", "candy", "gummy",
@@ -123,7 +123,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "personal", label: "Personal Care", icon: "🧴", color: "--cat-personal",
+    id: "personal", label: "טיפוח", labelEn: "Personal Care", icon: "🧴", color: "--cat-personal",
     keywords: [
       // English
       "shampoo", "conditioner", "soap", "lotion", "toothpaste", "toothbrush",
@@ -136,7 +136,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "household", label: "Household", icon: "🧹", color: "--cat-household",
+    id: "household", label: "ניקיון ובית", labelEn: "Household", icon: "🧹", color: "--cat-household",
     keywords: [
       // English
       "detergent", "bleach", "sponge", "bag", "foil", "wrap", "paper", "towel",
@@ -148,7 +148,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    id: "other", label: "Other", icon: "🛒", color: "--cat-other",
+    id: "other", label: "אחר", labelEn: "Other", icon: "🛒", color: "--cat-other",
     keywords: [],
   },
 ];

@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import "./ListDetail.css";
 import {
   db, doc, onSnapshot, updateDoc, setDoc, collection, runTransaction, increment,
 } from "../firebase.js";
 import { CATEGORIES, CATEGORY_BY_ID, DEFAULT_CATEGORY, detectCategory } from "../categories.js";
 import { LS } from "../utils.js";
+import { useT, LanguageContext } from "../i18n.js";
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -14,6 +15,7 @@ import { LS } from "../utils.js";
  * @param {{ item: object, onToggle: Function, onDelete: Function }} props
  */
 function ItemRow({ item, onToggle, onDelete }) {
+  const t = useT();
   return (
     <div className="item-row">
       <button
@@ -21,7 +23,7 @@ function ItemRow({ item, onToggle, onDelete }) {
         onClick={() => onToggle(item.id)}
         role="checkbox"
         aria-checked={item.checked}
-        aria-label={item.checked ? "Uncheck item" : "Check item"}
+        aria-label={item.checked ? t("uncheckItem") : t("checkItem")}
         type="button"
       />
       <div className="item-body">
@@ -29,7 +31,7 @@ function ItemRow({ item, onToggle, onDelete }) {
         {item.note       && <div className="item-note">📝 {item.note}</div>}
         {item.assignedTo && <div className="item-assigned">👤 {item.assignedTo}</div>}
       </div>
-      <button className="item-delete" onClick={() => onDelete(item.id)} aria-label="Delete item">
+      <button className="item-delete" onClick={() => onDelete(item.id)} aria-label={t("deleteItem")}>
         ✕
       </button>
     </div>
@@ -42,6 +44,9 @@ function ItemRow({ item, onToggle, onDelete }) {
  * @param {{ category: object, items: object[], onToggle: Function, onDelete: Function }} props
  */
 function CategorySection({ category, items, onToggle, onDelete }) {
+  const t    = useT();
+  const lang = useContext(LanguageContext);
+  const catLabel = lang === "en" ? (category.labelEn || category.label) : category.label;
   const [collapsed, setCollapsed] = useState(false);
   const checkedCount   = items.filter(i => i.checked).length;
   const uncheckedCount = items.length - checkedCount;
@@ -55,11 +60,11 @@ function CategorySection({ category, items, onToggle, onDelete }) {
         aria-expanded={!collapsed}
       >
         <span className="category-icon">{category.icon}</span>
-        <span className="category-label">{category.label}</span>
+        <span className="category-label">{catLabel}</span>
         <span className="category-count">
           {uncheckedCount > 0
-            ? `${uncheckedCount} left`
-            : <span className="category-done">✓ done</span>
+            ? t("leftCount", uncheckedCount)
+            : <span className="category-done">{t("doneLabel")}</span>
           }
         </span>
         <span className="category-chevron">{collapsed ? "›" : "⌄"}</span>
@@ -106,7 +111,7 @@ function groupByCategory(items) {
 
 // ── Voice input hook ──────────────────────────────────────────────────────────
 
-const FILLER_RE = /^(add|please|i need|i want|put|get|buy)\s+/i;
+const FILLER_RE = /^(add|please|i need|i want|put|get|buy|תוסיף|אני צריך|תביא|קנה|שים)\s+/i;
 
 const VOICE_LANGS = [
   { code: "he-IL", label: "עב" },
@@ -207,6 +212,8 @@ function useVoiceInput({ onInterim, onFinal, onError, lang }) {
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function ListDetail({ list, session, onBack }) {
+  const t    = useT();
+  const lang = useContext(LanguageContext);
   const [liveList,     setLiveList]     = useState(list);
   const [text,         setText]         = useState("");
   const [note,         setNote]         = useState("");
@@ -236,7 +243,7 @@ export default function ListDetail({ list, session, onBack }) {
       setText("");
       items.forEach(item => addItem(item));
     },
-    onError:   (msg)     => setError(`Microphone error: ${msg}`),
+    onError:   (msg)     => setError(t("micError", msg)),
     lang:      voiceLang,
   });
   const listRef  = doc(db, "rooms", session.roomId, "lists", list.id);
@@ -252,11 +259,11 @@ export default function ListDetail({ list, session, onBack }) {
         if (snap.exists()) {
           setLiveList({ id: snap.id, ...snap.data() });
         } else {
-          setError("This list was deleted.");
+          setError(t("listDeleted"));
           onBack();
         }
       },
-      () => setError("Lost connection. Please refresh."),
+      () => setError(t("listLostConnection")),
     );
   }, [list.id]);
 
@@ -359,7 +366,7 @@ export default function ListDetail({ list, session, onBack }) {
       setSugg([]);
       inputRef.current?.focus();
     } catch (err) {
-      setError(err.message || "Failed to add item. Please try again.");
+      setError(err.message || t("addItemFailed"));
     }
   }
 
@@ -387,7 +394,7 @@ export default function ListDetail({ list, session, onBack }) {
         ...prev,
         items: (prev.items || []).map(i => i.id === id ? { ...i, checked: !i.checked } : i),
       }));
-      setError("Failed to update item.");
+      setError(t("updateItemFailed"));
     }
   }
 
@@ -403,7 +410,7 @@ export default function ListDetail({ list, session, onBack }) {
         });
       });
     } catch (err) {
-      setError("Failed to delete item.");
+      setError(t("deleteItemFailed"));
     }
   }
 
@@ -419,7 +426,7 @@ export default function ListDetail({ list, session, onBack }) {
         });
       });
     } catch (err) {
-      setError("Failed to clear checked items.");
+      setError(t("clearCheckedFailed"));
     }
   }
 
@@ -433,7 +440,8 @@ export default function ListDetail({ list, session, onBack }) {
 
     if (unchecked.length > 0) {
       groupByCategory(unchecked).forEach(({ category: cat, items: catItems }) => {
-        text += `${cat.icon} ${cat.label}:\n`;
+        const label = lang === "en" ? (cat.labelEn || cat.label) : cat.label;
+        text += `${cat.icon} ${label}:\n`;
         catItems.forEach(item => {
           text += `  • ${item.text}`;
           if (item.note)       text += ` (${item.note})`;
@@ -445,12 +453,12 @@ export default function ListDetail({ list, session, onBack }) {
     }
 
     if (checked.length > 0) {
-      text += `✓ Already got (${checked.length}):\n`;
+      text += `${t("shareListAlreadyGot", checked.length)}\n`;
       checked.forEach(item => { text += `  ✓ ${item.text}\n`; });
       text += "\n";
     }
 
-    text += `Shared via GrocerieShop 🛒`;
+    text += t("shareListFooter");
 
     if (navigator.share) {
       navigator.share({ title: liveList.name, text }).catch(() => {});
@@ -465,7 +473,7 @@ export default function ListDetail({ list, session, onBack }) {
       await updateDoc(listRef, { status: "archived" });
       onBack();
     } catch (err) {
-      setError("Failed to archive list.");
+      setError(t("archiveFailed"));
     }
   }
 
@@ -480,7 +488,7 @@ export default function ListDetail({ list, session, onBack }) {
     try {
       await updateDoc(listRef, { name });
     } catch (err) {
-      setError("Failed to rename list.");
+      setError(t("renameFailed"));
     }
     setEditingName(false);
   }
@@ -501,7 +509,7 @@ export default function ListDetail({ list, session, onBack }) {
     <div className="list-detail">
       {/* Header */}
       <div className="header">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack}>→</button>
         {editingName ? (
           <input
             ref={nameRef}
@@ -515,16 +523,16 @@ export default function ListDetail({ list, session, onBack }) {
             onBlur={saveRename}
           />
         ) : (
-          <h1 className="editable" onClick={() => setEditingName(true)} title="Tap to rename">
+          <h1 className="editable" onClick={() => setEditingName(true)} title={t("tapToRename")}>
             {liveList.name}
             <span className="rename-hint">✏️</span>
           </h1>
         )}
         {checked.length > 0 && (
-          <button className="btn btn-gray btn-sm" onClick={clearChecked}>Clear ✓</button>
+          <button className="btn btn-gray btn-sm" onClick={clearChecked}>{t("clearChecked")}</button>
         )}
-        <button className="btn btn-gray btn-sm" onClick={shareList} title="Share list">↗</button>
-        <button className="btn btn-gray btn-sm" onClick={archiveList} title="Archive list">📦</button>
+        <button className="btn btn-gray btn-sm" onClick={shareList} title={t("shareList")}>↗</button>
+        <button className="btn btn-gray btn-sm" onClick={archiveList} title={t("archiveList")}>📦</button>
       </div>
 
       {error && (
@@ -538,7 +546,7 @@ export default function ListDetail({ list, session, onBack }) {
         {items.length === 0 && (
           <div className="empty-state">
             <div className="icon">🛒</div>
-            <p>List is empty. Add your first item below!</p>
+            <p>{t("emptyList")}</p>
           </div>
         )}
 
@@ -568,7 +576,7 @@ export default function ListDetail({ list, session, onBack }) {
 
         {dupWarning && (
           <div className="dup-warning" role="alert">
-            ⚠️ "{text.trim()}" is already in this list
+            {t("alreadyInList", text.trim())}
           </div>
         )}
 
@@ -576,7 +584,7 @@ export default function ListDetail({ list, session, onBack }) {
           <input
             ref={inputRef}
             type="text"
-            placeholder={voice.listening ? "Listening…" : "Add item…"}
+            placeholder={voice.listening ? t("listeningPlaceholder") : t("addItemPlaceholder")}
             value={text}
             onChange={e => { setText(e.target.value); setDupWarning(false); }}
             onKeyDown={e => e.key === "Enter" && addItem()}
@@ -588,8 +596,8 @@ export default function ListDetail({ list, session, onBack }) {
               className="lang-toggle"
               onClick={cycleVoiceLang}
               disabled={voice.listening}
-              title="Switch recording language"
-              aria-label="Switch recording language"
+              title={t("switchLang")}
+              aria-label={t("switchLang")}
             >
               {VOICE_LANGS.find(l => l.code === voiceLang)?.label}
             </button>
@@ -599,8 +607,8 @@ export default function ListDetail({ list, session, onBack }) {
               type="button"
               className={`mic-btn ${voice.listening ? "listening" : ""}`}
               onClick={voice.toggle}
-              aria-label={voice.listening ? "Stop recording" : "Record items"}
-              title={voice.listening ? "Stop recording" : "Speak items to add them"}
+              aria-label={voice.listening ? t("stopRecording") : t("speakToAdd")}
+              title={voice.listening ? t("stopRecording") : t("speakToAdd")}
             >
               🎙
             </button>
@@ -610,16 +618,16 @@ export default function ListDetail({ list, session, onBack }) {
 
         {/* Category pill — always visible, auto-updates as you type */}
         <div className="category-picker-row">
-          <span className="category-pill-label">Category:</span>
+          <span className="category-pill-label">{t("categoryLabel")}</span>
           <div className="category-pills">
             {CATEGORIES.map(cat => (
               <button
                 key={cat.id}
                 className={`category-pill ${category === cat.id ? "active" : ""}`}
                 onClick={() => setCategory(cat.id)}
-                title={cat.label}
+                title={lang === "en" ? (cat.labelEn || cat.label) : cat.label}
               >
-                {cat.icon} {cat.label}
+                {cat.icon} {lang === "en" ? (cat.labelEn || cat.label) : cat.label}
               </button>
             ))}
           </div>
@@ -631,7 +639,7 @@ export default function ListDetail({ list, session, onBack }) {
             className="btn btn-gray btn-details"
             onClick={() => setShowDetails(v => !v)}
           >
-            {showDetails ? "Hide details" : "Add note / assign"}
+            {showDetails ? t("hideDetails") : t("addDetails")}
           </button>
         </div>
 
@@ -639,14 +647,14 @@ export default function ListDetail({ list, session, onBack }) {
           <div className="add-bar-details">
             <input
               type="text"
-              placeholder="Note (e.g. 2% fat)"
+              placeholder={t("notePlaceholder")}
               value={note}
               onChange={e => setNote(e.target.value)}
               style={{ flex: 1, minWidth: 0 }}
             />
             <input
               type="text"
-              placeholder="Assign to…"
+              placeholder={t("assignPlaceholder")}
               value={assignTo}
               onChange={e => setAssignTo(e.target.value)}
               style={{ flex: 1, minWidth: 0 }}

@@ -5,6 +5,32 @@
   gap: 24px;
 }
 
+.lang-switcher {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.lang-option {
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.lang-option.active {
+  border-color: var(--green);
+  background: #dcfce7;
+  color: var(--green-d);
+}
+
 .join-screen .logo {
   text-align: center;
   font-size: 3rem;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { LS } from "./utils.js";
+import { LanguageContext, useT } from "./i18n.js";
 import JoinScreen  from "./components/JoinScreen.jsx";
 import ListsView   from "./components/ListsView.jsx";
 import ListDetail  from "./components/ListDetail.jsx";
@@ -26,7 +27,23 @@ export default function App() {
   const [session,    setSession]    = useState(() => LS.get("fc_session", null));
   const [view,       setView]       = useState(VIEWS.LISTS);
   const [activeList, setActiveList] = useState(null);
+  const [lang,       setLang]       = useState(() => {
+    const saved = LS.get("fc_lang", null);
+    if (saved) return saved;
+    return navigator.language?.startsWith("he") ? "he" : "en";
+  });
   const online = useOnlineStatus();
+  const t = useT();
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir  = lang === "he" ? "rtl" : "ltr";
+  }, [lang]);
+
+  function handleLangChange(newLang) {
+    LS.set("fc_lang", newLang);
+    setLang(newLang);
+  }
 
   function openList(list) {
     setActiveList(list);
@@ -53,7 +70,11 @@ export default function App() {
   }
 
   if (!session) {
-    return <JoinScreen onJoin={handleJoin} />;
+    return (
+      <LanguageContext.Provider value={lang}>
+        <JoinScreen onJoin={handleJoin} lang={lang} onLangChange={handleLangChange} />
+      </LanguageContext.Provider>
+    );
   }
 
   const screen = view === VIEWS.DETAIL && activeList
@@ -63,7 +84,7 @@ export default function App() {
     : <ListsView session={session} onOpen={openList} onHistory={() => setView(VIEWS.HISTORY)} onLeave={handleLeave} />;
 
   return (
-    <>
+    <LanguageContext.Provider value={lang}>
       {!online && (
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999,
@@ -71,10 +92,10 @@ export default function App() {
           textAlign: "center", fontSize: "0.8rem",
           padding: "6px 16px", letterSpacing: "0.01em",
         }}>
-          You're offline — changes will sync when you reconnect
+          {t("offlineBanner")}
         </div>
       )}
       {screen}
-    </>
+    </LanguageContext.Provider>
   );
 }

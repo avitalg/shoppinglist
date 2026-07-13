@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import "./HistoryView.css";
 import { db, collection, onSnapshot, query, orderBy } from "../firebase.js";
 import { formatDate } from "../utils.js";
+import { useT } from "../i18n.js";
 
 export default function HistoryView({ session, onBack }) {
+  const t = useT();
   const [lists,    setLists]   = useState([]);
   const [expanded, setExpanded] = useState(null);
   const [loading,  setLoading]  = useState(true);
@@ -31,22 +33,22 @@ export default function HistoryView({ session, onBack }) {
   return (
     <div>
       <div className="header">
-        <button className="back-btn" onClick={onBack}>←</button>
-        <h1>List History</h1>
+        <button className="back-btn" onClick={onBack}>→</button>
+        <h1>{t("listHistoryTitle")}</h1>
       </div>
 
       <div className="history-view">
         {loading && (
           <div className="loading-state">
             <div className="loading-spinner" />
-            <p>Loading history…</p>
+            <p>{t("loadingHistory")}</p>
           </div>
         )}
 
         {!loading && lists.length === 0 && (
           <div className="empty-state">
             <div className="icon">📂</div>
-            <p>No archived lists yet.</p>
+            <p>{t("noArchivedLists")}</p>
           </div>
         )}
 
@@ -54,7 +56,7 @@ export default function HistoryView({ session, onBack }) {
           <div key={list.id} className="archive-card" onClick={() => toggleExpand(list.id)}>
             <h4>📋 {list.name}</h4>
             <p>
-              {(list.items || []).length} items · {formatDate(list.createdAt)}
+              {t("itemsCount", (list.items || []).length)} · {formatDate(list.createdAt)}
             </p>
 
             {expanded === list.id && (

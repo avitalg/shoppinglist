@@ -2,8 +2,10 @@ import { useState } from "react";
 import "./JoinScreen.css";
 import { db, doc, setDoc, getDoc, serverTimestamp } from "../firebase.js";
 import { genCode, LS } from "../utils.js";
+import { useT } from "../i18n.js";
 
-export default function JoinScreen({ onJoin }) {
+export default function JoinScreen({ onJoin, lang, onLangChange }) {
+  const t = useT();
   const [lastRoom,  setLastRoom]  = useState(() => LS.get("fc_last_room", null));
   const [spaceName, setSpaceName] = useState("");
   const [code,      setCode]      = useState("");
@@ -18,21 +20,21 @@ export default function JoinScreen({ onJoin }) {
     try {
       const snap = await getDoc(doc(db, "rooms", lastRoom.roomId));
       if (!snap.exists()) {
-        setError("This room no longer exists.");
+        setError(t("roomNoLongerExists"));
         setLastRoom(null);
         LS.set("fc_last_room", null);
         return;
       }
       onJoin({ roomId: lastRoom.roomId, roomName: lastRoom.roomName });
     } catch {
-      setError("Failed to connect. Check your internet connection.");
+      setError(t("connectFailed"));
     } finally {
       setBusy(false);
     }
   }
 
   async function handleJoin() {
-    if (code.trim().length < 4) return setError("Enter a valid room code");
+    if (code.trim().length < 4) return setError(t("invalidCode"));
 
     setBusy(true);
     setError("");
@@ -41,30 +43,29 @@ export default function JoinScreen({ onJoin }) {
       const roomId = code.trim().toUpperCase();
       const snap   = await getDoc(doc(db, "rooms", roomId));
 
-      if (!snap.exists()) return setError("Room not found. Double-check the code.");
+      if (!snap.exists()) return setError(t("roomNotFound"));
 
       onJoin({ roomId, roomName: snap.data().name || roomId });
     } catch {
-      setError("Failed to connect. Check your internet connection.");
+      setError(t("connectFailed"));
     } finally {
       setBusy(false);
     }
   }
 
   async function handleCreate() {
-    if (!spaceName.trim()) return setError("Enter a family space name");
+    if (!spaceName.trim()) return setError(t("enterSpaceName"));
 
     setBusy(true);
     setError("");
 
     try {
-      // Find a code that is not already taken (handles unlikely collisions)
       let code = newCode;
       for (let i = 0; i < 5; i++) {
         const snap = await getDoc(doc(db, "rooms", code));
         if (!snap.exists()) break;
         code = genCode();
-        if (i === 4) throw new Error("Could not generate a unique room code. Please try again.");
+        if (i === 4) throw new Error(t("codeGenFailed"));
       }
 
       await setDoc(doc(db, "rooms", code), {
@@ -74,7 +75,7 @@ export default function JoinScreen({ onJoin }) {
 
       onJoin({ roomId: code, roomName: spaceName.trim() });
     } catch (err) {
-      setError(err.message || "Failed to create room. Please try again.");
+      setError(err.message || t("createRoomFailed"));
     } finally {
       setBusy(false);
     }
@@ -82,28 +83,43 @@ export default function JoinScreen({ onJoin }) {
 
   return (
     <div className="join-screen">
+      <div className="lang-switcher">
+        <button
+          className={`lang-option ${lang === "he" ? "active" : ""}`}
+          onClick={() => onLangChange("he")}
+        >
+          עב
+        </button>
+        <button
+          className={`lang-option ${lang === "en" ? "active" : ""}`}
+          onClick={() => onLangChange("en")}
+        >
+          EN
+        </button>
+      </div>
+
       <div className="logo">🛒</div>
       <h2>GrocerieShop</h2>
-      <p>Shop together in real time. Share one list, everyone sees every change.</p>
+      <p>{t("tagline")}</p>
 
       {lastRoom && (
         <div className="quick-rejoin-card">
           <div className="quick-rejoin-header">
             <span className="quick-rejoin-icon">👋</span>
             <div>
-              <div className="quick-rejoin-title">Welcome back!</div>
+              <div className="quick-rejoin-title">{t("welcomeBack")}</div>
               <div className="quick-rejoin-room">{lastRoom.roomName}</div>
             </div>
             <span className="quick-rejoin-code">{lastRoom.roomId}</span>
           </div>
           <button className="btn btn-green btn-full" onClick={handleQuickRejoin} disabled={busy}>
-            Rejoin {lastRoom.roomName}
+            {t("rejoin")} {lastRoom.roomName}
           </button>
           <button
             className="quick-rejoin-dismiss"
             onClick={() => { setLastRoom(null); LS.set("fc_last_room", null); }}
           >
-            Sign in to a different room
+            {t("differentRoom")}
           </button>
         </div>
       )}
@@ -111,40 +127,40 @@ export default function JoinScreen({ onJoin }) {
       {!lastRoom && (
         <>
           <div className="card">
-            <h3>Join an existing room</h3>
+            <h3>{t("joinRoom")}</h3>
             <div className="input-row">
               <input
                 type="text"
-                placeholder="Room code"
+                placeholder={t("roomCodePlaceholder")}
                 value={code}
                 onChange={e => setCode(e.target.value.toUpperCase())}
                 onKeyDown={e => e.key === "Enter" && handleJoin()}
                 style={{ textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700 }}
               />
               <button className="btn btn-green" onClick={handleJoin} disabled={busy}>
-                Join
+                {t("joinBtn")}
               </button>
             </div>
           </div>
 
-          <div className="or-divider">or</div>
+          <div className="or-divider">{t("orDivider")}</div>
 
           <div className="card">
-            <h3>Create a new room</h3>
+            <h3>{t("createRoom")}</h3>
             <input
               type="text"
-              placeholder="Family space name (e.g. The Glazers)"
+              placeholder={t("spaceNamePlaceholder")}
               value={spaceName}
               onChange={e => setSpaceName(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleCreate()}
             />
-            <p className="input-hint">The name of your family shopping space</p>
+            <p className="input-hint">{t("spaceNameHint")}</p>
             <p className="room-code-preview">
-              Your room code: <strong className="room-code-highlight">{newCode}</strong>
-              <span> — share this with your family</span>
+              {t("yourRoomCode")} <strong className="room-code-highlight">{newCode}</strong>
+              <span>{t("shareWithFamily")}</span>
             </p>
             <button className="btn btn-outline btn-full" onClick={handleCreate} disabled={busy}>
-              Create space
+              {t("createBtn")}
             </button>
           </div>
         </>

@@ -265,7 +265,7 @@
   border: none;
   border-bottom: 2px solid var(--cat-color, var(--border));
   cursor: pointer;
-  text-align: left;
+  text-align: start;
   color: var(--text);
   min-height: 44px;
   touch-action: manipulation;
