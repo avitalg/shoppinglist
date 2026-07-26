@@ -70,6 +70,7 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
 
       await setDoc(doc(db, "rooms", code), {
         name:      spaceName.trim(),
+        code:      code,
         createdAt: serverTimestamp(),
       });
 
