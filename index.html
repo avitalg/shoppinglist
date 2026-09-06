@@ -9,12 +9,12 @@
   <link rel="apple-touch-icon" href="/favicon.svg" />
 
   <!-- Primary SEO -->
-  <title>GrocerieShop – רשימת קניות משותפת למשפחה</title>
-  <meta name="description" content="GrocerieShop היא אפליקציה לרשימת קניות משותפת בזמן אמת למשפחות. צרו חדר, שתפו קוד, וקנו ביחד — כולם רואים כל שינוי מיידית." />
-  <meta name="keywords" content="רשימת קניות משותפת, אפליקציית קניות למשפחה, רשימת מכולת בזמן אמת, קניות שיתופיות, shared shopping list, family grocery list app, Israel grocery app" />
+  <title>GrocerieShop – Shared Shopping List App | רשימת קניות משותפת למשפחה</title>
+  <meta name="description" content="Free shared shopping list app for families. Create a room, share a code, and shop together in real time — everyone sees every change instantly. רשימת קניות משותפת בזמן אמת למשפחות." />
+  <meta name="keywords" content="shopping list, shared shopping list, grocery list app, family shopping list, collaborative grocery list, real-time shopping list, free shopping list app, רשימת קניות, רשימת קניות משותפת, אפליקציית קניות למשפחה, רשימת מכולת בזמן אמת" />
   <meta name="author" content="GrocerieShop" />
   <meta name="robots" content="index, follow" />
-  <meta name="language" content="Hebrew" />
+  <meta name="language" content="Hebrew, English" />
   <meta name="geo.region" content="IL" />
   <meta name="geo.country" content="Israel" />
   <meta name="geo.placename" content="Israel" />
@@ -28,8 +28,8 @@
   <!-- Open Graph (Facebook, WhatsApp, LinkedIn previews) -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.grocerieshop.tech/" />
-  <meta property="og:title" content="GrocerieShop – רשימת קניות משותפת למשפחה" />
-  <meta property="og:description" content="צרו חדר קניות משפחתי, הזמינו את כל המשפחה עם קוד, וקנו ביחד בזמן אמת." />
+  <meta property="og:title" content="GrocerieShop – Free Shared Shopping List App" />
+  <meta property="og:description" content="Create a shared grocery list, invite your family with a code, and shop together in real time. Free, instant, no sign-up." />
   <meta property="og:image" content="https://www.grocerieshop.tech/og-image.png" />
   <meta property="og:locale" content="he_IL" />
   <meta property="og:locale:alternate" content="en_US" />
@@ -37,8 +37,8 @@
 
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="GrocerieShop – רשימת קניות משותפת למשפחה" />
-  <meta name="twitter:description" content="רשימות קניות משותפות בזמן אמת לכל המשפחה. הצטרפו לחדר וקנו ביחד." />
+  <meta name="twitter:title" content="GrocerieShop – Free Shared Shopping List App" />
+  <meta name="twitter:description" content="Real-time shared grocery lists for the whole family. Create a room, share a code, shop together — free & instant." />
   <meta name="twitter:image" content="https://www.grocerieshop.tech/og-image.png" />
 
   <!-- PWA / mobile -->
@@ -54,23 +54,54 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "GrocerieShop",
+    "alternateName": ["Grocerie Shop", "GrocerieShop App", "רשימת קניות משותפת"],
     "url": "https://www.grocerieshop.tech/",
-    "description": "רשימת קניות משותפת בזמן אמת למשפחות — צרו חדר, שתפו קוד, וקנו ביחד.",
+    "description": "Free real-time shared shopping list app for families. Create a room, share a code, and shop together — everyone sees every change instantly.",
     "applicationCategory": "LifestyleApplication",
+    "applicationSubCategory": "Shopping",
     "operatingSystem": "Web, iOS, Android",
+    "featureList": [
+      "Shared shopping lists",
+      "Real-time sync",
+      "Family room with code",
+      "Voice input",
+      "Offline support",
+      "Hebrew and English"
+    ],
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "ILS"
+      "priceCurrency": "USD"
     },
     "inLanguage": ["he", "en"],
     "availableOnDevice": ["Desktop", "Mobile", "Tablet"],
-    "countriesSupported": "IL"
+    "screenshot": "https://www.grocerieshop.tech/og-image.png"
   }
   </script>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Static content for search engine crawlers (replaced by React on load) -->
+    <main style="display:none" aria-hidden="true">
+      <h1>GrocerieShop – Shared Shopping List App</h1>
+      <p>Free real-time shared shopping list for families. Create a room, share a code, and everyone sees every change instantly.</p>
+      <h2>Features</h2>
+      <ul>
+        <li>Shared grocery lists for the whole family</li>
+        <li>Real-time sync — everyone sees changes instantly</li>
+        <li>Join with a simple room code, no sign-up needed</li>
+        <li>Voice input — speak your shopping items</li>
+        <li>Works offline with automatic sync</li>
+        <li>Hebrew and English support</li>
+        <li>Free to use on any device</li>
+      </ul>
+      <p lang="he">רשימת קניות משותפת בזמן אמת למשפחות. צרו חדר, שתפו קוד, וקנו ביחד — כולם רואים כל שינוי מיידית. חינמי לשימוש.</p>
+    </main>
+  </div>
+  <noscript>
+    <h1>GrocerieShop – Shared Shopping List</h1>
+    <p>Free real-time shared shopping list app for families. Please enable JavaScript to use GrocerieShop.</p>
+  </noscript>
   <script type="module" src="/js/main.jsx"></script>
 </body>
 </html>
