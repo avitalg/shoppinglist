@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import "./ListDetail.css";
+import ConfirmDialog from "./ConfirmDialog.jsx";
 import {
-  db, doc, onSnapshot, updateDoc, setDoc, collection, runTransaction, increment,
+  db, doc, onSnapshot, updateDoc, deleteDoc, setDoc, collection, runTransaction, increment,
 } from "../firebase.js";
 import { CATEGORIES, CATEGORY_BY_ID, DEFAULT_CATEGORY, detectCategory } from "../categories.js";
 import { LS } from "../utils.js";
@@ -227,6 +228,7 @@ export default function ListDetail({ list, session, onBack }) {
   const [dupWarning,   setDupWarning]   = useState(false);
   const [error,        setError]        = useState("");
   const [voiceLang,    setVoiceLang]    = useState(() => LS.get("fc_voice_lang", "he-IL"));
+  const [confirmAction, setConfirmAction] = useState(null);
 
   const inputRef = useRef(null);
   const nameRef  = useRef(null);
@@ -477,6 +479,24 @@ export default function ListDetail({ list, session, onBack }) {
     }
   }
 
+  /** Permanently delete the list and return to the lists view. */
+  async function deleteList() {
+    setError("");
+    try {
+      await deleteDoc(listRef);
+      onBack();
+    } catch (err) {
+      setError(t("deleteListFailed"));
+    }
+  }
+
+  function handleConfirm() {
+    const action = confirmAction;
+    setConfirmAction(null);
+    if (action === "clear")  clearChecked();
+    if (action === "delete") deleteList();
+  }
+
   /** Persist a renamed list title. */
   async function saveRename() {
     const name = nameDraft.trim();
@@ -529,10 +549,11 @@ export default function ListDetail({ list, session, onBack }) {
           </h1>
         )}
         {checked.length > 0 && (
-          <button className="btn btn-gray btn-sm" onClick={clearChecked}>{t("clearChecked")}</button>
+          <button className="btn btn-gray btn-sm" onClick={() => setConfirmAction("clear")}>{t("clearChecked")}</button>
         )}
         <button className="btn btn-gray btn-sm" onClick={shareList} title={t("shareList")}>↗</button>
         <button className="btn btn-gray btn-sm" onClick={archiveList} title={t("archiveList")}>📦</button>
+        <button className="btn btn-gray btn-sm" onClick={() => setConfirmAction("delete")} title={t("deleteList")} aria-label={t("deleteList")}>🗑</button>
       </div>
 
       {error && (
@@ -662,6 +683,19 @@ export default function ListDetail({ list, session, onBack }) {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        open={!!confirmAction}
+        title={confirmAction === "delete" ? t("deleteListTitle") : t("clearCheckedTitle")}
+        message={confirmAction === "delete"
+          ? t("deleteListMessage", liveList.name)
+          : t("clearCheckedMessage", checked.length)}
+        confirmLabel={confirmAction === "delete" ? t("deleteListConfirm") : t("clearCheckedConfirm")}
+        cancelLabel={t("cancel")}
+        danger
+        onCancel={() => setConfirmAction(null)}
+        onConfirm={handleConfirm}
+      />
     </div>
   );
 }

@@ -13,7 +13,8 @@ export default defineConfig({
         globPatterns: ["**/*.{js,css,html,svg,png,ico,woff2}"],
         // Firestore uses long-polling XHR — don't cache Firebase API calls.
         navigateFallback: "index.html",
-        navigateFallbackDenylist: [/^\/api/, /firestore\.googleapis\.com/],
+        // Don't SPA-fallback real files (sitemap, robots, verification HTML, images).
+        navigateFallbackDenylist: [/^\/api/, /firestore\.googleapis\.com/, /\.[^/]+$/],
       },
       manifest: {
         name: "GrocerieShop",

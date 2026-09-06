@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./HistoryView.css";
-import { db, collection, onSnapshot, query, orderBy } from "../firebase.js";
+import ConfirmDialog from "./ConfirmDialog.jsx";
+import { db, collection, doc, deleteDoc, onSnapshot, query, orderBy } from "../firebase.js";
 import { formatDate } from "../utils.js";
 import { useT } from "../i18n.js";
 
@@ -9,6 +10,7 @@ export default function HistoryView({ session, onBack }) {
   const [lists,    setLists]   = useState([]);
   const [expanded, setExpanded] = useState(null);
   const [loading,  setLoading]  = useState(true);
+  const [pendingDelete, setPendingDelete] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -28,6 +30,18 @@ export default function HistoryView({ session, onBack }) {
 
   function toggleExpand(id) {
     setExpanded(prev => (prev === id ? null : id));
+  }
+
+  async function deleteList() {
+    if (!pendingDelete) return;
+    const id = pendingDelete.id;
+    setPendingDelete(null);
+    setExpanded(prev => (prev === id ? null : prev));
+    try {
+      await deleteDoc(doc(db, "rooms", session.roomId, "lists", id));
+    } catch {
+      /* snapshot listener will surface remaining lists either way */
+    }
   }
 
   return (
@@ -54,10 +68,27 @@ export default function HistoryView({ session, onBack }) {
 
         {lists.map(list => (
           <div key={list.id} className="archive-card" onClick={() => toggleExpand(list.id)}>
-            <h4>📋 {list.name}</h4>
-            <p>
-              {t("itemsCount", (list.items || []).length)} · {formatDate(list.createdAt)}
-            </p>
+            <div className="archive-card-header">
+              <div>
+                <h4>📋 {list.name}</h4>
+                <p>
+                  {t("itemsCount", (list.items || []).length)} · {formatDate(list.createdAt)}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="list-delete"
+                aria-label={t("deleteList")}
+                title={t("deleteList")}
+                onClick={e => {
+                  e.stopPropagation();
+                  setPendingDelete(list);
+                }}
+                onPointerDown={e => e.stopPropagation()}
+              >
+                ✕
+              </button>
+            </div>
 
             {expanded === list.id && (
               <div className="archive-items">
@@ -75,6 +106,17 @@ export default function HistoryView({ session, onBack }) {
           </div>
         ))}
       </div>
+
+      <ConfirmDialog
+        open={!!pendingDelete}
+        title={t("deleteListTitle")}
+        message={t("deleteListMessage", pendingDelete?.name || "")}
+        confirmLabel={t("deleteListConfirm")}
+        cancelLabel={t("cancel")}
+        danger
+        onCancel={() => setPendingDelete(null)}
+        onConfirm={deleteList}
+      />
     </div>
   );
 }

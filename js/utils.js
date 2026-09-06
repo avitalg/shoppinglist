@@ -24,6 +24,13 @@ export function genCode() {
   return Array.from(bytes, b => CODE_CHARS[b % CODE_CHARS.length]).join("");
 }
 
+/** Open WhatsApp (app or web) with a pre-filled message. */
+export function shareViaWhatsApp(text) {
+  const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  const opened = window.open(url, "_blank", "noopener,noreferrer");
+  if (!opened) window.location.href = url;
+}
+
 // ── Format a Firestore timestamp (or Date) to a readable string ───────────────
 export function formatDate(d) {
   if (!d) return "";

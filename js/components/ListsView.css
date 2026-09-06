@@ -70,6 +70,29 @@
   font-size: 1.1rem;
 }
 
+.list-card .list-delete {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 1rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  margin-inline-end: -8px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.list-card .list-delete:hover,
+.list-card .list-delete:active {
+  color: var(--red);
+}
+
 [dir="rtl"] .list-card .list-arrow {
   transform: scaleX(-1);
 }

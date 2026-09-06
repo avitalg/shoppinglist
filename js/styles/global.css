@@ -116,7 +116,15 @@ body {
 .btn:active   { opacity: 0.8; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.btn-green   { background: var(--green);  color: var(--white); }
+.btn-green    { background: var(--green);  color: var(--white); }
+.btn-whatsapp {
+  background: #25d366;
+  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 .btn-gray    { background: var(--border); color: var(--text); }
 .btn-red     { background: var(--red);    color: var(--white); }
 .btn-outline { background: none; border: 1.5px solid var(--green); color: var(--green); }

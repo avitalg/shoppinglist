@@ -40,6 +40,41 @@
   margin-bottom: 4px;
 }
 
+.archive-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.archive-card-header > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.archive-card .list-delete {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 1rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  margin-block-start: -8px;
+  margin-inline-end: -8px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.archive-card .list-delete:hover,
+.archive-card .list-delete:active {
+  color: var(--red);
+}
+
 .archive-card p {
   font-size: 0.8rem;
   color: var(--gray);
