@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import {
+  BrowserRouter, Routes, Route, Navigate, useNavigate, useParams,
+} from "react-router-dom";
 import { LS } from "./utils.js";
 import { LanguageContext, useT } from "./i18n.js";
 import JoinScreen  from "./components/JoinScreen.jsx";
@@ -6,7 +9,7 @@ import ListsView   from "./components/ListsView.jsx";
 import ListDetail  from "./components/ListDetail.jsx";
 import HistoryView from "./components/HistoryView.jsx";
 
-const VIEWS = { LISTS: "lists", DETAIL: "detail", HISTORY: "history" };
+// ── Online status hook ────────────────────────────────────────────────────────
 
 function useOnlineStatus() {
   const [online, setOnline] = useState(navigator.onLine);
@@ -23,17 +26,35 @@ function useOnlineStatus() {
   return online;
 }
 
+// ── Route guards ──────────────────────────────────────────────────────────────
+
+/** Redirect to / if there is no active session. */
+function RequireSession({ session, children }) {
+  if (!session) return <Navigate to="/" replace />;
+  return children;
+}
+
+// ── Screen components (wired to router) ──────────────────────────────────────
+
+function ListDetailRoute({ session, lists, onBack }) {
+  const { listId } = useParams();
+  // Find the list from the in-memory list cache, or fall back to a minimal
+  // stub so the component can load the live data from Firestore itself.
+  const list = lists.find(l => l.id === listId) ?? { id: listId, name: "", items: [] };
+  return <ListDetail list={list} session={session} onBack={onBack} />;
+}
+
+// ── Root app (manages session + language) ────────────────────────────────────
+
 export default function App() {
-  const [session,    setSession]    = useState(() => LS.get("fc_session", null));
-  const [view,       setView]       = useState(VIEWS.LISTS);
-  const [activeList, setActiveList] = useState(null);
-  const [lang,       setLang]       = useState(() => {
+  const [session, setSession] = useState(() => LS.get("fc_session", null));
+  const [lists,   setLists]   = useState([]);   // shared cache for deep-linked list detail
+  const [lang,    setLang]    = useState(() => {
     const saved = LS.get("fc_lang", null);
     if (saved) return saved;
     return navigator.language?.startsWith("he") ? "he" : "en";
   });
   const online = useOnlineStatus();
-  const t = useT();
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -43,16 +64,6 @@ export default function App() {
   function handleLangChange(newLang) {
     LS.set("fc_lang", newLang);
     setLang(newLang);
-  }
-
-  function openList(list) {
-    setActiveList(list);
-    setView(VIEWS.DETAIL);
-  }
-
-  function closeList() {
-    setActiveList(null);
-    setView(VIEWS.LISTS);
   }
 
   function handleJoin(sessionData) {
@@ -69,33 +80,107 @@ export default function App() {
     setSession(null);
   }
 
-  if (!session) {
-    return (
-      <LanguageContext.Provider value={lang}>
-        <JoinScreen onJoin={handleJoin} lang={lang} onLangChange={handleLangChange} />
-      </LanguageContext.Provider>
-    );
-  }
-
-  const screen = view === VIEWS.DETAIL && activeList
-    ? <ListDetail list={activeList} session={session} onBack={closeList} />
-    : view === VIEWS.HISTORY
-    ? <HistoryView session={session} onBack={() => setView(VIEWS.LISTS)} />
-    : <ListsView session={session} onOpen={openList} onHistory={() => setView(VIEWS.HISTORY)} onLeave={handleLeave} />;
-
   return (
     <LanguageContext.Provider value={lang}>
-      {!online && (
-        <div style={{
-          position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999,
-          background: "#92400e", color: "#fef3c7",
-          textAlign: "center", fontSize: "0.8rem",
-          padding: "6px 16px", letterSpacing: "0.01em",
-        }}>
-          {t("offlineBanner")}
-        </div>
-      )}
-      {screen}
+      <BrowserRouter>
+        <OfflineBanner online={online} />
+        <Routes>
+          {/* Public: join / login */}
+          <Route
+            path="/"
+            element={
+              session
+                ? <Navigate to="/lists" replace />
+                : <JoinScreen onJoin={handleJoin} lang={lang} onLangChange={handleLangChange} />
+            }
+          />
+
+          {/* Protected: lists */}
+          <Route
+            path="/lists"
+            element={
+              <RequireSession session={session}>
+                <ListsViewRoute
+                  session={session}
+                  onLeave={handleLeave}
+                  onListsLoaded={setLists}
+                />
+              </RequireSession>
+            }
+          />
+
+          {/* Protected: list detail */}
+          <Route
+            path="/list/:listId"
+            element={
+              <RequireSession session={session}>
+                <ListDetailRouteWrapper session={session} lists={lists} />
+              </RequireSession>
+            }
+          />
+
+          {/* Protected: history */}
+          <Route
+            path="/history"
+            element={
+              <RequireSession session={session}>
+                <HistoryViewRoute session={session} />
+              </RequireSession>
+            }
+          />
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to={session ? "/lists" : "/"} replace />} />
+        </Routes>
+      </BrowserRouter>
     </LanguageContext.Provider>
   );
+}
+
+// ── Small inline wrappers to connect router navigation ────────────────────────
+
+function OfflineBanner({ online }) {
+  const t = useT();
+  if (online) return null;
+  return (
+    <div style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999,
+      background: "#92400e", color: "#fef3c7",
+      textAlign: "center", fontSize: "0.8rem",
+      padding: "6px 16px", letterSpacing: "0.01em",
+    }}>
+      {t("offlineBanner")}
+    </div>
+  );
+}
+
+function ListsViewRoute({ session, onLeave, onListsLoaded }) {
+  const navigate = useNavigate();
+  return (
+    <ListsView
+      session={session}
+      onOpen={list => navigate(`/list/${list.id}`, { state: { list } })}
+      onHistory={() => navigate("/history")}
+      onLeave={onLeave}
+      onListsLoaded={onListsLoaded}
+    />
+  );
+}
+
+function ListDetailRouteWrapper({ session, lists }) {
+  const navigate  = useNavigate();
+  const { listId } = useParams();
+  const list = lists.find(l => l.id === listId) ?? { id: listId, name: "", items: [] };
+  return (
+    <ListDetail
+      list={list}
+      session={session}
+      onBack={() => navigate("/lists")}
+    />
+  );
+}
+
+function HistoryViewRoute({ session }) {
+  const navigate = useNavigate();
+  return <HistoryView session={session} onBack={() => navigate("/lists")} />;
 }

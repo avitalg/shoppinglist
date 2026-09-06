@@ -70,6 +70,10 @@
   font-size: 1.1rem;
 }
 
+[dir="rtl"] .list-card .list-arrow {
+  transform: scaleX(-1);
+}
+
 .lists-footer {
   display: flex;
   gap: 8px;

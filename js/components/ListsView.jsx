@@ -4,7 +4,7 @@ import { db, collection, onSnapshot, addDoc, serverTimestamp, query, orderBy } f
 import { formatDate } from "../utils.js";
 import { useT } from "../i18n.js";
 
-export default function ListsView({ session, onOpen, onHistory, onLeave }) {
+export default function ListsView({ session, onOpen, onHistory, onLeave, onListsLoaded }) {
   const t = useT();
   const [lists,   setLists]   = useState([]);
   const [newName, setNewName] = useState(() => {
@@ -24,7 +24,9 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
     return onSnapshot(
       q,
       snap => {
-        setLists(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        const loaded = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        setLists(loaded);
+        onListsLoaded?.(loaded);
         setLoading(false);
       },
       () => {
@@ -120,7 +122,7 @@ export default function ListsView({ session, onOpen, onHistory, onLeave }) {
                   {list.createdAt ? ` · ${formatDate(list.createdAt)}` : ""}
                 </div>
               </div>
-              <span className="list-arrow">←</span>
+              <span className="list-arrow">→</span>
             </div>
           );
         })}

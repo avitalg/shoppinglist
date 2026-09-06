@@ -509,7 +509,7 @@ export default function ListDetail({ list, session, onBack }) {
     <div className="list-detail">
       {/* Header */}
       <div className="header">
-        <button className="back-btn" onClick={onBack}>→</button>
+        <button className="back-btn" onClick={onBack}>←</button>
         {editingName ? (
           <input
             ref={nameRef}
