@@ -7,6 +7,26 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "grocerypair.com" }],
+      "destination": "https://www.grocerypair.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.grocerieshop.tech" }],
+      "destination": "https://www.grocerypair.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "grocerieshop.tech" }],
+      "destination": "https://www.grocerypair.com/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/((?!sitemap\\.xml|robots\\.txt|favicon\\.svg|og-image\\.png|googlea.*\\.html|assets/|about|faq).*)", "destination": "/index.html" }
   ]

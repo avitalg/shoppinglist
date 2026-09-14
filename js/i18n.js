@@ -49,8 +49,8 @@ export const TRANSLATIONS = {
     listHistory:        "List History",
     // share room
     shareRoomText:      (spaceName, roomId) =>
-      `You're invited to join "${spaceName}" on GrocerieShop! 🛒\n\nRoom code: ${roomId}\nOpen the app: https://www.grocerieshop.tech/\n\nWe can share shopping lists in real time!`,
-    shareRoomTitle:     (spaceName) => `Join ${spaceName} on GrocerieShop`,
+      `You're invited to join "${spaceName}" on GroceryPair! 🛒\n\nRoom code: ${roomId}\nOpen the app: https://www.grocerypair.com/\n\nWe can share shopping lists in real time!`,
+    shareRoomTitle:     (spaceName) => `Join ${spaceName} on GroceryPair`,
 
     // ── ListDetail ──────────────────────────────────────────────────────────
     tapToRename:        "Tap to rename",
@@ -91,7 +91,7 @@ export const TRANSLATIONS = {
     renameFailed:       "Failed to rename list.",
     // share list
     shareListAlreadyGot:(n) => `✓ Already got (${n}):`,
-    shareListFooter:    "Shared via GrocerieShop 🛒",
+    shareListFooter:    "Shared via GroceryPair 🛒",
 
     // ── HistoryView ─────────────────────────────────────────────────────────
     listHistoryTitle:   "List History",
@@ -111,7 +111,7 @@ export const TRANSLATIONS = {
     aboutTitle:         "About",
     aboutDocTitle:      PAGE_SEO.about.en.title,
     aboutDocDesc:       PAGE_SEO.about.en.description,
-    aboutLead:          "GrocerieShop is a free shared shopping list for families and roommates. One list, everyone sees every change — at the store or at home.",
+    aboutLead:          "GroceryPair is a free shared shopping list for families and roommates. One list, everyone sees every change — at the store or at home.",
     aboutHowTitle:      "How it works",
     aboutStep1:         "Create a family room. You get a short code — no sign-up, no email.",
     aboutStep2:         "Share the code (or a WhatsApp invite) so everyone joins the same room.",
@@ -181,8 +181,8 @@ export const TRANSLATIONS = {
     listHistory:        "ארכיון",
     // share room
     shareRoomText:      (spaceName, roomId) =>
-      `הוזמנתם להצטרף ל"${spaceName}" ב-GrocerieShop! 🛒\n\nקוד חדר: ${roomId}\nפתחו את האפליקציה: https://www.grocerieshop.tech/\n\nנוכל לשתף רשימות קניות בזמן אמת!`,
-    shareRoomTitle:     (spaceName) => `הצטרף ל${spaceName} ב-GrocerieShop`,
+      `הוזמנתם להצטרף ל"${spaceName}" ב-GroceryPair! 🛒\n\nקוד חדר: ${roomId}\nפתחו את האפליקציה: https://www.grocerypair.com/\n\nנוכל לשתף רשימות קניות בזמן אמת!`,
+    shareRoomTitle:     (spaceName) => `הצטרף ל${spaceName} ב-GroceryPair`,
 
     // ── ListDetail ──────────────────────────────────────────────────────────
     tapToRename:        "לחץ לשינוי שם",
@@ -223,7 +223,7 @@ export const TRANSLATIONS = {
     renameFailed:       "שינוי שם הרשימה נכשל.",
     // share list
     shareListAlreadyGot:(n) => `✓ כבר יש לנו (${n}):`,
-    shareListFooter:    "שותף דרך GrocerieShop 🛒",
+    shareListFooter:    "שותף דרך GroceryPair 🛒",
 
     // ── HistoryView ─────────────────────────────────────────────────────────
     listHistoryTitle:   "ארכיון רשימות",
@@ -243,7 +243,7 @@ export const TRANSLATIONS = {
     aboutTitle:         "אודות",
     aboutDocTitle:      PAGE_SEO.about.he.title,
     aboutDocDesc:       PAGE_SEO.about.he.description,
-    aboutLead:          "GrocerieShop היא רשימת קניות משותפת חינמית למשפחות ולשותפים לדירה. רשימה אחת — כולם רואים כל שינוי, בסופר או בבית.",
+    aboutLead:          "GroceryPair היא רשימת קניות משותפת חינמית למשפחות ולשותפים לדירה. רשימה אחת — כולם רואים כל שינוי, בסופר או בבית.",
     aboutHowTitle:      "איך זה עובד",
     aboutStep1:         "יוצרים חדר משפחתי. מקבלים קוד קצר — בלי הרשמה ובלי אימייל.",
     aboutStep2:         "משתפים את הקוד (או הזמנה בוואטסאפ) כדי שכולם ייכנסו לאותו חדר.",

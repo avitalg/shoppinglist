@@ -94,7 +94,7 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
       <div className="header">
         <span style={{ fontSize: "1.4rem" }}>🛒</span>
         <div className="header-room-info">
-          <h1>{session.roomName || "GrocerieShop"}</h1>
+          <h1>{session.roomName || "GroceryPair"}</h1>
           <span className="room-code-tag">{session.roomId}</span>
         </div>
       </div>

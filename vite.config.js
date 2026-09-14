@@ -17,8 +17,8 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api/, /firestore\.googleapis\.com/, /\.[^/]+$/],
       },
       manifest: {
-        name: "GrocerieShop",
-        short_name: "GrocerieShop",
+        name: "GroceryPair",
+        short_name: "GroceryPair",
         description: "Real-time shared shopping list for families",
         theme_color: "#16a34a",
         background_color: "#ffffff",

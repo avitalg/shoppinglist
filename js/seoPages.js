@@ -1,11 +1,11 @@
-export const SITE = "https://www.grocerieshop.tech";
+export const SITE = "https://www.grocerypair.com";
 
 export const HOME_SEO = {
   path: "/",
-  title: "GrocerieShop – Shared Shopping List App | רשימת קניות משותפת למשפחה",
+  title: "GroceryPair – Shared Shopping List App | רשימת קניות משותפת למשפחה",
   description:
     "Free shared shopping list app for families. Create a room, share a code, and shop together in real time — everyone sees every change instantly. רשימת קניות משותפת בזמן אמת למשפחות.",
-  ogTitle: "GrocerieShop – Free Shared Shopping List App",
+  ogTitle: "GroceryPair – Free Shared Shopping List App",
   ogDescription:
     "Create a shared grocery list, invite your family with a code, and shop together in real time. Free, instant, no sign-up.",
 };
@@ -13,12 +13,12 @@ export const HOME_SEO = {
 export const FAQ_ITEMS = {
   en: [
     {
-      q: "What is GrocerieShop?",
+      q: "What is GroceryPair?",
       a: "A free web app for a shared grocery list. Everyone in your room sees adds, checks, and deletes in real time.",
     },
     {
       q: "Is it free?",
-      a: "Yes. GrocerieShop is free to use — no subscription and no ads in the list.",
+      a: "Yes. GroceryPair is free to use — no subscription and no ads in the list.",
     },
     {
       q: "Do I need to create an account?",
@@ -26,7 +26,7 @@ export const FAQ_ITEMS = {
     },
     {
       q: "How do I invite my family?",
-      a: "Open the room and tap “Send room via WhatsApp”, or tell them the room code and the site: grocerieshop.tech.",
+      a: "Open the room and tap “Send room via WhatsApp”, or tell them the room code and the site: grocerypair.com.",
     },
     {
       q: "What if I forget the room code?",
@@ -63,12 +63,12 @@ export const FAQ_ITEMS = {
   ],
   he: [
     {
-      q: "מה זה GrocerieShop\u200f?",
+      q: "מה זה GroceryPair\u200f?",
       a: "אפליקציית ווב חינמית לרשימת קניות משותפת. כולם בחדר רואים הוספות, סימונים ומחיקות בזמן אמת.",
     },
     {
       q: "זה בחינם?",
-      a: "כן. GrocerieShop חינמית לשימוש — בלי מנוי ובלי פרסומות ברשימה.",
+      a: "כן. GroceryPair חינמית לשימוש — בלי מנוי ובלי פרסומות ברשימה.",
     },
     {
       q: "צריך לפתוח חשבון?",
@@ -76,7 +76,7 @@ export const FAQ_ITEMS = {
     },
     {
       q: "איך מזמינים את המשפחה?",
-      a: "בחדר לוחצים על «שלח חדר בוואטסאפ», או מוסרים את קוד החדר ואת הכתובת grocerieshop.tech.",
+      a: "בחדר לוחצים על «שלח חדר בוואטסאפ», או מוסרים את קוד החדר ואת הכתובת grocerypair.com.",
     },
     {
       q: "שכחתי את קוד החדר. מה עושים?",
@@ -117,30 +117,30 @@ export const PAGE_SEO = {
   about: {
     path: "/about",
     en: {
-      title: "About GrocerieShop – Shared Shopping List App",
+      title: "About GroceryPair – Shared Shopping List App",
       description:
-        "GrocerieShop is a free shared shopping list for families. Create a room, share a code, and shop together in real time.",
-      h1: "About GrocerieShop",
+        "GroceryPair is a free shared shopping list for families. Create a room, share a code, and shop together in real time.",
+      h1: "About GroceryPair",
     },
     he: {
-      title: "אודות GrocerieShop – רשימת קניות משותפת",
+      title: "אודות GroceryPair – רשימת קניות משותפת",
       description:
-        "GrocerieShop היא רשימת קניות משותפת חינמית למשפחות. צרו חדר, שתפו קוד, וקנו ביחד בזמן אמת.",
-      h1: "אודות GrocerieShop",
+        "GroceryPair היא רשימת קניות משותפת חינמית למשפחות. צרו חדר, שתפו קוד, וקנו ביחד בזמן אמת.",
+      h1: "אודות GroceryPair",
     },
   },
   faq: {
     path: "/faq",
     en: {
-      title: "GrocerieShop FAQ – Shared Shopping List Help",
+      title: "GroceryPair FAQ – Shared Shopping List Help",
       description:
-        "Answers about GrocerieShop: room codes, sharing, offline use, voice input, and how to get started.",
-      h1: "GrocerieShop FAQ",
+        "Answers about GroceryPair: room codes, sharing, offline use, voice input, and how to get started.",
+      h1: "GroceryPair FAQ",
     },
     he: {
-      title: "שאלות נפוצות – GrocerieShop רשימת קניות משותפת",
+      title: "שאלות נפוצות – GroceryPair רשימת קניות משותפת",
       description:
-        "תשובות על GrocerieShop: קוד חדר, שיתוף, שימוש בלי אינטרנט, קלט קולי ואיך מתחילים.",
+        "תשובות על GroceryPair: קוד חדר, שיתוף, שימוש בלי אינטרנט, קלט קולי ואיך מתחילים.",
       h1: "שאלות נפוצות",
     },
   },
@@ -169,7 +169,7 @@ export function aboutJsonLd() {
     inLanguage: ["en", "he"],
     isPartOf: {
       "@type": "WebApplication",
-      name: "GrocerieShop",
+      name: "GroceryPair",
       url: `${SITE}/`,
     },
   };

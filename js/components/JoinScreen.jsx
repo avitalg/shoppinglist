@@ -108,7 +108,7 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
       </div>
 
       <div className="logo">🛒</div>
-      <h2>GrocerieShop</h2>
+      <h2>GroceryPair</h2>
       <p>{t("tagline")}</p>
 
       {lastRoom && (

@@ -81,7 +81,7 @@ function aboutBody() {
     <main>
       <h1>${esc(en.h1)}</h1>
       <p>${esc(en.description)}</p>
-      <p><a href="/">GrocerieShop</a> · <a href="/faq">FAQ</a></p>
+      <p><a href="/">GroceryPair</a> · <a href="/faq">FAQ</a></p>
       <section lang="he" dir="rtl">
         <h2>${esc(he.h1)}</h2>
         <p>${esc(he.description)}</p>
@@ -108,7 +108,7 @@ function faqBody() {
         <p>${esc(he.description)}</p>
         ${heItems}
       </section>
-      <p><a href="/">GrocerieShop</a> · <a href="/about">About</a></p>
+      <p><a href="/">GroceryPair</a> · <a href="/about">About</a></p>
     </main>`;
 }
 
