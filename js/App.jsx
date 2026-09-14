@@ -8,6 +8,8 @@ import JoinScreen  from "./components/JoinScreen.jsx";
 import ListsView   from "./components/ListsView.jsx";
 import ListDetail  from "./components/ListDetail.jsx";
 import HistoryView from "./components/HistoryView.jsx";
+import AboutPage   from "./components/AboutPage.jsx";
+import FaqPage     from "./components/FaqPage.jsx";
 
 // ── Online status hook ────────────────────────────────────────────────────────
 
@@ -92,6 +94,20 @@ export default function App() {
               session
                 ? <Navigate to="/lists" replace />
                 : <JoinScreen onJoin={handleJoin} lang={lang} onLangChange={handleLangChange} />
+            }
+          />
+
+          <Route
+            path="/about"
+            element={
+              <AboutPage lang={lang} onLangChange={handleLangChange} session={session} />
+            }
+          />
+
+          <Route
+            path="/faq"
+            element={
+              <FaqPage lang={lang} onLangChange={handleLangChange} session={session} />
             }
           />
 

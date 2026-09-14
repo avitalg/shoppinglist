@@ -3,9 +3,17 @@ import "./JoinScreen.css";
 import { db, doc, setDoc, getDoc, serverTimestamp } from "../firebase.js";
 import { genCode, LS } from "../utils.js";
 import { useT } from "../i18n.js";
+import { HOME_SEO } from "../seoPages.js";
+import { SiteFooter, usePageMeta } from "./InfoPage.jsx";
 
 export default function JoinScreen({ onJoin, lang, onLangChange }) {
   const t = useT();
+  usePageMeta({
+    title: HOME_SEO.title,
+    description: HOME_SEO.description,
+    path: HOME_SEO.path,
+    lang,
+  });
   const [lastRoom,  setLastRoom]  = useState(() => LS.get("fc_last_room", null));
   const [spaceName, setSpaceName] = useState("");
   const [code,      setCode]      = useState("");
@@ -168,6 +176,8 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
       )}
 
       {error && <p className="error-msg">{error}</p>}
+
+      <SiteFooter />
     </div>
   );
 }

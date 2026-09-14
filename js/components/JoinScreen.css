@@ -5,13 +5,13 @@
   gap: 24px;
 }
 
-.lang-switcher {
+.join-screen .lang-switcher {
   display: flex;
   justify-content: flex-end;
   gap: 4px;
 }
 
-.lang-option {
+.join-screen .lang-option {
   padding: 4px 10px;
   border-radius: 8px;
   border: 1.5px solid var(--border);
@@ -25,7 +25,7 @@
   transition: border-color 0.15s, background 0.15s;
 }
 
-.lang-option.active {
+.join-screen .lang-option.active {
   border-color: var(--green);
   background: #dcfce7;
   color: var(--green-d);

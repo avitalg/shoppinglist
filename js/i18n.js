@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import { FAQ_ITEMS, PAGE_SEO } from "./seoPages.js";
 
 export const TRANSLATIONS = {
   en: {
@@ -100,6 +101,37 @@ export const TRANSLATIONS = {
 
     // ── App ─────────────────────────────────────────────────────────────────
     offlineBanner:      "You're offline — changes will sync when you reconnect",
+    back:               "Back",
+    backToLists:        "Back to lists",
+    footerNav:          "Site pages",
+    aboutNav:           "About",
+    faqNav:             "FAQ",
+
+    // ── About ───────────────────────────────────────────────────────────────
+    aboutTitle:         "About",
+    aboutDocTitle:      PAGE_SEO.about.en.title,
+    aboutDocDesc:       PAGE_SEO.about.en.description,
+    aboutLead:          "GrocerieShop is a free shared shopping list for families and roommates. One list, everyone sees every change — at the store or at home.",
+    aboutHowTitle:      "How it works",
+    aboutStep1:         "Create a family room. You get a short code — no sign-up, no email.",
+    aboutStep2:         "Share the code (or a WhatsApp invite) so everyone joins the same room.",
+    aboutStep3:         "Add items, check them off, and the list updates for everyone instantly.",
+    aboutFeaturesTitle: "What you can do",
+    aboutFeature1:      "🛒 Shared lists that sync in real time",
+    aboutFeature2:      "🎙 Voice input — speak items to add them",
+    aboutFeature3:      "🥦 Auto categories like Produce, Dairy, and Bakery",
+    aboutFeature4:      "📴 Works offline and syncs when you’re back online",
+    aboutFeature5:      "עב Hebrew and English, including right-to-left layout",
+    aboutPrivacyTitle:  "Privacy",
+    aboutPrivacy:       "There is no account. Access is the room code: anyone who has it can see and edit that room’s lists. Don’t share the code outside your household.",
+    aboutCta:           "Start a list",
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    faqTitle:           "FAQ",
+    faqDocTitle:        PAGE_SEO.faq.en.title,
+    faqDocDesc:         PAGE_SEO.faq.en.description,
+    faqLead:            "Quick answers about rooms, sharing, and using the list.",
+    faqItems:           FAQ_ITEMS.en,
   },
 
   he: {
@@ -201,6 +233,37 @@ export const TRANSLATIONS = {
 
     // ── App ─────────────────────────────────────────────────────────────────
     offlineBanner:      "אין חיבור לאינטרנט — השינויים יסונכרנו כשהחיבור יחזור",
+    back:               "חזרה",
+    backToLists:        "חזרה לרשימות",
+    footerNav:          "דפי האתר",
+    aboutNav:           "אודות",
+    faqNav:             "שאלות נפוצות",
+
+    // ── About ───────────────────────────────────────────────────────────────
+    aboutTitle:         "אודות",
+    aboutDocTitle:      PAGE_SEO.about.he.title,
+    aboutDocDesc:       PAGE_SEO.about.he.description,
+    aboutLead:          "GrocerieShop היא רשימת קניות משותפת חינמית למשפחות ולשותפים לדירה. רשימה אחת — כולם רואים כל שינוי, בסופר או בבית.",
+    aboutHowTitle:      "איך זה עובד",
+    aboutStep1:         "יוצרים חדר משפחתי. מקבלים קוד קצר — בלי הרשמה ובלי אימייל.",
+    aboutStep2:         "משתפים את הקוד (או הזמנה בוואטסאפ) כדי שכולם ייכנסו לאותו חדר.",
+    aboutStep3:         "מוסיפים פריטים, מסמנים מה נקנה, והרשימה מתעדכנת אצל כולם מיידית.",
+    aboutFeaturesTitle: "מה אפשר לעשות",
+    aboutFeature1:      "🛒 רשימות משותפות שמסתנכרנות בזמן אמת",
+    aboutFeature2:      "🎙 קלט קולי — מקליטים פריטים להוספה",
+    aboutFeature3:      "🥦 קטגוריות אוטומטיות כמו ירקות, חלב ומאפייה",
+    aboutFeature4:      "📴 עובד בלי אינטרנט ומסתנכרן כשהחיבור חוזר",
+    aboutFeature5:      "EN עברית ואנגלית, כולל תצוגה מימין לשמאל",
+    aboutPrivacyTitle:  "פרטיות",
+    aboutPrivacy:       "אין חשבון משתמש. הגישה היא קוד החדר: כל מי שיש לו את הקוד יכול לראות ולערוך את הרשימות. אל תשתפו את הקוד מחוץ לבית.",
+    aboutCta:           "התחילו רשימה",
+
+    // ── FAQ ─────────────────────────────────────────────────────────────────
+    faqTitle:           "שאלות נפוצות",
+    faqDocTitle:        PAGE_SEO.faq.he.title,
+    faqDocDesc:         PAGE_SEO.faq.he.description,
+    faqLead:            "תשובות קצרות על חדרים, שיתוף ושימוש ברשימה.",
+    faqItems:           FAQ_ITEMS.he,
   },
 };
 

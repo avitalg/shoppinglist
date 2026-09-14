@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./ListsView.css";
 import ConfirmDialog from "./ConfirmDialog.jsx";
+import { SiteFooter } from "./InfoPage.jsx";
 import { db, collection, doc, onSnapshot, addDoc, deleteDoc, serverTimestamp, query, orderBy } from "../firebase.js";
 import { formatDate, shareViaWhatsApp } from "../utils.js";
 import { useT } from "../i18n.js";
@@ -181,6 +182,8 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
             🚪
           </button>
         </div>
+
+        <SiteFooter />
       </div>
 
       <ConfirmDialog
