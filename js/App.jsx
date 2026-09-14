@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
-  BrowserRouter, Routes, Route, Navigate, useNavigate, useParams,
+  BrowserRouter, Routes, Route, Navigate, useNavigate, useParams, useLocation,
 } from "react-router-dom";
 import { LS } from "./utils.js";
 import { LanguageContext, useT } from "./i18n.js";
@@ -85,6 +85,7 @@ export default function App() {
   return (
     <LanguageContext.Provider value={lang}>
       <BrowserRouter>
+        <GoogleAnalytics />
         <OfflineBanner online={online} />
         <Routes>
           {/* Public: join / login */}
@@ -154,6 +155,25 @@ export default function App() {
 }
 
 // ── Small inline wrappers to connect router navigation ────────────────────────
+
+function GoogleAnalytics() {
+  const { pathname, search } = useLocation();
+  const isFirst = useRef(true);
+
+  useEffect(() => {
+    if (isFirst.current) {
+      isFirst.current = false;
+      return;
+    }
+    if (typeof window.gtag !== "function") return;
+    window.gtag("event", "page_view", {
+      page_path: pathname + search,
+      page_title: document.title,
+    });
+  }, [pathname, search]);
+
+  return null;
+}
 
 function OfflineBanner({ online }) {
   const t = useT();
