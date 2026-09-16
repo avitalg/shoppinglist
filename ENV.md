@@ -65,7 +65,7 @@ Vite only injects variables that start with `VITE_` into the client bundle. This
 
 ## Security note
 
-Firebase **web** API keys are designed to be included in client apps — they identify your Firebase project, not authenticate privileged access. Real protection comes from **Firestore security rules** (see [FIREBASE_SETUP.md](./FIREBASE_SETUP.md)).
+Firebase **web** API keys are designed to be included in client apps — they identify your Firebase project, not authenticate privileged access. Real protection for **room create** is BotID + Admin API + Firestore rules (see [FIREBASE_SETUP.md](./FIREBASE_SETUP.md)).
 
 What env vars give you:
 
@@ -76,6 +76,20 @@ What env vars give you:
 What they do **not** do: hide keys from someone inspecting the built JavaScript in the browser. That is expected for Firebase client SDKs.
 
 **Never** put Firebase Admin SDK credentials, service account JSON, or other true secrets in `VITE_*` variables.
+
+Room creation uses server-only `FIREBASE_SERVICE_ACCOUNT` (see [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) and [SECURITY.md](./SECURITY.md)).
+
+---
+
+## Secure room creation (Vercel)
+
+| Variable | Scope | Purpose |
+|---|---|---|
+| `FIREBASE_SERVICE_ACCOUNT` | Server (Vercel env, not `VITE_`) | Service account JSON for `POST /api/create-room` |
+
+Local room create: `vercel env pull` then `vercel dev` (plain `npm run dev` cannot run the Admin API).
+
+Deploy Firestore rules that deny client room creates before relying on the API-only path — details in [FIREBASE_SETUP.md](./FIREBASE_SETUP.md).
 
 ---
 

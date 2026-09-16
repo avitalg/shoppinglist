@@ -11,7 +11,9 @@
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "@vercel/flags-core": "^1.8.1",
+    "botid": "^1.5.11",
     "firebase": "^11.0.0",
+    "firebase-admin": "^14.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.18.3"

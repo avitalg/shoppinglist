@@ -1,0 +1,70 @@
+rules_version = '2';
+
+// GroceryPair — room create is server-only (Admin SDK via /api/create-room).
+// Clients may read rooms by code and manage lists under an existing room.
+// Deploy: firebase deploy --only firestore:rules  (see FIREBASE_SETUP.md)
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidRoomId(roomId) {
+      return roomId.matches('^[A-Z0-9]{6}$');
+    }
+
+    function roomExists(roomId) {
+      return exists(/databases/$(database)/documents/rooms/$(roomId));
+    }
+
+    match /rooms/{roomId} {
+      allow get: if isValidRoomId(roomId);
+      allow list: if false;
+
+      // Creates go through Firebase Admin in /api/create-room (bypasses these rules).
+      allow create, update, delete: if false;
+
+      match /lists/{listId} {
+        allow read: if isValidRoomId(roomId) && roomExists(roomId);
+
+        allow create: if isValidRoomId(roomId)
+          && roomExists(roomId)
+          && request.resource.data.keys().hasOnly(['name', 'status', 'createdAt', 'items'])
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 120
+          && request.resource.data.status == 'active'
+          && request.resource.data.items is list
+          && request.resource.data.items.size() == 0
+          && request.resource.data.createdAt == request.time;
+
+        allow update: if isValidRoomId(roomId)
+          && roomExists(roomId)
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['name', 'status', 'items'])
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 120
+          && request.resource.data.items is list
+          && request.resource.data.items.size() <= 500
+          && (!('status' in request.resource.data)
+            || request.resource.data.status in ['active', 'archived']);
+
+        allow delete: if isValidRoomId(roomId) && roomExists(roomId);
+      }
+
+      match /itemHistory/{wordId} {
+        allow read: if isValidRoomId(roomId) && roomExists(roomId);
+
+        allow create, update: if isValidRoomId(roomId)
+          && roomExists(roomId)
+          && wordId.size() > 0
+          && wordId.size() <= 200
+          && request.resource.data.keys().hasOnly(['count'])
+          && request.resource.data.count is int
+          && request.resource.data.count > 0
+          && request.resource.data.count <= 100000;
+
+        allow delete: if false;
+      }
+    }
+  }
+}

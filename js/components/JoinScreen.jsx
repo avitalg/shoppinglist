@@ -1,12 +1,42 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./JoinScreen.css";
-import { db, doc, setDoc, getDoc, serverTimestamp } from "../firebase.js";
+import "./ListDetail.css";
+import { db, doc, getDoc } from "../firebase.js";
 import { genCode, LS } from "../utils.js";
-import { useT } from "../i18n.js";
+import { useT, LanguageContext } from "../i18n.js";
+import { CATEGORIES, CATEGORY_BY_ID } from "../categories.js";
 import { HOME_SEO } from "../seoPages.js";
 import { trackEvent } from "../analytics.js";
 import { SiteFooter, usePageMeta, LangSwitcher } from "./InfoPage.jsx";
+
+const PREVIEW_CATEGORIES = ["produce", "meat", "dairy"];
+
+const PREVIEW_GROUPS = [
+  {
+    id: "produce",
+    left: 2,
+    items: [
+      { key: "homePreviewItem1", checked: false },
+      { key: "homePreviewItem2", checked: false },
+    ],
+  },
+  {
+    id: "meat",
+    left: 1,
+    items: [
+      { key: "homePreviewItem3", checked: false },
+    ],
+  },
+  {
+    id: "dairy",
+    left: 1,
+    items: [
+      { key: "homePreviewItem4", checked: true },
+      { key: "homePreviewItem5", checked: false, noteKey: "homePreviewNote" },
+    ],
+  },
+];
 
 function StartPanel({
   t, lastRoom, setLastRoom, busy, error,
@@ -91,19 +121,86 @@ function StartPanel({
 
 function ListPreview() {
   const t = useT();
+  const lang = useContext(LanguageContext);
+
   return (
     <div className="home-preview" aria-hidden="true">
       <div className="home-phone">
-        <div className="home-phone-bar">
-          <span>🛒</span>
-          <span>{t("homePreviewTitle")}</span>
+        <div className="list-detail home-phone-demo">
+          <div className="header">
+            <span className="back-btn">←</span>
+            <h1 className="editable">
+              {t("homePreviewTitle")}
+              <span className="rename-hint">✏️</span>
+            </h1>
+            <span className="btn btn-gray btn-sm">{t("clearChecked")}</span>
+            <span className="btn btn-gray btn-sm">↗</span>
+            <span className="btn btn-gray btn-sm">📦</span>
+            <span className="btn btn-gray btn-sm">🗑</span>
+          </div>
+
+          <div className="body">
+            {PREVIEW_GROUPS.map(group => {
+              const category = CATEGORY_BY_ID[group.id];
+              const catLabel = lang === "en"
+                ? (category.labelEn || category.label)
+                : category.label;
+
+              return (
+                <div className="category-section" key={group.id}>
+                  <div
+                    className="category-header"
+                    style={{ "--cat-color": `var(${category.color})` }}
+                  >
+                    <span className="category-icon">{category.icon}</span>
+                    <span className="category-label">{catLabel}</span>
+                    <span className="category-count">{t("leftCount", group.left)}</span>
+                    <span className="category-chevron">⌄</span>
+                  </div>
+                  <div className="category-items">
+                    {group.items.map(item => (
+                      <div className="item-row" key={item.key}>
+                        <span className={`item-check ${item.checked ? "checked" : ""}`} />
+                        <div className="item-body">
+                          <div className={`item-text ${item.checked ? "checked" : ""}`}>
+                            {t(item.key)}
+                          </div>
+                          {item.noteKey && (
+                            <div className="item-note">📝 {t(item.noteKey)}</div>
+                          )}
+                        </div>
+                        <span className="item-delete">✕</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="add-bar">
+            <div className="add-bar-row">
+              <div className="home-phone-input">{t("addItemPlaceholder")}</div>
+              <span className="btn btn-green">+</span>
+            </div>
+
+            <div className="category-picker-row">
+              <span className="category-pill-label">{t("categoryLabel")}</span>
+              <div className="category-pills">
+                {CATEGORIES.filter(cat => PREVIEW_CATEGORIES.includes(cat.id)).map(cat => (
+                  <span key={cat.id} className="category-pill">
+                    {cat.icon}{" "}
+                    {lang === "en" ? (cat.labelEn || cat.label) : cat.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <span className="btn btn-gray btn-details">{t("addDetails")}</span>
+            </div>
+          </div>
         </div>
-        <ul className="home-phone-list">
-          <li><span className="home-check" /><span>{t("homePreviewItem1")}</span></li>
-          <li><span className="home-check" /><span>{t("homePreviewItem2")}</span></li>
-          <li className="done"><span className="home-check on">✓</span><span>{t("homePreviewItem3")}</span></li>
-          <li><span className="home-check" /><span>{t("homePreviewItem4")}</span></li>
-        </ul>
         <p className="home-phone-sync">{t("homePreviewSync")}</p>
       </div>
     </div>
@@ -121,7 +218,7 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
   const [lastRoom,  setLastRoom]  = useState(() => LS.get("fc_last_room", null));
   const [spaceName, setSpaceName] = useState("");
   const [code,      setCode]      = useState("");
-  const [newCode,   setNewCode]   = useState(genCode);
+  const [newCode] = useState(genCode);
   const [error,     setError]     = useState("");
   const [busy,      setBusy]      = useState(false);
 
@@ -186,26 +283,38 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
     setError("");
 
     try {
-      let nextCode = newCode;
-      for (let i = 0; i < 5; i++) {
-        const snap = await getDoc(doc(db, "rooms", nextCode));
-        if (!snap.exists()) break;
-        nextCode = genCode();
-        if (i === 4) throw new Error(t("codeGenFailed"));
-      }
-
-      await setDoc(doc(db, "rooms", nextCode), {
-        name:      spaceName.trim(),
-        code:      nextCode,
-        createdAt: serverTimestamp(),
+      const res = await fetch("/api/create-room", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: spaceName.trim() }),
       });
 
+      let data = null;
+      try {
+        data = await res.json();
+      } catch {
+        data = null;
+      }
+
+      if (!res.ok) {
+        const reason =
+          res.status === 403 ? "bot" : res.status === 400 ? "invalid" : "network";
+        trackEvent("create_room_failed", { reason });
+        setError(data?.error || t("createRoomFailed"));
+        return;
+      }
+
+      if (!data?.roomId) {
+        trackEvent("create_room_failed", { reason: "network" });
+        setError(t("createRoomFailed"));
+        return;
+      }
+
       trackEvent("create_room");
-      onJoin({ roomId: nextCode, roomName: spaceName.trim() });
-    } catch (err) {
-      const genFailed = err.message === t("codeGenFailed");
-      trackEvent("create_room_failed", { reason: genFailed ? "code_gen" : "network" });
-      setError(err.message || t("createRoomFailed"));
+      onJoin({ roomId: data.roomId, roomName: data.name || spaceName.trim() });
+    } catch {
+      trackEvent("create_room_failed", { reason: "network" });
+      setError(t("createRoomFailed"));
     } finally {
       setBusy(false);
     }
@@ -267,7 +376,7 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
               </li>
             </ol>
 
-            <ListPreview />
+            {!lastRoom && <ListPreview />}
           </div>
 
           <StartPanel {...formProps} />
