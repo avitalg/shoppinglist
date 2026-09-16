@@ -1,10 +1,113 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./JoinScreen.css";
 import { db, doc, setDoc, getDoc, serverTimestamp } from "../firebase.js";
 import { genCode, LS } from "../utils.js";
 import { useT } from "../i18n.js";
 import { HOME_SEO } from "../seoPages.js";
-import { SiteFooter, usePageMeta } from "./InfoPage.jsx";
+import { SiteFooter, usePageMeta, LangSwitcher } from "./InfoPage.jsx";
+
+function StartPanel({
+  t, lastRoom, setLastRoom, busy, error,
+  code, setCode, spaceName, setSpaceName, newCode,
+  onQuickRejoin, onJoin, onCreate,
+}) {
+  return (
+    <aside className="home-form" id="start" aria-labelledby="home-start-title">
+      <h2 id="home-start-title" className="home-form-title">{t("homeStartTitle")}</h2>
+
+      {lastRoom && (
+        <div className="quick-rejoin-card">
+          <div className="quick-rejoin-header">
+            <span className="quick-rejoin-icon">👋</span>
+            <div>
+              <div className="quick-rejoin-title">{t("welcomeBack")}</div>
+              <div className="quick-rejoin-room">{lastRoom.roomName}</div>
+            </div>
+            <span className="quick-rejoin-code">{lastRoom.roomId}</span>
+          </div>
+          <button type="button" className="btn btn-green btn-full" onClick={onQuickRejoin} disabled={busy}>
+            {t("rejoin")} {lastRoom.roomName}
+          </button>
+          <button
+            type="button"
+            className="quick-rejoin-dismiss"
+            onClick={() => { setLastRoom(null); LS.set("fc_last_room", null); }}
+          >
+            {t("differentRoom")}
+          </button>
+        </div>
+      )}
+
+      {!lastRoom && (
+        <>
+          <div className="card">
+            <h3>{t("joinRoom")}</h3>
+            <div className="input-row">
+              <input
+                type="text"
+                placeholder={t("roomCodePlaceholder")}
+                value={code}
+                onChange={e => setCode(e.target.value.toUpperCase())}
+                onKeyDown={e => e.key === "Enter" && onJoin()}
+                style={{ textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700 }}
+                autoComplete="off"
+                autoCapitalize="characters"
+              />
+              <button type="button" className="btn btn-green" onClick={onJoin} disabled={busy}>
+                {t("joinBtn")}
+              </button>
+            </div>
+          </div>
+
+          <div className="or-divider">{t("orDivider")}</div>
+
+          <div className="card">
+            <h3>{t("createRoom")}</h3>
+            <input
+              type="text"
+              placeholder={t("spaceNamePlaceholder")}
+              value={spaceName}
+              onChange={e => setSpaceName(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && onCreate()}
+            />
+            <p className="input-hint">{t("spaceNameHint")}</p>
+            <p className="room-code-preview">
+              {t("yourRoomCode")} <strong className="room-code-highlight">{newCode}</strong>
+              <span>{t("shareWithFamily")}</span>
+            </p>
+            <button type="button" className="btn btn-outline btn-full" onClick={onCreate} disabled={busy}>
+              {t("createBtn")}
+            </button>
+          </div>
+        </>
+      )}
+
+      {error && <p className="error-msg">{error}</p>}
+    </aside>
+  );
+}
+
+function ListPreview() {
+  const t = useT();
+  return (
+    <div className="home-preview" aria-hidden="true">
+      <div className="home-phone">
+        <div className="home-phone-bar">
+          <span>🛒</span>
+          <span>{t("homePreviewTitle")}</span>
+        </div>
+        <ul className="home-phone-list">
+          <li><span className="home-check" /><span>{t("homePreviewItem1")}</span></li>
+          <li><span className="home-check" /><span>{t("homePreviewItem2")}</span></li>
+          <li className="done"><span className="home-check on">✓</span><span>{t("homePreviewItem3")}</span></li>
+          <li><span className="home-check" /><span>{t("homePreviewItem4")}</span></li>
+        </ul>
+        <p className="home-phone-sync">{t("homePreviewSync")}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function JoinScreen({ onJoin, lang, onLangChange }) {
   const t = useT();
@@ -68,21 +171,21 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
     setError("");
 
     try {
-      let code = newCode;
+      let nextCode = newCode;
       for (let i = 0; i < 5; i++) {
-        const snap = await getDoc(doc(db, "rooms", code));
+        const snap = await getDoc(doc(db, "rooms", nextCode));
         if (!snap.exists()) break;
-        code = genCode();
+        nextCode = genCode();
         if (i === 4) throw new Error(t("codeGenFailed"));
       }
 
-      await setDoc(doc(db, "rooms", code), {
+      await setDoc(doc(db, "rooms", nextCode), {
         name:      spaceName.trim(),
-        code:      code,
+        code:      nextCode,
         createdAt: serverTimestamp(),
       });
 
-      onJoin({ roomId: code, roomName: spaceName.trim() });
+      onJoin({ roomId: nextCode, roomName: spaceName.trim() });
     } catch (err) {
       setError(err.message || t("createRoomFailed"));
     } finally {
@@ -90,92 +193,79 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
     }
   }
 
+  const formProps = {
+    t, lastRoom, setLastRoom, busy, error,
+    code, setCode, spaceName, setSpaceName, newCode,
+    onQuickRejoin: handleQuickRejoin,
+    onJoin: handleJoin,
+    onCreate: handleCreate,
+  };
+
   return (
-    <div className="join-screen">
-      <div className="lang-switcher">
-        <button
-          className={`lang-option ${lang === "he" ? "active" : ""}`}
-          onClick={() => onLangChange("he")}
-        >
-          עב
-        </button>
-        <button
-          className={`lang-option ${lang === "en" ? "active" : ""}`}
-          onClick={() => onLangChange("en")}
-        >
-          EN
-        </button>
-      </div>
-
-      <div className="logo">🛒</div>
-      <h2>GroceryPair</h2>
-      <p>{t("tagline")}</p>
-
-      {lastRoom && (
-        <div className="quick-rejoin-card">
-          <div className="quick-rejoin-header">
-            <span className="quick-rejoin-icon">👋</span>
-            <div>
-              <div className="quick-rejoin-title">{t("welcomeBack")}</div>
-              <div className="quick-rejoin-room">{lastRoom.roomName}</div>
-            </div>
-            <span className="quick-rejoin-code">{lastRoom.roomId}</span>
-          </div>
-          <button className="btn btn-green btn-full" onClick={handleQuickRejoin} disabled={busy}>
-            {t("rejoin")} {lastRoom.roomName}
-          </button>
-          <button
-            className="quick-rejoin-dismiss"
-            onClick={() => { setLastRoom(null); LS.set("fc_last_room", null); }}
-          >
-            {t("differentRoom")}
-          </button>
+    <div className="home-page">
+      <header className="home-nav">
+        <div className="home-brand">
+          <span className="home-brand-mark" aria-hidden="true">🛒</span>
+          <span>GroceryPair</span>
         </div>
-      )}
+        <nav className="home-nav-links" aria-label={t("footerNav")}>
+          <Link to="/about">{t("aboutNav")}</Link>
+          <Link to="/faq">{t("faqNav")}</Link>
+        </nav>
+        <LangSwitcher lang={lang} onLangChange={onLangChange} />
+      </header>
 
-      {!lastRoom && (
-        <>
-          <div className="card">
-            <h3>{t("joinRoom")}</h3>
-            <div className="input-row">
-              <input
-                type="text"
-                placeholder={t("roomCodePlaceholder")}
-                value={code}
-                onChange={e => setCode(e.target.value.toUpperCase())}
-                onKeyDown={e => e.key === "Enter" && handleJoin()}
-                style={{ textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700 }}
-              />
-              <button className="btn btn-green" onClick={handleJoin} disabled={busy}>
-                {t("joinBtn")}
-              </button>
+      <main className="home-main">
+        <section className="home-hero">
+          <div className="home-copy">
+            <div className="home-intro">
+              <p className="home-eyebrow">{t("homeEyebrow")}</p>
+              <h1>{t("homeHeadline")}</h1>
+              <p className="home-lead">{t("homeLead")}</p>
+              <p className="home-note">{t("homeNoAccount")}</p>
             </div>
+
+            <ol className="home-steps">
+              <li>
+                <span className="home-step-num">1</span>
+                <div>
+                  <strong>{t("homeStep1Title")}</strong>
+                  <span className="home-step-text">{t("aboutStep1")}</span>
+                </div>
+              </li>
+              <li>
+                <span className="home-step-num">2</span>
+                <div>
+                  <strong>{t("homeStep2Title")}</strong>
+                  <span className="home-step-text">{t("aboutStep2")}</span>
+                </div>
+              </li>
+              <li>
+                <span className="home-step-num">3</span>
+                <div>
+                  <strong>{t("homeStep3Title")}</strong>
+                  <span className="home-step-text">{t("aboutStep3")}</span>
+                </div>
+              </li>
+            </ol>
+
+            <ListPreview />
           </div>
 
-          <div className="or-divider">{t("orDivider")}</div>
+          <StartPanel {...formProps} />
+        </section>
 
-          <div className="card">
-            <h3>{t("createRoom")}</h3>
-            <input
-              type="text"
-              placeholder={t("spaceNamePlaceholder")}
-              value={spaceName}
-              onChange={e => setSpaceName(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && handleCreate()}
-            />
-            <p className="input-hint">{t("spaceNameHint")}</p>
-            <p className="room-code-preview">
-              {t("yourRoomCode")} <strong className="room-code-highlight">{newCode}</strong>
-              <span>{t("shareWithFamily")}</span>
-            </p>
-            <button className="btn btn-outline btn-full" onClick={handleCreate} disabled={busy}>
-              {t("createBtn")}
-            </button>
-          </div>
-        </>
-      )}
-
-      {error && <p className="error-msg">{error}</p>}
+        <section className="home-features" aria-labelledby="home-features-title">
+          <h2 id="home-features-title">{t("aboutFeaturesTitle")}</h2>
+          <ul className="home-feature-grid">
+            <li>{t("aboutFeature1")}</li>
+            <li>{t("aboutFeature2")}</li>
+            <li>{t("aboutFeature3")}</li>
+            <li>{t("aboutFeature4")}</li>
+            <li>{t("aboutFeature5")}</li>
+          </ul>
+        </section>
+      </main>
 
       <SiteFooter />
     </div>

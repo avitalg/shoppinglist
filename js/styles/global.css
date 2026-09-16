@@ -25,9 +25,13 @@ body {
 }
 
 #root {
+  min-height: 100vh;
+}
+
+/* App screens stay a phone-width column. The marketing homepage is full-width. */
+#root:not(:has(.home-page)) {
   max-width: 480px;
   margin: 0 auto;
-  min-height: 100vh;
   background: var(--white);
   box-shadow: var(--shadow);
 }
