@@ -40,7 +40,6 @@ export default function AboutPage({ lang, onLangChange, session }) {
       <h2>{t("aboutFeaturesTitle")}</h2>
       <ul className="feature-list">
         <li>{t("aboutFeature1")}</li>
-        <li>{t("aboutFeature2")}</li>
         <li>{t("aboutFeature3")}</li>
         <li>{t("aboutFeature4")}</li>
         <li>{t("aboutFeature5")}</li>

@@ -385,11 +385,18 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
         <section className="home-features" aria-labelledby="home-features-title">
           <h2 id="home-features-title">{t("aboutFeaturesTitle")}</h2>
           <ul className="home-feature-grid">
-            <li>{t("aboutFeature1")}</li>
-            <li>{t("aboutFeature2")}</li>
-            <li>{t("aboutFeature3")}</li>
-            <li>{t("aboutFeature4")}</li>
-            <li>{t("aboutFeature5")}</li>
+            <li>
+              <span className="home-feature-icon" aria-hidden="true">🛒</span>
+              <span className="home-feature-text">{t("homeFeatureSync")}</span>
+            </li>
+            <li>
+              <span className="home-feature-icon" aria-hidden="true">🥦</span>
+              <span className="home-feature-text">{t("homeFeatureCategories")}</span>
+            </li>
+            <li>
+              <span className="home-feature-icon" aria-hidden="true">📴</span>
+              <span className="home-feature-text">{t("homeFeatureOffline")}</span>
+            </li>
           </ul>
         </section>
       </main>
