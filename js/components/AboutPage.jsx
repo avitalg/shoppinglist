@@ -48,6 +48,9 @@ export default function AboutPage({ lang, onLangChange, session }) {
 
       <h2>{t("aboutPrivacyTitle")}</h2>
       <p>{t("aboutPrivacy")}</p>
+      <p>
+        <Link to="/privacy">{t("aboutPrivacyLink")}</Link>
+      </p>
 
       <Link to={homeTo} className="btn btn-green btn-full">
         {session ? t("backToLists") : t("aboutCta")}

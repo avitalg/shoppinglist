@@ -11,6 +11,7 @@ import ListDetail  from "./components/ListDetail.jsx";
 import HistoryView from "./components/HistoryView.jsx";
 import AboutPage   from "./components/AboutPage.jsx";
 import FaqPage     from "./components/FaqPage.jsx";
+import PrivacyPage from "./components/PrivacyPage.jsx";
 import CookieBar, { CookieConsentContext } from "./components/CookieBar.jsx";
 import {
   getCookieConsent,
@@ -151,6 +152,13 @@ export default function App() {
             path="/faq"
             element={
               <FaqPage lang={lang} onLangChange={handleLangChange} session={session} />
+            }
+          />
+
+          <Route
+            path="/privacy"
+            element={
+              <PrivacyPage lang={lang} onLangChange={handleLangChange} session={session} />
             }
           />
 

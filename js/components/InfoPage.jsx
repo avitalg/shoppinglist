@@ -84,6 +84,8 @@ export function SiteFooter() {
       <span aria-hidden="true">·</span>
       <Link to="/faq">{t("faqNav")}</Link>
       <span aria-hidden="true">·</span>
+      <Link to="/privacy">{t("privacyNav")}</Link>
+      <span aria-hidden="true">·</span>
       <button type="button" className="site-footer-cookies" onClick={openSettings}>
         {t("cookieNav")}
       </button>

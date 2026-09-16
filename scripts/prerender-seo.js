@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  SITE, PAGE_SEO, FAQ_ITEMS, faqJsonLd, aboutJsonLd,
+  SITE, PAGE_SEO, FAQ_ITEMS, faqJsonLd, aboutJsonLd, privacyJsonLd,
 } from "../js/seoPages.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -81,7 +81,7 @@ function aboutBody() {
     <main>
       <h1>${esc(en.h1)}</h1>
       <p>${esc(en.description)}</p>
-      <p><a href="/">GroceryPair</a> · <a href="/faq">FAQ</a></p>
+      <p><a href="/">GroceryPair</a> · <a href="/faq">FAQ</a> · <a href="/privacy">Privacy</a></p>
       <section lang="he" dir="rtl">
         <h2>${esc(he.h1)}</h2>
         <p>${esc(he.description)}</p>
@@ -108,7 +108,22 @@ function faqBody() {
         <p>${esc(he.description)}</p>
         ${heItems}
       </section>
-      <p><a href="/">GroceryPair</a> · <a href="/about">About</a></p>
+      <p><a href="/">GroceryPair</a> · <a href="/about">About</a> · <a href="/privacy">Privacy</a></p>
+    </main>`;
+}
+
+function privacyBody() {
+  const en = PAGE_SEO.privacy.en;
+  const he = PAGE_SEO.privacy.he;
+  return `
+    <main>
+      <h1>${esc(en.h1)}</h1>
+      <p>${esc(en.description)}</p>
+      <p><a href="/">GroceryPair</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a></p>
+      <section lang="he" dir="rtl">
+        <h2>${esc(he.h1)}</h2>
+        <p>${esc(he.description)}</p>
+      </section>
     </main>`;
 }
 
@@ -144,6 +159,14 @@ const pages = [
     description: PAGE_SEO.faq.en.description,
     jsonLd: faqJsonLd(FAQ_ITEMS.en),
     body: faqBody(),
+  },
+  {
+    file: "privacy/index.html",
+    path: PAGE_SEO.privacy.path,
+    title: PAGE_SEO.privacy.en.title,
+    description: PAGE_SEO.privacy.en.description,
+    jsonLd: privacyJsonLd(),
+    body: privacyBody(),
   },
 ];
 

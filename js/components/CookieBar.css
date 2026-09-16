@@ -29,6 +29,18 @@
   color: var(--gray);
 }
 
+.cookie-bar-link {
+  color: var(--green-d);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cookie-bar-link:hover,
+.cookie-bar-link:focus-visible {
+  color: var(--text);
+}
+
 .cookie-bar-actions {
   display: flex;
   justify-content: flex-end;

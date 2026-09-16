@@ -144,6 +144,21 @@ export const PAGE_SEO = {
       h1: "שאלות נפוצות",
     },
   },
+  privacy: {
+    path: "/privacy",
+    en: {
+      title: "Privacy Policy – GroceryPair",
+      description:
+        "How GroceryPair handles room data, cookies, and analytics. No accounts — access is your room code.",
+      h1: "Privacy Policy",
+    },
+    he: {
+      title: "מדיניות פרטיות – GroceryPair",
+      description:
+        "איך GroceryPair מטפלת בנתוני חדרים, עוגיות ואנליטיקה. אין חשבונות — הגישה היא קוד החדר.",
+      h1: "מדיניות פרטיות",
+    },
+  },
 };
 
 export function faqJsonLd(items) {
@@ -165,6 +180,23 @@ export function aboutJsonLd() {
     "@type": "AboutPage",
     name: en.h1,
     url: `${SITE}${PAGE_SEO.about.path}`,
+    description: en.description,
+    inLanguage: ["en", "he"],
+    isPartOf: {
+      "@type": "WebApplication",
+      name: "GroceryPair",
+      url: `${SITE}/`,
+    },
+  };
+}
+
+export function privacyJsonLd() {
+  const en = PAGE_SEO.privacy.en;
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: en.h1,
+    url: `${SITE}${PAGE_SEO.privacy.path}`,
     description: en.description,
     inLanguage: ["en", "he"],
     isPartOf: {

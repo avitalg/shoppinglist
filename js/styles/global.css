@@ -28,12 +28,22 @@ body {
   min-height: 100vh;
 }
 
-/* App screens stay a phone-width column. The marketing homepage is full-width. */
-#root:not(:has(.home-page)) {
+/* App screens stay a phone-width column. Marketing pages (home, about, FAQ) are full-width. */
+#root:not(:has(.home-page)):not(:has(.info-page)) {
   max-width: 480px;
   margin: 0 auto;
   background: var(--white);
   box-shadow: var(--shadow);
+}
+
+/* Keep about/FAQ in the phone shell on small screens; expand on desktop. */
+@media (max-width: 879px) {
+  #root:has(.info-page) {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
 }
 
 /* ── Shared Utilities ──────────────────────────────────────────────────────── */

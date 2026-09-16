@@ -45,6 +45,12 @@
   color: var(--text);
 }
 
+.privacy-updated {
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin-top: -8px;
+}
+
 .info-page-body .info-lead {
   color: var(--text);
 }
@@ -176,4 +182,156 @@
 .faq-item p {
   padding: 0 0 14px;
   margin: 0;
+}
+
+/* Desktop: wider reading column, grid sections — mobile styles above stay unchanged. */
+@media (min-width: 880px) {
+  .info-page {
+    background:
+      radial-gradient(1200px 480px at 10% -10%, #dcfce7 0%, transparent 55%),
+      radial-gradient(900px 420px at 100% 0%, #ecfdf5 0%, transparent 50%),
+      #f8fafc;
+  }
+
+  /* Light top nav — green bar is mobile-only */
+  .info-page .header {
+    background: transparent;
+    color: var(--text);
+    padding: 28px max(32px, calc((100% - 760px) / 2)) 8px;
+    gap: 12px;
+  }
+
+  .info-page .header h1 {
+    font-size: 1.45rem;
+    color: var(--text);
+  }
+
+  .info-page .header .back-btn {
+    color: var(--text);
+  }
+
+  .info-page .header .lang-option {
+    border-color: var(--border);
+    background: var(--white);
+    color: var(--text);
+  }
+
+  .info-page .header .lang-option.active {
+    border-color: var(--green);
+    background: #dcfce7;
+    color: var(--green-d);
+  }
+
+  .info-page-body {
+    width: min(760px, calc(100% - 64px));
+    margin: 16px auto 0;
+    padding: 36px 40px 32px;
+    gap: 20px;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .info-lead {
+    font-size: 1.12rem;
+    line-height: 1.6;
+    max-width: 40rem;
+  }
+
+  .info-page-body h2 {
+    font-size: 1.2rem;
+    margin-top: 12px;
+  }
+
+  .info-page-body p,
+  .info-page-body li {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .info-steps {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    counter-reset: about-step;
+  }
+
+  .info-steps li {
+    counter-increment: about-step;
+    position: relative;
+    background: var(--light);
+    border-radius: 14px;
+    padding: 18px 16px 16px 16px;
+    padding-inline-start: 52px;
+  }
+
+  .info-steps li::before {
+    content: counter(about-step);
+    position: absolute;
+    inset-inline-start: 14px;
+    top: 16px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .feature-list li {
+    padding: 16px 18px;
+    border-radius: 14px;
+  }
+
+  .faq-list {
+    gap: 10px;
+  }
+
+  .faq-item {
+    border-radius: 14px;
+    padding: 0 18px;
+    transition: background 0.15s;
+  }
+
+  .faq-item:hover {
+    background: #eef0f3;
+  }
+
+  .faq-item summary {
+    font-size: 1.02rem;
+    padding: 16px 0;
+  }
+
+  .faq-item p {
+    font-size: 0.98rem;
+    max-width: 42rem;
+  }
+
+  .info-page-body > .btn.btn-full {
+    width: auto;
+    align-self: flex-start;
+    min-width: 220px;
+    margin-top: 8px;
+    padding: 12px 28px;
+  }
+
+  .info-page .site-footer-links {
+    width: min(760px, calc(100% - 64px));
+    margin: 0 auto;
+    justify-content: flex-start;
+    padding: 20px 0 40px;
+    font-size: 0.9rem;
+  }
 }

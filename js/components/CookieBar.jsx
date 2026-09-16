@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import { Link } from "react-router-dom";
 import { useT } from "../i18n.js";
 import "./CookieBar.css";
 
@@ -17,7 +18,10 @@ export default function CookieBar({ onAccept, onReject }) {
     <div className="cookie-bar" role="dialog" aria-labelledby="cookie-bar-title" aria-describedby="cookie-bar-text">
       <div className="cookie-bar-inner">
         <p id="cookie-bar-title" className="cookie-bar-title">{t("cookieTitle")}</p>
-        <p id="cookie-bar-text" className="cookie-bar-text">{t("cookieBody")}</p>
+        <p id="cookie-bar-text" className="cookie-bar-text">
+          {t("cookieBody")}{" "}
+          <Link to="/privacy" className="cookie-bar-link">{t("cookiePrivacyLink")}</Link>.
+        </p>
         <div className="cookie-bar-actions">
           <button type="button" className="btn btn-outline" onClick={onReject}>
             {t("cookieReject")}

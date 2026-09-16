@@ -120,9 +120,11 @@ export const TRANSLATIONS = {
     footerNav:          "Site pages",
     aboutNav:           "About",
     faqNav:             "FAQ",
+    privacyNav:         "Privacy",
     cookieNav:          "Cookies",
     cookieTitle:        "Cookies",
-    cookieBody:         "Please note: we use cookies to improve your browsing experience and personalize content. More information can be found in our privacy policy.",
+    cookieBody:         "Please note: we use cookies to improve your browsing experience and personalize content. More information can be found in our",
+    cookiePrivacyLink:  "privacy policy",
     cookieAccept:       "Accept",
     cookieReject:       "Reject",
 
@@ -143,6 +145,7 @@ export const TRANSLATIONS = {
     aboutFeature5:      "עב Hebrew and English, including right-to-left layout",
     aboutPrivacyTitle:  "Privacy",
     aboutPrivacy:       "There is no account. Access is the room code: anyone who has it can see and edit that room’s lists. Don’t share the code outside your household.",
+    aboutPrivacyLink:   "Read the full privacy policy",
     aboutCta:           "Start a list",
 
     // ── FAQ ─────────────────────────────────────────────────────────────────
@@ -151,6 +154,27 @@ export const TRANSLATIONS = {
     faqDocDesc:         PAGE_SEO.faq.en.description,
     faqLead:            "Quick answers about rooms, sharing, and using the list.",
     faqItems:           FAQ_ITEMS.en,
+
+    // ── Privacy ─────────────────────────────────────────────────────────────
+    privacyTitle:       "Privacy",
+    privacyDocTitle:    PAGE_SEO.privacy.en.title,
+    privacyDocDesc:     PAGE_SEO.privacy.en.description,
+    privacyLead:        "GroceryPair is built for shared shopping lists without accounts. This page explains what data we store, how cookies work, and who helps run the service.",
+    privacyUpdated:     "Last updated: September 16, 2026",
+    privacyWhatTitle:   "What we collect",
+    privacyWhat:        "We do not ask for your name, email, or password. To use the app you create or join a room with a short code. We store room and list data you enter so everyone in that room can shop together.",
+    privacyListsTitle:  "Lists and room data",
+    privacyLists:       "Room names, list names, items, notes, assignees, check-off state, and related timestamps are saved so the list can sync in real time. Anyone with the room code can view and edit that room’s lists — treat the code like a house key.",
+    privacyDeviceTitle: "Data on your device",
+    privacyDevice:      "We store a few preferences in your browser (such as language, cookie consent, and your current room session) so you can reopen the app without starting over. Offline support may also keep a local cache of list data on the device until it syncs again.",
+    privacyCookiesTitle:"Cookies and analytics",
+    privacyCookies:     "Essential local storage keeps the app working. If you accept cookies, we may use Google Analytics and Vercel Analytics to understand how the site is used (for example pages visited and basic device context). If you reject cookies, we do not load those analytics tools. You can change your choice anytime via Cookies in the footer.",
+    privacyProvidersTitle: "Service providers",
+    privacyProviders:   "List data is hosted with Google Firebase (Firestore). The website is hosted on Vercel. Voice input, when available, uses your device or browser speech features; spoken phrases become list items only after you add them.",
+    privacyChoicesTitle:"Your choices",
+    privacyChoices:     "You can reject analytics cookies, clear site data in your browser, leave a room, or delete lists and items you no longer need. Deleting a list removes it for everyone who shares that room.",
+    privacyChangesTitle:"Changes",
+    privacyChanges:     "We may update this policy as the product changes. The “Last updated” date at the top will change when we do.",
   },
 
   he: {
@@ -271,9 +295,11 @@ export const TRANSLATIONS = {
     footerNav:          "דפי האתר",
     aboutNav:           "אודות",
     faqNav:             "שאלות נפוצות",
+    privacyNav:         "פרטיות",
     cookieNav:          "עוגיות",
     cookieTitle:        "עוגיות",
-    cookieBody:         "לידיעתך, אנו משתמשים בקבצי Cookies לצורך שיפור חווית הגלישה והתאמת התכנים. מידע נוסף ניתן למצוא במדיניות הפרטיות.",
+    cookieBody:         "לידיעתך, אנו משתמשים בקבצי Cookies לצורך שיפור חווית הגלישה והתאמת התכנים. מידע נוסף ניתן למצוא ב",
+    cookiePrivacyLink:  "מדיניות הפרטיות",
     cookieAccept:       "קבל",
     cookieReject:       "דחה",
 
@@ -294,6 +320,7 @@ export const TRANSLATIONS = {
     aboutFeature5:      "EN עברית ואנגלית, כולל תצוגה מימין לשמאל",
     aboutPrivacyTitle:  "פרטיות",
     aboutPrivacy:       "אין חשבון משתמש. הגישה היא קוד החדר: כל מי שיש לו את הקוד יכול לראות ולערוך את הרשימות. אל תשתפו את הקוד מחוץ לבית.",
+    aboutPrivacyLink:   "לקריאת מדיניות הפרטיות המלאה",
     aboutCta:           "התחילו רשימה",
 
     // ── FAQ ─────────────────────────────────────────────────────────────────
@@ -302,6 +329,27 @@ export const TRANSLATIONS = {
     faqDocDesc:         PAGE_SEO.faq.he.description,
     faqLead:            "תשובות קצרות על חדרים, שיתוף ושימוש ברשימה.",
     faqItems:           FAQ_ITEMS.he,
+
+    // ── Privacy ─────────────────────────────────────────────────────────────
+    privacyTitle:       "פרטיות",
+    privacyDocTitle:    PAGE_SEO.privacy.he.title,
+    privacyDocDesc:     PAGE_SEO.privacy.he.description,
+    privacyLead:        "GroceryPair נבנתה לרשימות קניות משותפות בלי חשבונות. בדף זה מוסבר אילו נתונים נשמרים, איך עובדות עוגיות, ומי עוזר להריץ את השירות.",
+    privacyUpdated:     "עודכן לאחרונה: 16 בספטמבר 2026",
+    privacyWhatTitle:   "מה אנחנו אוספים",
+    privacyWhat:        "אנחנו לא מבקשים שם, אימייל או סיסמה. כדי להשתמש באפליקציה יוצרים או מצטרפים לחדר עם קוד קצר. אנחנו שומרים את נתוני החדר והרשימה שאתם מזינים כדי שכולם בחדר יוכלו לקנות ביחד.",
+    privacyListsTitle:  "רשימות ונתוני חדר",
+    privacyLists:       "שמות חדרים, שמות רשימות, פריטים, הערות, הקצאות, מצב סימון ותאריכים קשורים נשמרים כדי שהרשימה תסתנכרן בזמן אמת. כל מי שיש לו את קוד החדר יכול לראות ולערוך את הרשימות — התייחסו לקוד כמו למפתח הבית.",
+    privacyDeviceTitle: "נתונים במכשיר שלכם",
+    privacyDevice:      "אנחנו שומרים כמה העדפות בדפדפן (כמו שפה, הסכמה לעוגיות והחדר הנוכחי) כדי שאפשר יהיה לפתוח שוב בלי להתחיל מאפס. תמיכה באופליין עשויה גם לשמור מטמון מקומי של נתוני הרשימה עד לסנכרון מחדש.",
+    privacyCookiesTitle:"עוגיות ואנליטיקה",
+    privacyCookies:     "אחסון מקומי חיוני שומר על תפקוד האפליקציה. אם תאשרו עוגיות, ייתכן שנשתמש ב-Google Analytics וב-Vercel Analytics כדי להבין איך משתמשים באתר (למשל דפים שנצפו והקשר מכשיר בסיסי). אם תדחו עוגיות, כלי האנליטיקה האלה לא ייטענו. אפשר לשנות בחירה בכל עת דרך «עוגיות» בתחתית הדף.",
+    privacyProvidersTitle: "ספקי שירות",
+    privacyProviders:   "נתוני הרשימות מתארחים ב-Google Firebase (Firestore). האתר מתארח ב-Vercel. קלט קולי, כשזמין, משתמש ביכולות הדיבור של המכשיר או הדפדפן; המשפטים הופכים לפריטים ברשימה רק אחרי שמוסיפים אותם.",
+    privacyChoicesTitle:"הבחירות שלכם",
+    privacyChoices:     "אפשר לדחות עוגיות אנליטיקה, לנקות נתוני אתר בדפדפן, לצאת מחדר, או למחוק רשימות ופריטים שאינם נחוצים. מחיקת רשימה מסירה אותה לכולם שמשתפים את אותו חדר.",
+    privacyChangesTitle:"שינויים",
+    privacyChanges:     "ייתכן שנעדכן מדיניות זו כשהמוצר משתנה. תאריך «עודכן לאחרונה» בראש הדף ישתנה בהתאם.",
   },
 };
 
