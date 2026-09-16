@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useT } from "../i18n.js";
 import { SITE } from "../seoPages.js";
@@ -79,6 +79,34 @@ export function LangSwitcher({ lang, onLangChange }) {
 export function SiteHeader({ lang, onLangChange, homeTo = "/" }) {
   const t = useT();
   const { pathname } = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+
+    function onKey(e) {
+      if (e.key === "Escape") setMenuOpen(false);
+    }
+
+    function onPointerDown(e) {
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [menuOpen]);
 
   function navClass(path) {
     const active = path === "/blog"
@@ -88,17 +116,41 @@ export function SiteHeader({ lang, onLangChange, homeTo = "/" }) {
   }
 
   return (
-    <header className="site-header">
+    <header className={`site-header${menuOpen ? " is-menu-open" : ""}`} ref={headerRef}>
       <Link to={homeTo} className="site-brand">
         <span className="site-brand-mark" aria-hidden="true">🛒</span>
         <span>GroceryPair</span>
       </Link>
-      <nav className="site-header-links" aria-label={t("footerNav")}>
-        <Link to="/about" className={navClass("/about")}>{t("aboutNav")}</Link>
-        <Link to="/blog" className={navClass("/blog")}>{t("blogNav")}</Link>
-        <Link to="/faq" className={navClass("/faq")}>{t("faqNav")}</Link>
+      <nav
+        id={menuId}
+        className={`site-header-links${menuOpen ? " is-open" : ""}`}
+        aria-label={t("footerNav")}
+      >
+        <Link to="/about" className={navClass("/about")} onClick={() => setMenuOpen(false)}>
+          {t("aboutNav")}
+        </Link>
+        <Link to="/blog" className={navClass("/blog")} onClick={() => setMenuOpen(false)}>
+          {t("blogNav")}
+        </Link>
+        <Link to="/faq" className={navClass("/faq")} onClick={() => setMenuOpen(false)}>
+          {t("faqNav")}
+        </Link>
       </nav>
       <LangSwitcher lang={lang} onLangChange={onLangChange} />
+      <button
+        type="button"
+        className="site-menu-toggle"
+        aria-expanded={menuOpen}
+        aria-controls={menuId}
+        aria-label={menuOpen ? t("menuClose") : t("menuOpen")}
+        onClick={() => setMenuOpen(open => !open)}
+      >
+        <span className="site-menu-toggle-bars" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </span>
+      </button>
     </header>
   );
 }

@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import "./JoinScreen.css";
 import "./ListDetail.css";
 import { db, doc, getDoc } from "../firebase.js";
@@ -8,7 +7,7 @@ import { useT, LanguageContext } from "../i18n.js";
 import { CATEGORIES, CATEGORY_BY_ID } from "../categories.js";
 import { HOME_SEO } from "../seoPages.js";
 import { trackEvent } from "../analytics.js";
-import { SiteFooter, usePageMeta, LangSwitcher } from "./InfoPage.jsx";
+import { SiteFooter, SiteHeader, usePageMeta } from "./InfoPage.jsx";
 
 const PREVIEW_CATEGORIES = ["produce", "meat", "dairy"];
 
@@ -330,18 +329,7 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
 
   return (
     <div className="home-page">
-      <header className="home-nav">
-        <div className="home-brand">
-          <span className="home-brand-mark" aria-hidden="true">🛒</span>
-          <span>GroceryPair</span>
-        </div>
-        <nav className="home-nav-links" aria-label={t("footerNav")}>
-          <Link to="/about">{t("aboutNav")}</Link>
-          <Link to="/blog">{t("blogNav")}</Link>
-          <Link to="/faq">{t("faqNav")}</Link>
-        </nav>
-        <LangSwitcher lang={lang} onLangChange={onLangChange} />
-      </header>
+      <SiteHeader lang={lang} onLangChange={onLangChange} homeTo="/" />
 
       <main className="home-main">
         <section className="home-hero">
