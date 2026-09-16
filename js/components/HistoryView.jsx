@@ -4,6 +4,7 @@ import ConfirmDialog from "./ConfirmDialog.jsx";
 import { db, collection, doc, deleteDoc, onSnapshot, query, orderBy } from "../firebase.js";
 import { formatDate } from "../utils.js";
 import { useT } from "../i18n.js";
+import { trackEvent } from "../analytics.js";
 
 export default function HistoryView({ session, onBack }) {
   const t = useT();
@@ -29,16 +30,24 @@ export default function HistoryView({ session, onBack }) {
   }, [session.roomId]);
 
   function toggleExpand(id) {
-    setExpanded(prev => (prev === id ? null : id));
+    if (expanded === id) {
+      setExpanded(null);
+      return;
+    }
+    const list = lists.find(l => l.id === id);
+    trackEvent("expand_history_list", { item_count: (list?.items || []).length });
+    setExpanded(id);
   }
 
   async function deleteList() {
     if (!pendingDelete) return;
     const id = pendingDelete.id;
+    const itemCount = (pendingDelete.items || []).length;
     setPendingDelete(null);
     setExpanded(prev => (prev === id ? null : prev));
     try {
       await deleteDoc(doc(db, "rooms", session.roomId, "lists", id));
+      trackEvent("delete_list", { source: "history", item_count: itemCount });
     } catch {
       /* snapshot listener will surface remaining lists either way */
     }

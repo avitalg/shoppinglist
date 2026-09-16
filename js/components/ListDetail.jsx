@@ -7,6 +7,7 @@ import {
 import { CATEGORIES, CATEGORY_BY_ID, DEFAULT_CATEGORY, detectCategory } from "../categories.js";
 import { LS } from "../utils.js";
 import { useT, LanguageContext } from "../i18n.js";
+import { trackEvent, mapVoiceError } from "../analytics.js";
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -235,6 +236,7 @@ export default function ListDetail({ list, session, onBack }) {
 
   function cycleVoiceLang() {
     const next = voiceLang === "he-IL" ? "en-US" : "he-IL";
+    trackEvent("voice_lang_change", { from: voiceLang, to: next });
     setVoiceLang(next);
     LS.set("fc_voice_lang", next);
   }
@@ -243,9 +245,12 @@ export default function ListDetail({ list, session, onBack }) {
     onInterim: (interim) => { if (interim) setText(interim); },
     onFinal:   (items)   => {
       setText("");
-      items.forEach(item => addItem(item));
+      items.forEach(item => addItem(item, "voice"));
     },
-    onError:   (msg)     => setError(t("micError", msg)),
+    onError:   (msg)     => {
+      trackEvent("voice_error", { reason: mapVoiceError(msg), voice_lang: voiceLang });
+      setError(t("micError", msg));
+    },
     lang:      voiceLang,
   });
   const listRef  = doc(db, "rooms", session.roomId, "lists", list.id);
@@ -318,9 +323,10 @@ export default function ListDetail({ list, session, onBack }) {
    * Add a new item to the list and increment its frequency counter.
    * @param {string} [overrideText] - Use instead of the text input (e.g. from suggestion click).
    */
-  async function addItem(overrideText) {
+  async function addItem(overrideText, method) {
     const itemText = (overrideText || text).trim();
     if (!itemText) return;
+    const via = method || (overrideText ? "suggestion" : "typed");
 
     setDupWarning(false);
     setError("");
@@ -351,10 +357,19 @@ export default function ListDetail({ list, session, onBack }) {
       });
 
       if (isDuplicate) {
+        trackEvent("add_item_duplicate", { method: via });
         setDupWarning(true);
         setTimeout(() => setDupWarning(false), 3000);
         return;
       }
+
+      const resolvedCategory = overrideText ? detectCategory(overrideText).id : category;
+      trackEvent("add_item", {
+        method: via,
+        category: resolvedCategory,
+        has_note: Boolean(note.trim()) && via !== "voice",
+        has_assignee: Boolean(assignTo.trim()) && via !== "voice",
+      });
 
       // History update is best-effort and atomic — no read required
       const wordKey    = itemText.toLowerCase();
@@ -368,6 +383,8 @@ export default function ListDetail({ list, session, onBack }) {
       setSugg([]);
       inputRef.current?.focus();
     } catch (err) {
+      const deleted = /deleted/i.test(err.message || "");
+      trackEvent("add_item_failed", { reason: deleted ? "deleted" : "network" });
       setError(err.message || t("addItemFailed"));
     }
   }
@@ -375,8 +392,15 @@ export default function ListDetail({ list, session, onBack }) {
   /** Toggle the checked state of an item by id. */
   async function toggleCheck(id) {
     setError("");
-    // Flip immediately so the UI responds on tap, not after the Firestore
-    // round-trip. If the transaction fails, toggle back to revert.
+    const items = liveList.items || [];
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    const nextChecked = !item.checked;
+    const uncheckedCount = items.reduce((n, i) => {
+      const checked = i.id === id ? nextChecked : i.checked;
+      return n + (checked ? 0 : 1);
+    }, 0);
+
     setLiveList(prev => ({
       ...prev,
       items: (prev.items || []).map(i => i.id === id ? { ...i, checked: !i.checked } : i),
@@ -385,13 +409,16 @@ export default function ListDetail({ list, session, onBack }) {
       await runTransaction(db, async tx => {
         const snap = await tx.get(listRef);
         if (!snap.exists()) throw new Error("List has been deleted.");
-        const items = (snap.data().items || []).map(i =>
+        const nextItems = (snap.data().items || []).map(i =>
           i.id === id ? { ...i, checked: !i.checked } : i
         );
-        tx.update(listRef, { items });
+        tx.update(listRef, { items: nextItems });
+      });
+      trackEvent(nextChecked ? "check_item" : "uncheck_item", {
+        category: item.category || "other",
+        unchecked_count: uncheckedCount,
       });
     } catch (err) {
-      // Revert the optimistic update
       setLiveList(prev => ({
         ...prev,
         items: (prev.items || []).map(i => i.id === id ? { ...i, checked: !i.checked } : i),
@@ -403,6 +430,7 @@ export default function ListDetail({ list, session, onBack }) {
   /** Remove an item from the list by id. */
   async function deleteItem(id) {
     setError("");
+    const item = (liveList.items || []).find(i => i.id === id);
     try {
       await runTransaction(db, async tx => {
         const snap = await tx.get(listRef);
@@ -411,6 +439,12 @@ export default function ListDetail({ list, session, onBack }) {
           items: (snap.data().items || []).filter(i => i.id !== id),
         });
       });
+      if (item) {
+        trackEvent("delete_item", {
+          category: item.category || "other",
+          was_checked: Boolean(item.checked),
+        });
+      }
     } catch (err) {
       setError(t("deleteItemFailed"));
     }
@@ -419,6 +453,9 @@ export default function ListDetail({ list, session, onBack }) {
   /** Remove all checked items from the list. */
   async function clearChecked() {
     setError("");
+    const current = liveList.items || [];
+    const count = current.filter(i => i.checked).length;
+    const remaining = current.length - count;
     try {
       await runTransaction(db, async tx => {
         const snap = await tx.get(listRef);
@@ -427,6 +464,7 @@ export default function ListDetail({ list, session, onBack }) {
           items: (snap.data().items || []).filter(i => !i.checked),
         });
       });
+      trackEvent("clear_checked", { count, remaining });
     } catch (err) {
       setError(t("clearCheckedFailed"));
     }
@@ -463,8 +501,18 @@ export default function ListDetail({ list, session, onBack }) {
     text += t("shareListFooter");
 
     if (navigator.share) {
+      trackEvent("share_list", {
+        method: "native",
+        item_count: items.length,
+        unchecked_count: unchecked.length,
+      });
       navigator.share({ title: liveList.name, text }).catch(() => {});
     } else {
+      trackEvent("share_list", {
+        method: "whatsapp",
+        item_count: items.length,
+        unchecked_count: unchecked.length,
+      });
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
     }
   }
@@ -473,6 +521,10 @@ export default function ListDetail({ list, session, onBack }) {
     setError("");
     try {
       await updateDoc(listRef, { status: "archived" });
+      trackEvent("archive_list", {
+        item_count: items.length,
+        checked_count: items.filter(i => i.checked).length,
+      });
       onBack();
     } catch (err) {
       setError(t("archiveFailed"));
@@ -484,6 +536,7 @@ export default function ListDetail({ list, session, onBack }) {
     setError("");
     try {
       await deleteDoc(listRef);
+      trackEvent("delete_list", { source: "detail", item_count: items.length });
       onBack();
     } catch (err) {
       setError(t("deleteListFailed"));
@@ -507,6 +560,7 @@ export default function ListDetail({ list, session, onBack }) {
     }
     try {
       await updateDoc(listRef, { name });
+      trackEvent("rename_list");
     } catch (err) {
       setError(t("renameFailed"));
     }
@@ -627,7 +681,11 @@ export default function ListDetail({ list, session, onBack }) {
             <button
               type="button"
               className={`mic-btn ${voice.listening ? "listening" : ""}`}
-              onClick={voice.toggle}
+              onClick={() => {
+                if (voice.listening) trackEvent("voice_stop", { voice_lang: voiceLang });
+                else trackEvent("voice_start", { voice_lang: voiceLang });
+                voice.toggle();
+              }}
               aria-label={voice.listening ? t("stopRecording") : t("speakToAdd")}
               title={voice.listening ? t("stopRecording") : t("speakToAdd")}
             >

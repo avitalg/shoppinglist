@@ -5,6 +5,7 @@ import { SiteFooter } from "./InfoPage.jsx";
 import { db, collection, doc, onSnapshot, addDoc, deleteDoc, serverTimestamp, query, orderBy } from "../firebase.js";
 import { formatDate, shareViaWhatsApp } from "../utils.js";
 import { useT } from "../i18n.js";
+import { trackEvent } from "../analytics.js";
 
 function WhatsAppIcon() {
   return (
@@ -53,6 +54,7 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
 
     setBusy(true);
     setError("");
+    const activeLists = lists.filter(l => l.status == null || l.status === "active").length;
     try {
       await addDoc(collection(db, "rooms", session.roomId, "lists"), {
         name,
@@ -60,8 +62,10 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
         createdAt: serverTimestamp(),
         items:     [],
       });
+      trackEvent("create_list", { active_lists: activeLists });
       setNewName(new Date().toLocaleDateString("he-IL", { day: "numeric", month: "numeric", year: "numeric" }));
     } catch {
+      trackEvent("create_list_failed", { reason: "network" });
       setError(t("createListFailed"));
     } finally {
       setBusy(false);
@@ -71,10 +75,12 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
   async function deleteList() {
     if (!pendingDelete) return;
     const id = pendingDelete.id;
+    const itemCount = (pendingDelete.items || []).length;
     setPendingDelete(null);
     setError("");
     try {
       await deleteDoc(doc(db, "rooms", session.roomId, "lists", id));
+      trackEvent("delete_list", { source: "lists", item_count: itemCount });
     } catch {
       setError(t("deleteListFailed"));
     }
@@ -86,7 +92,17 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
 
   function shareRoom() {
     const spaceName = session.roomName || session.roomId;
+    trackEvent("share_room", { active_lists: active.length });
     shareViaWhatsApp(t("shareRoomText", spaceName, session.roomId));
+  }
+
+  function openList(list) {
+    const itemCount = (list.items || []).length;
+    trackEvent("open_list", {
+      item_count: itemCount,
+      unchecked_count: uncheckedCount(list),
+    });
+    onOpen(list);
   }
 
   return (
@@ -126,7 +142,7 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
           const uc = uncheckedCount(list);
           const itemCount = (list.items || []).length;
           return (
-            <div key={list.id} className="list-card" onClick={() => onOpen(list)}>
+            <div key={list.id} className="list-card" onClick={() => openList(list)}>
               <span className="list-icon">📋</span>
               <div className="list-info">
                 <div className="list-name">
@@ -175,7 +191,14 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
         </button>
 
         <div className="lists-footer">
-          <button className="btn btn-gray" onClick={onHistory} style={{ flex: 1 }}>
+          <button
+            className="btn btn-gray"
+            onClick={() => {
+              trackEvent("open_history", { archived_count: archived.length });
+              onHistory();
+            }}
+            style={{ flex: 1 }}
+          >
             📂 {t("listHistory")}{archived.length > 0 ? ` (${archived.length})` : ""}
           </button>
           <button className="btn btn-gray" onClick={onLeave} title={t("leaveRoom")}>

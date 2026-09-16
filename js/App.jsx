@@ -10,6 +10,7 @@ import ListDetail  from "./components/ListDetail.jsx";
 import HistoryView from "./components/HistoryView.jsx";
 import AboutPage   from "./components/AboutPage.jsx";
 import FaqPage     from "./components/FaqPage.jsx";
+import { trackEvent } from "./analytics.js";
 
 // ── Online status hook ────────────────────────────────────────────────────────
 
@@ -64,6 +65,12 @@ export default function App() {
   }, [lang]);
 
   function handleLangChange(newLang) {
+    if (newLang === lang) return;
+    trackEvent("change_language", {
+      from: lang,
+      to: newLang,
+      path: window.location.pathname,
+    });
     LS.set("fc_lang", newLang);
     setLang(newLang);
   }
@@ -74,6 +81,8 @@ export default function App() {
   }
 
   function handleLeave() {
+    const activeLists = lists.filter(l => l.status == null || l.status === "active").length;
+    trackEvent("leave_room", { active_lists: activeLists });
     LS.set("fc_last_room", {
       roomId:   session.roomId,
       roomName: session.roomName || session.roomId,

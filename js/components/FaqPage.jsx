@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useT } from "../i18n.js";
 import { faqJsonLd } from "../seoPages.js";
+import { trackEvent } from "../analytics.js";
 import InfoPage, { usePageMeta } from "./InfoPage.jsx";
 
 const FAQ_LD_ID = "faq-jsonld";
@@ -36,8 +37,16 @@ export default function FaqPage({ lang, onLangChange, session }) {
 
       <div className="faq-list">
         {Array.isArray(faqs)
-          ? faqs.map(item => (
-              <details key={item.q} className="faq-item">
+          ? faqs.map((item, index) => (
+              <details
+                key={item.q}
+                className="faq-item"
+                onToggle={e => {
+                  if (e.currentTarget.open) {
+                    trackEvent("faq_open", { index, logged_in: Boolean(session) });
+                  }
+                }}
+              >
                 <summary>{item.q}</summary>
                 <p>{item.a}</p>
               </details>

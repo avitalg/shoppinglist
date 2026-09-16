@@ -5,6 +5,7 @@ import { db, doc, setDoc, getDoc, serverTimestamp } from "../firebase.js";
 import { genCode, LS } from "../utils.js";
 import { useT } from "../i18n.js";
 import { HOME_SEO } from "../seoPages.js";
+import { trackEvent } from "../analytics.js";
 import { SiteFooter, usePageMeta, LangSwitcher } from "./InfoPage.jsx";
 
 function StartPanel({
@@ -134,10 +135,13 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
         setError(t("roomNoLongerExists"));
         setLastRoom(null);
         LS.set("fc_last_room", null);
+        trackEvent("join_room_failed", { reason: "gone" });
         return;
       }
+      trackEvent("join_room", { method: "rejoin" });
       onJoin({ roomId: lastRoom.roomId, roomName: lastRoom.roomName });
     } catch {
+      trackEvent("join_room_failed", { reason: "network" });
       setError(t("connectFailed"));
     } finally {
       setBusy(false);
@@ -145,7 +149,10 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
   }
 
   async function handleJoin() {
-    if (code.trim().length < 4) return setError(t("invalidCode"));
+    if (code.trim().length < 4) {
+      trackEvent("join_room_failed", { reason: "invalid" });
+      return setError(t("invalidCode"));
+    }
 
     setBusy(true);
     setError("");
@@ -154,10 +161,15 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
       const roomId = code.trim().toUpperCase();
       const snap   = await getDoc(doc(db, "rooms", roomId));
 
-      if (!snap.exists()) return setError(t("roomNotFound"));
+      if (!snap.exists()) {
+        trackEvent("join_room_failed", { reason: "not_found" });
+        return setError(t("roomNotFound"));
+      }
 
+      trackEvent("join_room", { method: "code" });
       onJoin({ roomId, roomName: snap.data().name || roomId });
     } catch {
+      trackEvent("join_room_failed", { reason: "network" });
       setError(t("connectFailed"));
     } finally {
       setBusy(false);
@@ -165,7 +177,10 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
   }
 
   async function handleCreate() {
-    if (!spaceName.trim()) return setError(t("enterSpaceName"));
+    if (!spaceName.trim()) {
+      trackEvent("create_room_failed", { reason: "empty_name" });
+      return setError(t("enterSpaceName"));
+    }
 
     setBusy(true);
     setError("");
@@ -185,8 +200,11 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
         createdAt: serverTimestamp(),
       });
 
+      trackEvent("create_room");
       onJoin({ roomId: nextCode, roomName: spaceName.trim() });
     } catch (err) {
+      const genFailed = err.message === t("codeGenFailed");
+      trackEvent("create_room_failed", { reason: genFailed ? "code_gen" : "network" });
       setError(err.message || t("createRoomFailed"));
     } finally {
       setBusy(false);
