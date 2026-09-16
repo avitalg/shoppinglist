@@ -28,17 +28,17 @@ body {
   min-height: 100vh;
 }
 
-/* App screens stay a phone-width column. Marketing pages (home, about, FAQ) are full-width. */
-#root:not(:has(.home-page)):not(:has(.info-page)) {
+/* App screens stay a phone-width column. Marketing pages stay full-width. */
+#root:not(:has(.home-page)):not(:has(.info-page)):not(:has(.site-page)) {
   max-width: 480px;
   margin: 0 auto;
   background: var(--white);
   box-shadow: var(--shadow);
 }
 
-/* Keep about/FAQ in the phone shell on small screens; expand on desktop. */
+/* Legacy info-page shell on small screens only (app-style about/faq fallback). */
 @media (max-width: 879px) {
-  #root:has(.info-page) {
+  #root:has(.info-page):not(:has(.site-page)) {
     max-width: 480px;
     margin: 0 auto;
     background: var(--white);

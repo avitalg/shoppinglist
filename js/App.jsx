@@ -12,6 +12,8 @@ import HistoryView from "./components/HistoryView.jsx";
 import AboutPage   from "./components/AboutPage.jsx";
 import FaqPage     from "./components/FaqPage.jsx";
 import PrivacyPage from "./components/PrivacyPage.jsx";
+import BlogIndexPage from "./components/BlogIndexPage.jsx";
+import BlogArticlePage from "./components/BlogArticlePage.jsx";
 import CookieBar, { CookieConsentContext } from "./components/CookieBar.jsx";
 import {
   getCookieConsent,
@@ -159,6 +161,20 @@ export default function App() {
             path="/privacy"
             element={
               <PrivacyPage lang={lang} onLangChange={handleLangChange} session={session} />
+            }
+          />
+
+          <Route
+            path="/blog"
+            element={
+              <BlogIndexPage lang={lang} onLangChange={handleLangChange} session={session} />
+            }
+          />
+
+          <Route
+            path="/blog/:slug"
+            element={
+              <BlogArticlePage lang={lang} onLangChange={handleLangChange} session={session} />
             }
           />
 

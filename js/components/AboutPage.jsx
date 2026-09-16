@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useT } from "../i18n.js";
 import { aboutJsonLd } from "../seoPages.js";
-import InfoPage, { usePageMeta } from "./InfoPage.jsx";
+import { MarketingPage, usePageMeta } from "./InfoPage.jsx";
+import "./InfoPage.css";
 
 const ABOUT_LD_ID = "about-jsonld";
 
@@ -27,33 +28,41 @@ export default function AboutPage({ lang, onLangChange, session }) {
   }, []);
 
   return (
-    <InfoPage title={t("aboutTitle")} lang={lang} onLangChange={onLangChange} homeTo={homeTo}>
+    <MarketingPage lang={lang} onLangChange={onLangChange} homeTo={homeTo} layout="wide">
+      <p className="blog-kicker">{t("aboutNav")}</p>
+      <h1 className="blog-page-title">{t("aboutTitle")}</h1>
       <p className="info-lead">{t("aboutLead")}</p>
 
-      <h2>{t("aboutHowTitle")}</h2>
-      <ol className="info-steps">
-        <li>{t("aboutStep1")}</li>
-        <li>{t("aboutStep2")}</li>
-        <li>{t("aboutStep3")}</li>
-      </ol>
+      <section className="site-section">
+        <h2>{t("aboutHowTitle")}</h2>
+        <ol className="info-steps">
+          <li>{t("aboutStep1")}</li>
+          <li>{t("aboutStep2")}</li>
+          <li>{t("aboutStep3")}</li>
+        </ol>
+      </section>
 
-      <h2>{t("aboutFeaturesTitle")}</h2>
-      <ul className="feature-list">
-        <li>{t("aboutFeature1")}</li>
-        <li>{t("aboutFeature3")}</li>
-        <li>{t("aboutFeature4")}</li>
-        <li>{t("aboutFeature5")}</li>
-      </ul>
+      <section className="site-section">
+        <h2>{t("aboutFeaturesTitle")}</h2>
+        <ul className="feature-list">
+          <li>{t("aboutFeature1")}</li>
+          <li>{t("aboutFeature3")}</li>
+          <li>{t("aboutFeature4")}</li>
+          <li>{t("aboutFeature5")}</li>
+        </ul>
+      </section>
 
-      <h2>{t("aboutPrivacyTitle")}</h2>
-      <p>{t("aboutPrivacy")}</p>
-      <p>
-        <Link to="/privacy">{t("aboutPrivacyLink")}</Link>
-      </p>
+      <section className="site-section">
+        <h2>{t("aboutPrivacyTitle")}</h2>
+        <p>{t("aboutPrivacy")}</p>
+        <p>
+          <Link to="/privacy">{t("aboutPrivacyLink")}</Link>
+        </p>
+      </section>
 
-      <Link to={homeTo} className="btn btn-green btn-full">
+      <Link to={homeTo} className="btn btn-green blog-cta">
         {session ? t("backToLists") : t("aboutCta")}
       </Link>
-    </InfoPage>
+    </MarketingPage>
   );
 }

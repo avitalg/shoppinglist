@@ -2,9 +2,20 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useT } from "../i18n.js";
 import { privacyJsonLd } from "../seoPages.js";
-import InfoPage, { usePageMeta } from "./InfoPage.jsx";
+import { MarketingPage, usePageMeta } from "./InfoPage.jsx";
+import "./InfoPage.css";
 
 const PRIVACY_LD_ID = "privacy-jsonld";
+
+const SECTIONS = [
+  { id: "what", titleKey: "privacyWhatTitle", bodyKey: "privacyWhat" },
+  { id: "lists", titleKey: "privacyListsTitle", bodyKey: "privacyLists" },
+  { id: "device", titleKey: "privacyDeviceTitle", bodyKey: "privacyDevice" },
+  { id: "cookies", titleKey: "privacyCookiesTitle", bodyKey: "privacyCookies" },
+  { id: "providers", titleKey: "privacyProvidersTitle", bodyKey: "privacyProviders" },
+  { id: "choices", titleKey: "privacyChoicesTitle", bodyKey: "privacyChoices" },
+  { id: "changes", titleKey: "privacyChangesTitle", bodyKey: "privacyChanges" },
+];
 
 export default function PrivacyPage({ lang, onLangChange, session }) {
   const t = useT();
@@ -15,6 +26,7 @@ export default function PrivacyPage({ lang, onLangChange, session }) {
     lang,
   });
   const homeTo = session ? "/lists" : "/";
+  const ctaLabel = session ? t("backToLists") : t("aboutCta");
 
   useEffect(() => {
     document.getElementById(PRIVACY_LD_ID)?.remove();
@@ -27,34 +39,52 @@ export default function PrivacyPage({ lang, onLangChange, session }) {
   }, []);
 
   return (
-    <InfoPage title={t("privacyTitle")} lang={lang} onLangChange={onLangChange} homeTo={homeTo}>
-      <p className="info-lead">{t("privacyLead")}</p>
-      <p className="privacy-updated">{t("privacyUpdated")}</p>
+    <MarketingPage lang={lang} onLangChange={onLangChange} homeTo={homeTo} layout="wide">
+      <article className="blog-post privacy-doc">
+        <header className="blog-post-hero">
+          <p className="blog-kicker">{t("privacyNav")}</p>
+          <h1 className="blog-page-title">{t("privacyTitle")}</h1>
+          <p className="blog-post-lead">{t("privacyLead")}</p>
+          <p className="privacy-updated">{t("privacyUpdated")}</p>
+        </header>
 
-      <h2>{t("privacyWhatTitle")}</h2>
-      <p>{t("privacyWhat")}</p>
+        <div className="blog-post-body">
+          <div className="blog-article">
+            {SECTIONS.map(section => (
+              <section key={section.id} id={section.id} className="privacy-section">
+                <h2>{t(section.titleKey)}</h2>
+                <p>{t(section.bodyKey)}</p>
+              </section>
+            ))}
+          </div>
 
-      <h2>{t("privacyListsTitle")}</h2>
-      <p>{t("privacyLists")}</p>
+          <aside className="blog-post-aside privacy-aside" aria-label={t("privacyNav")}>
+            <nav className="privacy-toc">
+              <p className="privacy-toc-label">{t("privacyTocLabel")}</p>
+              <ol>
+                {SECTIONS.map(section => (
+                  <li key={section.id}>
+                    <a href={`#${section.id}`}>{t(section.titleKey)}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+            <div className="blog-aside-panel">
+              <p className="blog-aside-kicker">{t("blogAsideKicker")}</p>
+              <p className="blog-aside-text">{t("blogAsideText")}</p>
+              <Link to={homeTo} className="btn btn-green blog-aside-cta">
+                {ctaLabel}
+              </Link>
+            </div>
+          </aside>
+        </div>
 
-      <h2>{t("privacyDeviceTitle")}</h2>
-      <p>{t("privacyDevice")}</p>
-
-      <h2>{t("privacyCookiesTitle")}</h2>
-      <p>{t("privacyCookies")}</p>
-
-      <h2>{t("privacyProvidersTitle")}</h2>
-      <p>{t("privacyProviders")}</p>
-
-      <h2>{t("privacyChoicesTitle")}</h2>
-      <p>{t("privacyChoices")}</p>
-
-      <h2>{t("privacyChangesTitle")}</h2>
-      <p>{t("privacyChanges")}</p>
-
-      <Link to={homeTo} className="btn btn-green btn-full">
-        {session ? t("backToLists") : t("aboutCta")}
-      </Link>
-    </InfoPage>
+        <div className="blog-post-mobile-cta">
+          <Link to={homeTo} className="btn btn-green blog-cta">
+            {ctaLabel}
+          </Link>
+        </div>
+      </article>
+    </MarketingPage>
   );
 }

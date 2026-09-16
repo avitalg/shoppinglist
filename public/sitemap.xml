@@ -13,6 +13,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.grocerypair.com/blog</loc>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.grocerypair.com/blog/weekly-grocery-list</loc>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.grocerypair.com/blog/share-grocery-list-with-partner</loc>
+    <lastmod>2026-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.grocerypair.com/faq</loc>
     <lastmod>2026-09-14</lastmod>
     <changefreq>monthly</changefreq>

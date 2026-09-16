@@ -43,7 +43,7 @@
       "destination": "https://api.vercel.com/bot-protection/v1/proxy/:path*"
     },
     {
-      "source": "/((?!api/|sitemap\\.xml|robots\\.txt|favicon\\.svg|og-image\\.png|googlea.*\\.html|assets/|about|faq|privacy).*)",
+      "source": "/((?!api/|sitemap\\.xml|robots\\.txt|favicon\\.svg|og-image\\.png|googlea.*\\.html|assets/|about|blog|faq|privacy).*)",
       "destination": "/index.html"
     }
   ]

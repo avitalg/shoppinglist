@@ -337,6 +337,7 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
         </div>
         <nav className="home-nav-links" aria-label={t("footerNav")}>
           <Link to="/about">{t("aboutNav")}</Link>
+          <Link to="/blog">{t("blogNav")}</Link>
           <Link to="/faq">{t("faqNav")}</Link>
         </nav>
         <LangSwitcher lang={lang} onLangChange={onLangChange} />

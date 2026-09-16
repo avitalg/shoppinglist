@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useT } from "../i18n.js";
 import { SITE } from "../seoPages.js";
 import { useCookieConsent } from "./CookieBar.jsx";
@@ -75,12 +75,42 @@ export function LangSwitcher({ lang, onLangChange }) {
   );
 }
 
+/** Homepage-style top nav shared by marketing pages (blog, etc.). */
+export function SiteHeader({ lang, onLangChange, homeTo = "/" }) {
+  const t = useT();
+  const { pathname } = useLocation();
+
+  function navClass(path) {
+    const active = path === "/blog"
+      ? pathname.startsWith("/blog")
+      : pathname === path;
+    return active ? "is-active" : undefined;
+  }
+
+  return (
+    <header className="site-header">
+      <Link to={homeTo} className="site-brand">
+        <span className="site-brand-mark" aria-hidden="true">🛒</span>
+        <span>GroceryPair</span>
+      </Link>
+      <nav className="site-header-links" aria-label={t("footerNav")}>
+        <Link to="/about" className={navClass("/about")}>{t("aboutNav")}</Link>
+        <Link to="/blog" className={navClass("/blog")}>{t("blogNav")}</Link>
+        <Link to="/faq" className={navClass("/faq")}>{t("faqNav")}</Link>
+      </nav>
+      <LangSwitcher lang={lang} onLangChange={onLangChange} />
+    </header>
+  );
+}
+
 export function SiteFooter() {
   const t = useT();
   const { openSettings } = useCookieConsent();
   return (
     <nav className="site-footer-links" aria-label={t("footerNav")}>
       <Link to="/about">{t("aboutNav")}</Link>
+      <span aria-hidden="true">·</span>
+      <Link to="/blog">{t("blogNav")}</Link>
       <span aria-hidden="true">·</span>
       <Link to="/faq">{t("faqNav")}</Link>
       <span aria-hidden="true">·</span>
@@ -93,7 +123,26 @@ export function SiteFooter() {
   );
 }
 
-export default function InfoPage({ title, lang, onLangChange, homeTo, children }) {
+/** Homepage-style shell for marketing pages (About, FAQ, Blog, Privacy). */
+export function MarketingPage({
+  lang,
+  onLangChange,
+  homeTo = "/",
+  children,
+  layout = "wide",
+}) {
+  return (
+    <div className="site-page">
+      <SiteHeader lang={lang} onLangChange={onLangChange} homeTo={homeTo} />
+      <main className={`site-page-main site-page-main--${layout}`}>
+        {children}
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}
+
+export default function InfoPage({ title, eyebrow, lang, onLangChange, homeTo, children }) {
   const t = useT();
   const navigate = useNavigate();
 
@@ -108,7 +157,10 @@ export default function InfoPage({ title, lang, onLangChange, homeTo, children }
         >
           ←
         </button>
-        <h1>{title}</h1>
+        <div className="header-title-wrap">
+          {eyebrow && <p className="header-eyebrow">{eyebrow}</p>}
+          <h1>{title}</h1>
+        </div>
         <LangSwitcher lang={lang} onLangChange={onLangChange} />
       </div>
       <div className="info-page-body">{children}</div>

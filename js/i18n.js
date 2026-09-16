@@ -128,6 +128,7 @@ export const TRANSLATIONS = {
     backToLists:        "Back to lists",
     footerNav:          "Site pages",
     aboutNav:           "About",
+    blogNav:            "Blog",
     faqNav:             "FAQ",
     privacyNav:         "Privacy",
     cookieNav:          "Cookies",
@@ -157,6 +158,11 @@ export const TRANSLATIONS = {
     aboutPrivacyLink:   "Read the full privacy policy",
     aboutCta:           "Start a list",
 
+    // ── Blog ────────────────────────────────────────────────────────────────
+    blogCta:            "Create a free shared grocery list",
+    blogAsideKicker:    "Try GroceryPair",
+    blogAsideText:      "One shared list for you and your partner — updates in real time, free, no sign-up.",
+
     // ── FAQ ─────────────────────────────────────────────────────────────────
     faqTitle:           "FAQ",
     faqDocTitle:        PAGE_SEO.faq.en.title,
@@ -165,11 +171,12 @@ export const TRANSLATIONS = {
     faqItems:           FAQ_ITEMS.en,
 
     // ── Privacy ─────────────────────────────────────────────────────────────
-    privacyTitle:       "Privacy",
+    privacyTitle:       "Privacy Policy",
     privacyDocTitle:    PAGE_SEO.privacy.en.title,
     privacyDocDesc:     PAGE_SEO.privacy.en.description,
     privacyLead:        "GroceryPair is built for shared shopping lists without accounts. This page explains what data we store, how cookies work, and who helps run the service.",
     privacyUpdated:     "Last updated: September 16, 2026",
+    privacyTocLabel:    "On this page",
     privacyWhatTitle:   "What we collect",
     privacyWhat:        "We do not ask for your name, email, or password. To use the app you create or join a room with a short code. We store room and list data you enter so everyone in that room can shop together.",
     privacyListsTitle:  "Lists and room data",
@@ -308,6 +315,7 @@ export const TRANSLATIONS = {
     backToLists:        "חזרה לרשימות",
     footerNav:          "דפי האתר",
     aboutNav:           "אודות",
+    blogNav:            "בלוג",
     faqNav:             "שאלות נפוצות",
     privacyNav:         "פרטיות",
     cookieNav:          "עוגיות",
@@ -337,6 +345,11 @@ export const TRANSLATIONS = {
     aboutPrivacyLink:   "לקריאת מדיניות הפרטיות המלאה",
     aboutCta:           "התחילו רשימה",
 
+    // ── Blog ────────────────────────────────────────────────────────────────
+    blogCta:            "צרו רשימת קניות משותפת בחינם",
+    blogAsideKicker:    "נסו את GroceryPair",
+    blogAsideText:      "רשימה משותפת אחת לשניכם — מתעדכנת בזמן אמת, חינם, בלי הרשמה.",
+
     // ── FAQ ─────────────────────────────────────────────────────────────────
     faqTitle:           "שאלות נפוצות",
     faqDocTitle:        PAGE_SEO.faq.he.title,
@@ -345,11 +358,12 @@ export const TRANSLATIONS = {
     faqItems:           FAQ_ITEMS.he,
 
     // ── Privacy ─────────────────────────────────────────────────────────────
-    privacyTitle:       "פרטיות",
+    privacyTitle:       "מדיניות פרטיות",
     privacyDocTitle:    PAGE_SEO.privacy.he.title,
     privacyDocDesc:     PAGE_SEO.privacy.he.description,
     privacyLead:        "GroceryPair נבנתה לרשימות קניות משותפות בלי חשבונות. בדף זה מוסבר אילו נתונים נשמרים, איך עובדות עוגיות, ומי עוזר להריץ את השירות.",
     privacyUpdated:     "עודכן לאחרונה: 16 בספטמבר 2026",
+    privacyTocLabel:    "בעמוד זה",
     privacyWhatTitle:   "מה אנחנו אוספים",
     privacyWhat:        "אנחנו לא מבקשים שם, אימייל או סיסמה. כדי להשתמש באפליקציה יוצרים או מצטרפים לחדר עם קוד קצר. אנחנו שומרים את נתוני החדר והרשימה שאתם מזינים כדי שכולם בחדר יוכלו לקנות ביחד.",
     privacyListsTitle:  "רשימות ונתוני חדר",

@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { useT } from "../i18n.js";
 import { faqJsonLd } from "../seoPages.js";
 import { trackEvent } from "../analytics.js";
-import InfoPage, { usePageMeta } from "./InfoPage.jsx";
+import { MarketingPage, usePageMeta } from "./InfoPage.jsx";
+import "./InfoPage.css";
 
 const FAQ_LD_ID = "faq-jsonld";
 
@@ -32,7 +33,9 @@ export default function FaqPage({ lang, onLangChange, session }) {
   }, [faqs]);
 
   return (
-    <InfoPage title={t("faqTitle")} lang={lang} onLangChange={onLangChange} homeTo={homeTo}>
+    <MarketingPage lang={lang} onLangChange={onLangChange} homeTo={homeTo} layout="wide">
+      <p className="blog-kicker">{t("faqNav")}</p>
+      <h1 className="blog-page-title">{t("faqTitle")}</h1>
       <p className="info-lead">{t("faqLead")}</p>
 
       <div className="faq-list">
@@ -54,9 +57,9 @@ export default function FaqPage({ lang, onLangChange, session }) {
           : null}
       </div>
 
-      <Link to={homeTo} className="btn btn-green btn-full">
+      <Link to={homeTo} className="btn btn-green blog-cta">
         {session ? t("backToLists") : t("aboutCta")}
       </Link>
-    </InfoPage>
+    </MarketingPage>
   );
 }
