@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useT } from "../i18n.js";
 import { SITE } from "../seoPages.js";
+import { useCookieConsent } from "./CookieBar.jsx";
 import "./InfoPage.css";
 
 /**
@@ -76,11 +77,16 @@ export function LangSwitcher({ lang, onLangChange }) {
 
 export function SiteFooter() {
   const t = useT();
+  const { openSettings } = useCookieConsent();
   return (
     <nav className="site-footer-links" aria-label={t("footerNav")}>
       <Link to="/about">{t("aboutNav")}</Link>
       <span aria-hidden="true">·</span>
       <Link to="/faq">{t("faqNav")}</Link>
+      <span aria-hidden="true">·</span>
+      <button type="button" className="site-footer-cookies" onClick={openSettings}>
+        {t("cookieNav")}
+      </button>
     </nav>
   );
 }

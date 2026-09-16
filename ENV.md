@@ -77,3 +77,22 @@ What they do **not** do: hide keys from someone inspecting the built JavaScript 
 
 **Never** put Firebase Admin SDK credentials, service account JSON, or other true secrets in `VITE_*` variables.
 
+---
+
+## Feature flags (Vercel)
+
+Voice / “record groceries” is controlled by the Vercel Flags boolean **`record-groceries`**.
+
+- Evaluated server-side by [`api/record-groceries.js`](./api/record-groceries.js) via `@vercel/flags-core` (OIDC on Vercel; no `VITE_*` secret).
+- The client fetches `/api/record-groceries` and shows the mic only when the flag is on.
+- **iOS / iPadOS / macOS always hide the mic**, regardless of the flag value.
+- If the API is unreachable (e.g. local `npm run dev` without `vercel dev`), non-Apple clients default to **enabled**.
+
+### One-time dashboard setup
+
+1. Vercel project → **Flags** → create boolean flag with key `record-groceries`.
+2. Set production to **Enabled** initially (Apple is still blocked in the app).
+3. Redeploy after shipping the API + client changes.
+
+For local flag evaluation with `vercel dev`, run `vercel env pull` if credentials are missing.
+

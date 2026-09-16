@@ -120,6 +120,11 @@ export const TRANSLATIONS = {
     footerNav:          "Site pages",
     aboutNav:           "About",
     faqNav:             "FAQ",
+    cookieNav:          "Cookies",
+    cookieTitle:        "Cookies",
+    cookieBody:         "Please note: we use cookies to improve your browsing experience and personalize content. More information can be found in our privacy policy.",
+    cookieAccept:       "Accept",
+    cookieReject:       "Reject",
 
     // ── About ───────────────────────────────────────────────────────────────
     aboutTitle:         "About",
@@ -266,6 +271,11 @@ export const TRANSLATIONS = {
     footerNav:          "דפי האתר",
     aboutNav:           "אודות",
     faqNav:             "שאלות נפוצות",
+    cookieNav:          "עוגיות",
+    cookieTitle:        "עוגיות",
+    cookieBody:         "לידיעתך, אנו משתמשים בקבצי Cookies לצורך שיפור חווית הגלישה והתאמת התכנים. מידע נוסף ניתן למצוא במדיניות הפרטיות.",
+    cookieAccept:       "קבל",
+    cookieReject:       "דחה",
 
     // ── About ───────────────────────────────────────────────────────────────
     aboutTitle:         "אודות",

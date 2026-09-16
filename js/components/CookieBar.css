@@ -1,0 +1,64 @@
+.cookie-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 100;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -8px 28px rgba(15, 23, 42, 0.08);
+}
+
+.cookie-bar-inner {
+  width: min(720px, 100%);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cookie-bar-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.cookie-bar-text {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--gray);
+}
+
+.cookie-bar-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cookie-bar-actions .btn {
+  min-width: 7rem;
+}
+
+body:has(.cookie-bar) {
+  padding-bottom: 180px;
+}
+
+@media (min-width: 640px) {
+  .cookie-bar-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title actions"
+      "text actions";
+    column-gap: 24px;
+    align-items: center;
+  }
+
+  .cookie-bar-title { grid-area: title; }
+  .cookie-bar-text { grid-area: text; }
+  .cookie-bar-actions {
+    grid-area: actions;
+    flex-direction: column;
+  }
+}

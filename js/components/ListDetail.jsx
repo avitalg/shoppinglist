@@ -8,6 +8,7 @@ import { CATEGORIES, CATEGORY_BY_ID, DEFAULT_CATEGORY, detectCategory } from "..
 import { LS } from "../utils.js";
 import { useT, LanguageContext } from "../i18n.js";
 import { trackEvent, mapVoiceError } from "../analytics.js";
+import { useRecordGroceriesEnabled } from "../flags.js";
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -241,6 +242,7 @@ export default function ListDetail({ list, session, onBack }) {
     LS.set("fc_voice_lang", next);
   }
 
+  const recordGroceries = useRecordGroceriesEnabled();
   const voice = useVoiceInput({
     onInterim: (interim) => { if (interim) setText(interim); },
     onFinal:   (items)   => {
@@ -253,6 +255,7 @@ export default function ListDetail({ list, session, onBack }) {
     },
     lang:      voiceLang,
   });
+  const voiceAvailable = voice.supported && recordGroceries;
   const listRef  = doc(db, "rooms", session.roomId, "lists", list.id);
   const histRef  = collection(db, "rooms", session.roomId, "itemHistory");
 
@@ -659,13 +662,13 @@ export default function ListDetail({ list, session, onBack }) {
           <input
             ref={inputRef}
             type="text"
-            placeholder={voice.listening ? t("listeningPlaceholder") : t("addItemPlaceholder")}
+            placeholder={voiceAvailable && voice.listening ? t("listeningPlaceholder") : t("addItemPlaceholder")}
             value={text}
             onChange={e => { setText(e.target.value); setDupWarning(false); }}
             onKeyDown={e => e.key === "Enter" && addItem()}
-            readOnly={voice.listening}
+            readOnly={voiceAvailable && voice.listening}
           />
-          {voice.supported && (
+          {voiceAvailable && (
             <button
               type="button"
               className="lang-toggle"
@@ -677,7 +680,7 @@ export default function ListDetail({ list, session, onBack }) {
               {VOICE_LANGS.find(l => l.code === voiceLang)?.label}
             </button>
           )}
-          {voice.supported && (
+          {voiceAvailable && (
             <button
               type="button"
               className={`mic-btn ${voice.listening ? "listening" : ""}`}

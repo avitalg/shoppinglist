@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import {
   BrowserRouter, Routes, Route, Navigate, useNavigate, useParams, useLocation,
 } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import { LS } from "./utils.js";
 import { LanguageContext, useT } from "./i18n.js";
 import JoinScreen  from "./components/JoinScreen.jsx";
@@ -10,7 +11,13 @@ import ListDetail  from "./components/ListDetail.jsx";
 import HistoryView from "./components/HistoryView.jsx";
 import AboutPage   from "./components/AboutPage.jsx";
 import FaqPage     from "./components/FaqPage.jsx";
-import { trackEvent } from "./analytics.js";
+import CookieBar, { CookieConsentContext } from "./components/CookieBar.jsx";
+import {
+  getCookieConsent,
+  loadGoogleTag,
+  setCookieConsent,
+  trackEvent,
+} from "./analytics.js";
 
 // ── Online status hook ────────────────────────────────────────────────────────
 
@@ -57,12 +64,31 @@ export default function App() {
     if (saved) return saved;
     return navigator.language?.startsWith("he") ? "he" : "en";
   });
+  const [consent, setConsent] = useState(() => getCookieConsent());
+  const [cookieSettingsOpen, setCookieSettingsOpen] = useState(false);
   const online = useOnlineStatus();
 
   useEffect(() => {
     document.documentElement.lang = lang;
     document.documentElement.dir  = lang === "he" ? "rtl" : "ltr";
   }, [lang]);
+
+  useEffect(() => {
+    if (consent === "granted") loadGoogleTag();
+  }, [consent]);
+
+  function handleCookieAccept() {
+    setCookieConsent("granted");
+    loadGoogleTag();
+    setConsent("granted");
+    setCookieSettingsOpen(false);
+  }
+
+  function handleCookieReject() {
+    setCookieConsent("denied");
+    setConsent("denied");
+    setCookieSettingsOpen(false);
+  }
 
   function handleLangChange(newLang) {
     if (newLang === lang) return;
@@ -91,12 +117,19 @@ export default function App() {
     setSession(null);
   }
 
+  const showCookieBar = consent == null || cookieSettingsOpen;
+
   return (
     <LanguageContext.Provider value={lang}>
-      <BrowserRouter>
-        <GoogleAnalytics />
-        <OfflineBanner online={online} />
-        <Routes>
+      <CookieConsentContext.Provider value={{ openSettings: () => setCookieSettingsOpen(true) }}>
+        <BrowserRouter>
+          <GoogleAnalytics />
+          {consent === "granted" && <Analytics />}
+          <OfflineBanner online={online} />
+          {showCookieBar && (
+            <CookieBar onAccept={handleCookieAccept} onReject={handleCookieReject} />
+          )}
+          <Routes>
           {/* Public: join / login */}
           <Route
             path="/"
@@ -157,8 +190,9 @@ export default function App() {
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to={session ? "/lists" : "/"} replace />} />
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </CookieConsentContext.Provider>
     </LanguageContext.Provider>
   );
 }
