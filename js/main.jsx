@@ -3,6 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./styles/global.css";
 import App from "./App.jsx";
 import ErrorBoundary from "./ErrorBoundary.jsx";
+import { captureLandingAttribution } from "./analytics.js";
+
+captureLandingAttribution();
 
 initBotId({
   protect: [

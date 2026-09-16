@@ -506,6 +506,7 @@ export default function ListDetail({ list, session, onBack }) {
     if (navigator.share) {
       trackEvent("share_list", {
         method: "native",
+        campaign: "list_share",
         item_count: items.length,
         unchecked_count: unchecked.length,
       });
@@ -513,6 +514,7 @@ export default function ListDetail({ list, session, onBack }) {
     } else {
       trackEvent("share_list", {
         method: "whatsapp",
+        campaign: "list_share",
         item_count: items.length,
         unchecked_count: unchecked.length,
       });

@@ -1,5 +1,9 @@
 import { createContext, useContext } from "react";
 import { FAQ_ITEMS, PAGE_SEO } from "./seoPages.js";
+import { inviteUrl } from "./analytics.js";
+
+const ROOM_INVITE_URL = inviteUrl("room_invite");
+const LIST_SHARE_URL = inviteUrl("list_share");
 
 export const TRANSLATIONS = {
   en: {
@@ -65,7 +69,7 @@ export const TRANSLATIONS = {
     listHistory:        "List History",
     // share room
     shareRoomText:      (spaceName, roomId) =>
-      `You're invited to join "${spaceName}" on GroceryPair! 🛒\n\nRoom code: ${roomId}\nOpen the app: https://www.grocerypair.com/\n\nWe can share shopping lists in real time!`,
+      `You're invited to join "${spaceName}" on GroceryPair! 🛒\n\nRoom code: ${roomId}\nOpen the app: ${ROOM_INVITE_URL}\n\nWe can share shopping lists in real time!`,
     shareRoomTitle:     (spaceName) => `Join ${spaceName} on GroceryPair`,
 
     // ── ListDetail ──────────────────────────────────────────────────────────
@@ -107,7 +111,7 @@ export const TRANSLATIONS = {
     renameFailed:       "Failed to rename list.",
     // share list
     shareListAlreadyGot:(n) => `✓ Already got (${n}):`,
-    shareListFooter:    "Shared via GroceryPair 🛒",
+    shareListFooter:    `Shared via GroceryPair 🛒\n${LIST_SHARE_URL}`,
 
     // ── HistoryView ─────────────────────────────────────────────────────────
     listHistoryTitle:   "List History",
@@ -242,7 +246,7 @@ export const TRANSLATIONS = {
     listHistory:        "ארכיון",
     // share room
     shareRoomText:      (spaceName, roomId) =>
-      `הוזמנתם להצטרף ל"${spaceName}" ב-GroceryPair! 🛒\n\nקוד חדר: ${roomId}\nפתחו את האפליקציה: https://www.grocerypair.com/\n\nנוכל לשתף רשימות קניות בזמן אמת!`,
+      `הוזמנתם להצטרף ל"${spaceName}" ב-GroceryPair! 🛒\n\nקוד חדר: ${roomId}\nפתחו את האפליקציה: ${ROOM_INVITE_URL}\n\nנוכל לשתף רשימות קניות בזמן אמת!`,
     shareRoomTitle:     (spaceName) => `הצטרף ל${spaceName} ב-GroceryPair`,
 
     // ── ListDetail ──────────────────────────────────────────────────────────
@@ -284,7 +288,7 @@ export const TRANSLATIONS = {
     renameFailed:       "שינוי שם הרשימה נכשל.",
     // share list
     shareListAlreadyGot:(n) => `✓ כבר יש לנו (${n}):`,
-    shareListFooter:    "שותף דרך GroceryPair 🛒",
+    shareListFooter:    `שותף דרך GroceryPair 🛒\n${LIST_SHARE_URL}`,
 
     // ── HistoryView ─────────────────────────────────────────────────────────
     listHistoryTitle:   "ארכיון רשימות",

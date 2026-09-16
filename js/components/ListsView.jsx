@@ -92,7 +92,11 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
 
   function shareRoom() {
     const spaceName = session.roomName || session.roomId;
-    trackEvent("share_room", { active_lists: active.length });
+    trackEvent("share_room", {
+      active_lists: active.length,
+      method: "whatsapp",
+      campaign: "room_invite",
+    });
     shareViaWhatsApp(t("shareRoomText", spaceName, session.roomId));
   }
 
