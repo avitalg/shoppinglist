@@ -24,6 +24,293 @@ import { SITE } from "./seoPages.js";
 /** @type {BlogPost[]} */
 export const BLOG_POSTS = [
   {
+    slug: "grocery-list-for-the-week",
+    path: "/blog/grocery-list-for-the-week",
+    date: "2026-09-26",
+    en: {
+      title: "Grocery List for the Week: Simple Essentials You Actually Need | GroceryPair",
+      description:
+        "A practical grocery list for the week: produce, dairy, eggs, bread, a few proteins, and pantry basics. Buy only what you are running low on or plan to use.",
+      h1: "Grocery List for the Week: Simple Essentials You Actually Need",
+      lead:
+        "A practical weekly grocery list usually includes fresh produce, milk and dairy, eggs, bread, a few protein sources, and basic foods for the meals you plan to make. You don't need to buy every item every week. Check your fridge and pantry first, then add only what you are actually running low on or plan to use.",
+      publishedLabel: "Published September 26, 2026",
+      sections: [
+        {
+          h2: "Grocery list for the week",
+          paragraphs: [
+            "A good weekly grocery list should make shopping easier, not give you a list of 50 things you may never use.",
+            "The exact items depend on your household and eating habits, but most weekly grocery trips can be built around a few basic categories.",
+          ],
+        },
+        {
+          h2: "1. Fruits and vegetables",
+          paragraphs: [
+            "Fresh produce is one of the main things worth checking every week because it gets used quickly.",
+            "Choose a few fruits and vegetables that your household actually eats. You don't need all of these every week. If you still have onions or potatoes at home, simply leave them off your list.",
+          ],
+          items: [
+            "Bananas or apples",
+            "Seasonal fruit",
+            "Tomatoes",
+            "Cucumbers",
+            "Carrots",
+            "Lettuce or salad greens",
+            "Onions",
+            "Potatoes",
+          ],
+        },
+        {
+          h2: "2. Milk, dairy, and eggs",
+          paragraphs: [
+            "These are common everyday staples for breakfast, cooking, and snacks.",
+            "How much you need will depend on your household. If you normally go through a carton of milk and a dozen eggs each week, those can become recurring items on your list.",
+          ],
+          items: [
+            "Milk or a milk alternative",
+            "Eggs",
+            "Yogurt",
+            "Cheese",
+            "Butter, if you use it",
+          ],
+        },
+        {
+          h2: "3. Bread and basic carbohydrates",
+          paragraphs: [
+            "For sandwiches, breakfasts, and quick meals, keep the staples you regularly use.",
+            "Not everything here needs to be purchased every week. Rice, pasta, and oats can usually stay in your pantry for several weeks, so check your supplies before adding them.",
+          ],
+          items: [
+            "Bread",
+            "Rice",
+            "Pasta",
+            "Oats or cereal",
+            "Tortillas, if you use them",
+          ],
+        },
+        {
+          h2: "4. Protein for the week",
+          paragraphs: [
+            "Instead of buying every type of protein, think about the meals you expect to prepare during the week.",
+            "You might only need two or three options for the week. Buying according to your planned meals can also help reduce food waste.",
+          ],
+          items: [
+            "Chicken",
+            "Fish",
+            "Ground meat",
+            "Tofu",
+            "Beans or lentils",
+            "Canned tuna",
+          ],
+        },
+        {
+          h2: "5. Pantry staples",
+          paragraphs: [
+            "These are useful to keep at home, but they don't necessarily belong on your grocery list every week.",
+            "These are better treated as “check before shopping” items rather than automatic weekly purchases.",
+          ],
+          items: [
+            "Olive oil or cooking oil",
+            "Salt and pepper",
+            "Spices",
+            "Canned tomatoes",
+            "Beans or chickpeas",
+            "Peanut butter or other spreads",
+          ],
+        },
+        {
+          h2: "6. Snacks",
+          paragraphs: [
+            "Add the snacks your household actually eats rather than filling the cart with a long list of possibilities.",
+            "If you still have enough snacks at home, there is no reason to buy more just because it's grocery day.",
+          ],
+          items: [
+            "Fruit",
+            "Nuts",
+            "Crackers",
+            "Hummus",
+            "Yogurt",
+            "One or two favorite snacks",
+          ],
+        },
+        {
+          h2: "A simple weekly grocery checklist",
+          paragraphs: [
+            "Before heading to the store, run through this short checklist.",
+          ],
+          items: [
+            "Fresh fruit",
+            "Fresh vegetables",
+            "Milk or milk alternative",
+            "Eggs",
+            "Yogurt and cheese",
+            "Bread",
+            "Protein for planned meals",
+            "Rice, pasta, or other staples if running low",
+            "Pantry items that need replacing",
+            "Snacks",
+          ],
+        },
+        {
+          h2: "What you don't need to buy every week",
+          paragraphs: [
+            "One of the easiest ways to make grocery shopping more efficient is to separate weekly essentials from occasional purchases.",
+            "You probably don't need to buy these every week. Leave them off the list until you are actually running low.",
+          ],
+          items: [
+            "Rice, pasta, and oats you still have",
+            "Cooking oil, salt, pepper, and spices",
+            "Canned tomatoes, beans, and chickpeas",
+            "Peanut butter and other spreads",
+            "Extra snacks when the cupboard is already stocked",
+          ],
+        },
+      ],
+      cta: "Create a free shared grocery list",
+    },
+    he: {
+      title: "רשימת קניות לשבוע: המצרכים הפשוטים שבאמת צריך | GroceryPair",
+      description:
+        "רשימת קניות מעשית לשבוע: ירקות ופירות, חלב, ביצים, לחם, כמה חלבונים ובסיס למזווה. קונים רק מה שאוזל או מה שמתכננים להשתמש בו.",
+      h1: "רשימת קניות לשבוע: המצרכים הפשוטים שבאמת צריך",
+      lead:
+        "רשימת קניות שבועית מעשית כוללת בדרך כלל ירקות ופירות טריים, חלב ומוצרי חלב, ביצים, לחם, כמה מקורות חלבון, ומזונות בסיסיים לארוחות שמתכננים להכין. לא צריך לקנות כל פריט כל שבוע. קודם בודקים מה יש במקרר ובמזווה, ואז מוסיפים רק מה שבאמת אוזל או מה שמתכוונים להשתמש בו.",
+      publishedLabel: "פורסם ב־26 בספטמבר 2026",
+      sections: [
+        {
+          h2: "רשימת קניות לשבוע",
+          paragraphs: [
+            "רשימת קניות שבועית טובה אמורה להקל על הקניות, לא לתת רשימה של 50 דברים שאולי לא תשתמשו בהם.",
+            "הפריטים המדויקים תלויים בבית ובהרגלי האכילה, אבל רוב הסיבובים השבועיים נבנים סביב כמה קטגוריות בסיסיות.",
+          ],
+        },
+        {
+          h2: "1. פירות וירקות",
+          paragraphs: [
+            "תוצרת טרייה היא אחד הדברים שכדאי לבדוק כל שבוע, כי היא נגמרת מהר.",
+            "בחרו כמה פירות וירקות שהבית באמת אוכל. לא צריך את כולם כל שבוע. אם עדיין יש בצל או תפוחי אדמה בבית, פשוט הורידו אותם מהרשימה.",
+          ],
+          items: [
+            "בננות או תפוחים",
+            "פרי עונתי",
+            "עגבניות",
+            "מלפפונים",
+            "גזר",
+            "חסה או עלי סלט",
+            "בצל",
+            "תפוחי אדמה",
+          ],
+        },
+        {
+          h2: "2. חלב, מוצרי חלב וביצים",
+          paragraphs: [
+            "אלה מצרכי יומיום נפוצים לארוחת בוקר, לבישול ולנשנושים.",
+            "הכמות תלויה בבית. אם בדרך כלל נגמרים קרטון חלב ותריסר ביצים בשבוע, הם יכולים להפוך לפריטים קבועים ברשימה.",
+          ],
+          items: [
+            "חלב או תחליף חלב",
+            "ביצים",
+            "יוגורט",
+            "גבינה",
+            "חמאה, אם משתמשים בה",
+          ],
+        },
+        {
+          h2: "3. לחם ופחמימות בסיסיות",
+          paragraphs: [
+            "לכריכים, לארוחות בוקר ולארוחות מהירות, שמרו את המצרכים שאתם באמת משתמשים בהם.",
+            "לא הכל כאן צריך קנייה כל שבוע. אורז, פסטה ושיבולת שועל בדרך כלל נשמרים במזווה כמה שבועות, אז בדקו מה יש לפני שמוסיפים אותם.",
+          ],
+          items: [
+            "לחם",
+            "אורז",
+            "פסטה",
+            "שיבולת שועל או דגני בוקר",
+            "טורטיות, אם משתמשים בהן",
+          ],
+        },
+        {
+          h2: "4. חלבון לשבוע",
+          paragraphs: [
+            "במקום לקנות כל סוג חלבון, חשבו על הארוחות שאתם מצפים להכין במהלך השבוע.",
+            "אולי מספיקים שניים או שלושה סוגי חלבון לשבוע. קנייה לפי ארוחות מתוכננות גם עוזרת להפחית בזבוז אוכל.",
+          ],
+          items: [
+            "עוף",
+            "דג",
+            "בשר טחון",
+            "טופו",
+            "שעועית או עדשים",
+            "טונה בקופסה",
+          ],
+        },
+        {
+          h2: "5. מצרכי מזווה",
+          paragraphs: [
+            "כדאי שיהיו בבית, אבל הם לא חייבים להופיע ברשימת הקניות כל שבוע.",
+            "עדיף להתייחס אליהם כפריטים שבודקים לפני הקניות, לא כקניות אוטומטיות כל שבוע.",
+          ],
+          items: [
+            "שמן זית או שמן לבישול",
+            "מלח ופלפל",
+            "תבלינים",
+            "עגבניות מקופסה",
+            "שעועית או חומוס",
+            "חמאת בוטנים או ממרחים אחרים",
+          ],
+        },
+        {
+          h2: "6. נשנושים",
+          paragraphs: [
+            "הוסיפו את הנשנושים שהבית באמת אוכל, במקום למלא את העגלה ברשימה ארוכה של אפשרויות.",
+            "אם עדיין יש מספיק נשנושים בבית, אין סיבה לקנות עוד רק כי זה יום קניות.",
+          ],
+          items: [
+            "פרי",
+            "אגוזים",
+            "קרקרים",
+            "חומוס",
+            "יוגורט",
+            "חטיף או שניים שאוהבים",
+          ],
+        },
+        {
+          h2: "רשימת בדיקה שבועית קצרה",
+          paragraphs: [
+            "לפני היציאה לסופר, עברו על הרשימה הקצרה הזו.",
+          ],
+          items: [
+            "פירות טריים",
+            "ירקות טריים",
+            "חלב או תחליף חלב",
+            "ביצים",
+            "יוגורט וגבינה",
+            "לחם",
+            "חלבון לארוחות מתוכננות",
+            "אורז, פסטה או מצרכים אחרים אם אוזלים",
+            "מצרכי מזווה שצריך להחליף",
+            "נשנושים",
+          ],
+        },
+        {
+          h2: "מה לא צריך לקנות כל שבוע",
+          paragraphs: [
+            "אחת הדרכים הקלות לייעל קניות היא להפריד בין מצרכים שבועיים לבין קניות מדי פעם.",
+            "כנראה שלא צריך לקנות את אלה כל שבוע. הורידו אותם מהרשימה עד שהם באמת אוזלים.",
+          ],
+          items: [
+            "אורז, פסטה ושיבולת שועל שעדיין יש",
+            "שמן, מלח, פלפל ותבלינים",
+            "עגבניות מקופסה, שעועית וחומוס",
+            "חמאת בוטנים וממרחים אחרים",
+            "נשנושים נוספים כשהארון כבר מלא",
+          ],
+        },
+      ],
+      cta: "צרו רשימת קניות משותפת בחינם",
+    },
+  },
+  {
     slug: "weekly-grocery-list",
     path: "/blog/weekly-grocery-list",
     date: "2026-09-16",
