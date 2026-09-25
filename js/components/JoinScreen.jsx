@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import "./JoinScreen.css";
 import "./ListDetail.css";
 import { db, doc, getDoc } from "../firebase.js";
@@ -208,11 +209,14 @@ function ListPreview() {
 
 export default function JoinScreen({ onJoin, lang, onLangChange }) {
   const t = useT();
+  const { pathname } = useLocation();
+  const hebrewHome = pathname === "/he";
+  const seo = hebrewHome ? HOME_SEO.he : HOME_SEO;
   usePageMeta({
-    title: HOME_SEO.title,
-    description: HOME_SEO.description,
-    path: HOME_SEO.path,
-    lang,
+    title: seo.title,
+    description: seo.description,
+    path: seo.path,
+    lang: hebrewHome ? "he" : "en",
   });
   const [lastRoom,  setLastRoom]  = useState(() => LS.get("fc_last_room", null));
   const [spaceName, setSpaceName] = useState("");
@@ -329,7 +333,7 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
 
   return (
     <div className="home-page">
-      <SiteHeader lang={lang} onLangChange={onLangChange} homeTo="/" />
+      <SiteHeader lang={lang} onLangChange={onLangChange} homeTo={hebrewHome ? "/he" : "/"} />
 
       <main className="home-main">
         <section className="home-hero">

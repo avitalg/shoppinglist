@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  SITE, PAGE_SEO, FAQ_ITEMS, faqJsonLd, aboutJsonLd, privacyJsonLd,
+  SITE, HOME_SEO, PAGE_SEO, FAQ_ITEMS, faqJsonLd, aboutJsonLd, privacyJsonLd,
 } from "../js/seoPages.js";
 import {
   BLOG_POSTS, BLOG_SEO, blogIndexJsonLd, blogPostJsonLd,
@@ -27,7 +27,7 @@ function replaceOnce(html, pattern, replacement) {
   return next;
 }
 
-function applyHead(html, { path, title, description, jsonLd }) {
+function applyHead(html, { path, title, description, jsonLd, hreflang, htmlLang }) {
   const url = `${SITE}${path}`;
   html = replaceOnce(html, /<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`);
   html = replaceOnce(
@@ -40,10 +40,33 @@ function applyHead(html, { path, title, description, jsonLd }) {
     /<link rel="canonical" href="[^"]*"\s*\/?>/,
     `<link rel="canonical" href="${url}" />`,
   );
-  html = html.replace(
-    /(<link rel="alternate" hreflang="[^"]+" href=")[^"]*("\s*\/?>)/g,
-    `$1${url}$2`,
-  );
+  if (hreflang) {
+    html = html.replace(
+      /<link rel="alternate" hreflang="([^"]+)" href="[^"]*"/g,
+      (match, code) => (
+        hreflang[code]
+          ? `<link rel="alternate" hreflang="${code}" href="${hreflang[code]}"`
+          : match
+      ),
+    );
+  } else {
+    html = html.replace(
+      /(<link rel="alternate" hreflang="[^"]+" href=")[^"]*("\s*\/?>)/g,
+      `$1${url}$2`,
+    );
+  }
+  if (htmlLang) {
+    html = replaceOnce(
+      html,
+      /<html lang="[^"]*"( dir="[^"]*")?/,
+      `<html lang="${htmlLang}" dir="${htmlLang === "he" ? "rtl" : "ltr"}"`,
+    );
+    html = replaceOnce(
+      html,
+      /<meta property="og:locale" content="[^"]*"\s*\/?>/,
+      `<meta property="og:locale" content="${htmlLang === "he" ? "he_IL" : "en_US"}" />`,
+    );
+  }
   html = replaceOnce(
     html,
     /<meta property="og:url" content="[^"]*"\s*\/?>/,
@@ -205,7 +228,51 @@ function replaceNoscript(html, description) {
   );
 }
 
+function hebrewHomeBody() {
+  const he = HOME_SEO.he;
+  return `
+    <main lang="he" dir="rtl">
+      <h1>${esc(he.h1)}</h1>
+      <p>${esc(he.description)}</p>
+      <p><a href="/he">GroceryPair</a> · <a href="/about">About</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a></p>
+    </main>`;
+}
+
+function hebrewHomeJsonLd() {
+  const he = HOME_SEO.he;
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "GroceryPair",
+    alternateName: he.title,
+    url: `${SITE}${he.path}`,
+    description: he.description,
+    inLanguage: "he",
+    applicationCategory: "LifestyleApplication",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    isPartOf: {
+      "@type": "WebApplication",
+      name: "GroceryPair",
+      url: `${SITE}/`,
+    },
+  };
+}
+
 const pages = [
+  {
+    file: "he/index.html",
+    path: HOME_SEO.he.path,
+    title: HOME_SEO.he.title,
+    description: HOME_SEO.he.description,
+    jsonLd: hebrewHomeJsonLd(),
+    htmlLang: "he",
+    hreflang: {
+      he: `${SITE}/he`,
+      en: `${SITE}/`,
+      "x-default": `${SITE}/`,
+    },
+    body: hebrewHomeBody(),
+  },
   {
     file: "about/index.html",
     path: PAGE_SEO.about.path,

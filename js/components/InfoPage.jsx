@@ -39,7 +39,14 @@ export function usePageMeta({ title, description, path, lang = "en" }) {
 
     const alts = [...document.querySelectorAll('link[rel="alternate"][hreflang]')];
     const prevAlts = alts.map(link => link.getAttribute("href"));
-    alts.forEach(link => link.setAttribute("href", url));
+    const homeLang = path === "/" || path === "/he";
+    alts.forEach(link => {
+      const code = link.getAttribute("hreflang");
+      const href = homeLang
+        ? (code === "he" ? `${SITE}/he` : `${SITE}/`)
+        : url;
+      link.setAttribute("href", href);
+    });
 
     return () => {
       tracked.forEach((item, i) => {

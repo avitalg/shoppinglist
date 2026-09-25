@@ -14,6 +14,10 @@ describe("seoPages", () => {
   it("brands pages as GroceryPair", () => {
     expect(HOME_SEO.title).toMatch(/^GroceryPair/);
     expect(HOME_SEO.ogTitle).toMatch(/^GroceryPair/);
+    expect(HOME_SEO.he.path).toBe("/he");
+    expect(HOME_SEO.he.title).toBe("רשימת קניות משותפת בחינם | GroceryPair");
+    expect(HOME_SEO.he.description).toMatch(/^רשימת קניות משותפת בחינם/);
+    expect(HOME_SEO.he.h1).toMatch(/רשימת קניות משותפת בחינם/);
     expect(FAQ_ITEMS.en[0].q).toBe("What is GroceryPair?");
     expect(aboutJsonLd().isPartOf.name).toBe("GroceryPair");
     expect(privacyJsonLd().isPartOf.name).toBe("GroceryPair");

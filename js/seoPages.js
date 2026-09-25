@@ -2,12 +2,19 @@ export const SITE = "https://www.grocerypair.com";
 
 export const HOME_SEO = {
   path: "/",
-  title: "GroceryPair – Shared Shopping List App | רשימת קניות משותפת למשפחה",
+  title: "GroceryPair – Shared Shopping List App",
   description:
     "Free shared shopping list app for families. Create a room, share a code, and shop together in real time — everyone sees every change instantly. רשימת קניות משותפת בזמן אמת למשפחות.",
   ogTitle: "GroceryPair – Free Shared Shopping List App",
   ogDescription:
     "Create a shared grocery list, invite your family with a code, and shop together in real time. Free, instant, no sign-up.",
+  he: {
+    path: "/he",
+    title: "רשימת קניות משותפת בחינם | GroceryPair",
+    description:
+      "רשימת קניות משותפת בחינם למשפחה. יוצרים חדר, שולחים קוד, וכולם רואים כל שינוי בזמן אמת — בלי הרשמה.",
+    h1: "רשימת קניות משותפת בחינם שהמשפחה באמת משתפת.",
+  },
 };
 
 export const FAQ_ITEMS = {

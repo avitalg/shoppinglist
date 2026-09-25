@@ -68,6 +68,8 @@ export default function App() {
   const [session, setSession] = useState(() => LS.get("fc_session", null));
   const [lists,   setLists]   = useState([]);   // shared cache for deep-linked list detail
   const [lang,    setLang]    = useState(() => {
+    const path = window.location.pathname;
+    if (path === "/he" || path === "/he/") return "he";
     const saved = LS.get("fc_lang", null);
     if (saved) return saved;
     return navigator.language?.startsWith("he") ? "he" : "en";
@@ -77,6 +79,7 @@ export default function App() {
   const [regionReady, setRegionReady] = useState(false);
   const [cookieSettingsOpen, setCookieSettingsOpen] = useState(false);
   const online = useOnlineStatus();
+  const navigateRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -128,14 +131,19 @@ export default function App() {
   }
 
   function handleLangChange(newLang) {
-    if (newLang === lang) return;
+    const path = window.location.pathname;
+    const onHome = path === "/" || path === "/he";
+    const next = newLang === "he" ? "/he" : "/";
+    const moveHome = onHome && path !== next;
+    if (newLang === lang && !moveHome) return;
     trackEvent("change_language", {
       from: lang,
       to: newLang,
-      path: window.location.pathname,
+      path,
     });
     LS.set("fc_lang", newLang);
     setLang(newLang);
+    if (moveHome) navigateRef.current?.(next);
   }
 
   function handleJoin(sessionData) {
@@ -167,6 +175,7 @@ export default function App() {
         regionReady,
       }}>
         <BrowserRouter>
+          <CaptureNavigate navigateRef={navigateRef} />
           <GoogleAnalytics />
           {analyticsOn && <Analytics />}
           <OfflineBanner online={online} />
@@ -189,6 +198,21 @@ export default function App() {
               session
                 ? <Navigate to="/lists" replace />
                 : <JoinScreen onJoin={handleJoin} lang={lang} onLangChange={handleLangChange} />
+            }
+          />
+
+          <Route
+            path="/he"
+            element={
+              session
+                ? <Navigate to="/lists" replace />
+                : (
+                  <HebrewHome
+                    onJoin={handleJoin}
+                    onLangChange={handleLangChange}
+                    setLang={setLang}
+                  />
+                )
             }
           />
 
@@ -271,6 +295,23 @@ export default function App() {
 }
 
 // ── Small inline wrappers to connect router navigation ────────────────────────
+
+function CaptureNavigate({ navigateRef }) {
+  const navigate = useNavigate();
+  navigateRef.current = navigate;
+  return null;
+}
+
+function HebrewHome({ onJoin, onLangChange, setLang }) {
+  useEffect(() => {
+    LS.set("fc_lang", "he");
+    setLang("he");
+  }, [setLang]);
+
+  return (
+    <JoinScreen onJoin={onJoin} lang="he" onLangChange={onLangChange} />
+  );
+}
 
 function GoogleAnalytics() {
   const { pathname, search } = useLocation();
