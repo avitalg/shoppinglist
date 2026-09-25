@@ -20,11 +20,10 @@ function esc(s) {
 }
 
 function replaceOnce(html, pattern, replacement) {
-  const next = html.replace(pattern, replacement);
-  if (next === html) {
+  if (!pattern.test(html)) {
     throw new Error(`Could not update HTML matching ${pattern}`);
   }
-  return next;
+  return html.replace(pattern, replacement);
 }
 
 function applyHead(html, { path, title, description, jsonLd, hreflang, htmlLang }) {
