@@ -855,9 +855,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   padding: 8px 20px 28px;
   font-size: 0.85rem;
+  text-align: center;
 }
 
 .site-footer-links a,

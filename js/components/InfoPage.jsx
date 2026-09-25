@@ -157,7 +157,10 @@ export function SiteHeader({ lang, onLangChange, homeTo = "/" }) {
 
 export function SiteFooter() {
   const t = useT();
-  const { openSettings } = useCookieConsent();
+  const { openSettings, regime, regionReady } = useCookieConsent();
+  const showPrivacyChoice = regionReady && regime !== "other";
+  const privacyChoiceLabel = regime === "us" ? t("doNotSellNav") : t("cookieNav");
+
   return (
     <nav className="site-footer-links" aria-label={t("footerNav")}>
       <Link to="/about">{t("aboutNav")}</Link>
@@ -167,10 +170,14 @@ export function SiteFooter() {
       <Link to="/faq">{t("faqNav")}</Link>
       <span aria-hidden="true">·</span>
       <Link to="/privacy">{t("privacyNav")}</Link>
-      <span aria-hidden="true">·</span>
-      <button type="button" className="site-footer-cookies" onClick={openSettings}>
-        {t("cookieNav")}
-      </button>
+      {showPrivacyChoice && (
+        <>
+          <span aria-hidden="true">·</span>
+          <button type="button" className="site-footer-cookies" onClick={openSettings}>
+            {privacyChoiceLabel}
+          </button>
+        </>
+      )}
     </nav>
   );
 }

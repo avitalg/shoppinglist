@@ -14,11 +14,16 @@ import FaqPage     from "./components/FaqPage.jsx";
 import PrivacyPage from "./components/PrivacyPage.jsx";
 import BlogIndexPage from "./components/BlogIndexPage.jsx";
 import BlogArticlePage from "./components/BlogArticlePage.jsx";
-import CookieBar, { CookieConsentContext } from "./components/CookieBar.jsx";
+import CookieBar, { CookieConsentContext, DoNotSellBar } from "./components/CookieBar.jsx";
 import {
+  clearGoogleAnalyticsDisable,
+  disableGoogleAnalytics,
+  fetchPrivacyRegion,
   getCookieConsent,
+  hasAnalyticsConsent,
   loadGoogleTag,
   setCookieConsent,
+  setPrivacyRegime,
   trackEvent,
 } from "./analytics.js";
 
@@ -68,6 +73,8 @@ export default function App() {
     return navigator.language?.startsWith("he") ? "he" : "en";
   });
   const [consent, setConsent] = useState(() => getCookieConsent());
+  const [regime, setRegime] = useState(null);
+  const [regionReady, setRegionReady] = useState(false);
   const [cookieSettingsOpen, setCookieSettingsOpen] = useState(false);
   const online = useOnlineStatus();
 
@@ -77,11 +84,37 @@ export default function App() {
   }, [lang]);
 
   useEffect(() => {
-    if (consent === "granted") loadGoogleTag();
-  }, [consent]);
+    let cancelled = false;
+    fetchPrivacyRegion()
+      .then(result => {
+        if (cancelled) return;
+        setRegime(result.regime);
+        setRegionReady(true);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setPrivacyRegime(null);
+        setRegime(null);
+        setRegionReady(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!regionReady) return;
+    if (hasAnalyticsConsent(regime)) {
+      clearGoogleAnalyticsDisable();
+      loadGoogleTag();
+    } else {
+      disableGoogleAnalytics();
+    }
+  }, [regionReady, regime, consent]);
 
   function handleCookieAccept() {
     setCookieConsent("granted");
+    clearGoogleAnalyticsDisable();
     loadGoogleTag();
     setConsent("granted");
     setCookieSettingsOpen(false);
@@ -89,6 +122,7 @@ export default function App() {
 
   function handleCookieReject() {
     setCookieConsent("denied");
+    disableGoogleAnalytics();
     setConsent("denied");
     setCookieSettingsOpen(false);
   }
@@ -120,17 +154,32 @@ export default function App() {
     setSession(null);
   }
 
-  const showCookieBar = consent == null || cookieSettingsOpen;
+  const needsConsentBar = regionReady && (regime == null || regime === "consent");
+  const showCookieBar = needsConsentBar && (consent == null || cookieSettingsOpen);
+  const showDoNotSell = regionReady && regime === "us" && cookieSettingsOpen;
+  const analyticsOn = regionReady && hasAnalyticsConsent(regime);
 
   return (
     <LanguageContext.Provider value={lang}>
-      <CookieConsentContext.Provider value={{ openSettings: () => setCookieSettingsOpen(true) }}>
+      <CookieConsentContext.Provider value={{
+        openSettings: () => setCookieSettingsOpen(true),
+        regime: regionReady ? regime : undefined,
+        regionReady,
+      }}>
         <BrowserRouter>
           <GoogleAnalytics />
-          {consent === "granted" && <Analytics />}
+          {analyticsOn && <Analytics />}
           <OfflineBanner online={online} />
           {showCookieBar && (
             <CookieBar onAccept={handleCookieAccept} onReject={handleCookieReject} />
+          )}
+          {showDoNotSell && (
+            <DoNotSellBar
+              optedOut={!analyticsOn}
+              onOptOut={handleCookieReject}
+              onAllow={handleCookieAccept}
+              onClose={() => setCookieSettingsOpen(false)}
+            />
           )}
           <Routes>
           {/* Public: join / login */}
@@ -232,6 +281,7 @@ function GoogleAnalytics() {
       isFirst.current = false;
       return;
     }
+    if (!hasAnalyticsConsent()) return;
     if (typeof window.gtag !== "function") return;
     window.gtag("event", "page_view", {
       page_path: pathname + search,

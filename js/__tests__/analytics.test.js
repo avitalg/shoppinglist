@@ -5,6 +5,7 @@ vi.mock("@vercel/analytics", () => ({
 }));
 
 import { track } from "@vercel/analytics";
+import { privacyRegimeForCountry } from "../privacyRegion.js";
 import { LS } from "../utils.js";
 import {
   CONSENT_KEY,
@@ -12,6 +13,7 @@ import {
   LANDING_ATTR_KEY,
   _resetGoogleTagLoadedForTests,
   captureLandingAttribution,
+  disableGoogleAnalytics,
   eventContext,
   getLandingAttribution,
   hasAnalyticsConsent,
@@ -19,8 +21,16 @@ import {
   loadGoogleTag,
   mapVoiceError,
   setCookieConsent,
+  setPrivacyRegime,
   trackEvent,
 } from "../analytics.js";
+
+function setGlobalPrivacyControl(value) {
+  Object.defineProperty(navigator, "globalPrivacyControl", {
+    configurable: true,
+    value,
+  });
+}
 
 describe("analytics", () => {
   beforeEach(() => {
@@ -28,6 +38,9 @@ describe("analytics", () => {
     localStorage.clear();
     sessionStorage.clear();
     _resetGoogleTagLoadedForTests();
+    setPrivacyRegime(null);
+    setGlobalPrivacyControl(false);
+    window[`ga-disable-${GA_MEASUREMENT_ID}`] = false;
     window.gtag = vi.fn();
     document.documentElement.lang = "he";
     document.querySelectorAll(`script[src*="gtag/js"]`).forEach(el => el.remove());
@@ -205,5 +218,66 @@ describe("analytics", () => {
     const payload = track.mock.calls[0][1];
     expect(payload).not.toHaveProperty("item_count");
     expect(payload.source).toBe("lists");
+  });
+
+  it("classifies EU, EEA, UK, US, and other countries", () => {
+    expect(privacyRegimeForCountry("de")).toBe("consent");
+    expect(privacyRegimeForCountry("GB")).toBe("consent");
+    expect(privacyRegimeForCountry("NO")).toBe("consent");
+    expect(privacyRegimeForCountry("US")).toBe("us");
+    expect(privacyRegimeForCountry("IL")).toBe("other");
+    expect(privacyRegimeForCountry(null)).toBe(null);
+    expect(privacyRegimeForCountry("")).toBe(null);
+  });
+
+  it("blocks analytics in a consent region when no choice is stored", () => {
+    setPrivacyRegime("consent");
+    expect(hasAnalyticsConsent()).toBe(false);
+    expect(hasAnalyticsConsent("consent")).toBe(false);
+    trackEvent("join_room", { method: "code" });
+    expect(track).not.toHaveBeenCalled();
+    expect(window.gtag).not.toHaveBeenCalled();
+  });
+
+  it("allows analytics in the US when consent is unset", () => {
+    setPrivacyRegime("us");
+    expect(hasAnalyticsConsent()).toBe(true);
+    trackEvent("join_room", { method: "code" });
+    expect(track).toHaveBeenCalledWith(
+      "join_room",
+      expect.objectContaining({ method: "code" }),
+    );
+  });
+
+  it("blocks US analytics for Global Privacy Control or a stored opt-out", () => {
+    setGlobalPrivacyControl(true);
+    setPrivacyRegime("us");
+    expect(hasAnalyticsConsent("us")).toBe(false);
+    trackEvent("join_room", { method: "code" });
+    expect(track).not.toHaveBeenCalled();
+
+    setCookieConsent("denied");
+    setGlobalPrivacyControl(false);
+    expect(hasAnalyticsConsent("us")).toBe(false);
+    trackEvent("join_room", { method: "code" });
+    expect(track).not.toHaveBeenCalled();
+
+    setCookieConsent("granted");
+    setGlobalPrivacyControl(true);
+    expect(hasAnalyticsConsent("us")).toBe(true);
+  });
+
+  it("respects a prior deny outside the US", () => {
+    setCookieConsent("denied");
+    setPrivacyRegime("other");
+    expect(hasAnalyticsConsent("other")).toBe(false);
+    trackEvent("join_room", { method: "code" });
+    expect(track).not.toHaveBeenCalled();
+    expect(window.gtag).not.toHaveBeenCalled();
+  });
+
+  it("sets the GA disable flag on opt-out", () => {
+    disableGoogleAnalytics();
+    expect(window[`ga-disable-${GA_MEASUREMENT_ID}`]).toBe(true);
   });
 });

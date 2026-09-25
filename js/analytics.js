@@ -1,4 +1,5 @@
 import { track } from "@vercel/analytics";
+import { privacyRegimeForCountry } from "./privacyRegion.js";
 import { LS } from "./utils.js";
 
 export const CONSENT_KEY = "fc_cookie_consent";
@@ -119,12 +120,62 @@ export function getCookieConsent() {
   return value === "granted" || value === "denied" ? value : null;
 }
 
-export function hasAnalyticsConsent() {
-  return getCookieConsent() === "granted";
+/** @type {"consent" | "us" | "other" | null} */
+let privacyRegime = null;
+
+export function setPrivacyRegime(regime) {
+  privacyRegime = regime === "consent" || regime === "us" || regime === "other" ? regime : null;
+}
+
+export function getPrivacyRegime() {
+  return privacyRegime;
+}
+
+export function hasGlobalPrivacyControl() {
+  return typeof navigator !== "undefined" && navigator.globalPrivacyControl === true;
+}
+
+/**
+ * Analytics may run when the visitor accepted, or — outside consent regions —
+ * when they have not opted out. US visitors with Global Privacy Control are opted out.
+ * Unknown region (null) requires an explicit grant.
+ * @param {"consent" | "us" | "other" | null} [regime]
+ */
+export function hasAnalyticsConsent(regime = privacyRegime) {
+  const choice = getCookieConsent();
+  if (choice === "denied") return false;
+  if (choice === "granted") return true;
+  if (regime === "us" && hasGlobalPrivacyControl()) return false;
+  return regime === "us" || regime === "other";
 }
 
 export function setCookieConsent(value) {
   LS.set(CONSENT_KEY, value);
+}
+
+/** Stop GA hits after an opt-out, including ones already queued this page. */
+export function disableGoogleAnalytics() {
+  if (typeof window === "undefined") return;
+  window[`ga-disable-${GA_MEASUREMENT_ID}`] = true;
+}
+
+export function clearGoogleAnalyticsDisable() {
+  if (typeof window === "undefined") return;
+  window[`ga-disable-${GA_MEASUREMENT_ID}`] = false;
+}
+
+/** Ask the server which privacy regime this visitor is in. Unknown on failure. */
+export async function fetchPrivacyRegion() {
+  const res = await fetch("/api/privacy-region");
+  if (!res.ok) throw new Error("privacy-region");
+  const data = await res.json();
+  const country = typeof data?.country === "string" ? data.country : null;
+  const regime = privacyRegimeForCountry(country);
+  setPrivacyRegime(regime);
+  return {
+    country: regime ? country.trim().toUpperCase() : null,
+    regime,
+  };
 }
 
 let googleTagLoaded = false;
