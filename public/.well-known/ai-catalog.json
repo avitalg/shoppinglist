@@ -1,0 +1,24 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "GroceryPair",
+    "documentationUrl": "https://www.grocerypair.com/about",
+    "logoUrl": "https://www.grocerypair.com/favicon.svg"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:grocerypair.com:docs:llms",
+      "displayName": "GroceryPair site guide for language models",
+      "type": "text/markdown",
+      "url": "https://www.grocerypair.com/llms.txt",
+      "description": "Markdown guide to GroceryPair, a free shared shopping list web app, with links to its public pages.",
+      "tags": ["shopping-list", "documentation", "llms.txt"],
+      "representativeQueries": [
+        "shared grocery list app for families",
+        "how does GroceryPair work",
+        "free real-time shopping list"
+      ],
+      "updatedAt": "2026-09-29T00:00:00Z"
+    }
+  ]
+}

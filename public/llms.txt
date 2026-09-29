@@ -1,0 +1,21 @@
+# GroceryPair
+
+> Free real-time shared shopping list for families. Create a room, share a code, and shop together — everyone sees every change instantly. English and Hebrew. No account required.
+
+GroceryPair is a free web app. A short room code is the only access control. Share that code only with people who should shop with you. Lists sync in real time, work offline, and support voice input.
+
+## Pages
+
+- [Home](https://www.grocerypair.com/): Start a shared shopping list or join a room with a code.
+- [Hebrew home](https://www.grocerypair.com/he): Hebrew version of the app.
+- [About](https://www.grocerypair.com/about): What GroceryPair is and who it is for.
+- [FAQ](https://www.grocerypair.com/faq): Room codes, sharing, offline use, voice input, and how to get started.
+- [Blog](https://www.grocerypair.com/blog): Guides on shared grocery lists and shopping together.
+- [Grocery list for the week](https://www.grocerypair.com/blog/grocery-list-for-the-week): A practical weekly grocery list of essentials you actually need.
+- [Weekly grocery list](https://www.grocerypair.com/blog/weekly-grocery-list): An aisle-by-aisle weekly shopping checklist.
+- [Share a grocery list with your partner](https://www.grocerypair.com/blog/share-grocery-list-with-partner): How couples keep one real-time list at the store.
+
+## Optional
+
+- [Privacy policy](https://www.grocerypair.com/privacy): How room data, cookies, and analytics are handled.
+- [Sitemap](https://www.grocerypair.com/sitemap.xml): All public URLs.

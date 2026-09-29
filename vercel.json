@@ -7,6 +7,24 @@
       ]
     },
     {
+      "source": "/llms.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/.well-known/ai-catalog.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/ai-catalog.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" }
+      ]
+    },
+    {
       "source": "/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/:path*",
       "headers": [
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
@@ -35,6 +53,10 @@
   ],
   "rewrites": [
     {
+      "source": "/ai-catalog.json",
+      "destination": "/.well-known/ai-catalog.json"
+    },
+    {
       "source": "/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/a-4-a/c.js",
       "destination": "https://api.vercel.com/bot-protection/v1/challenge"
     },
@@ -43,7 +65,7 @@
       "destination": "https://api.vercel.com/bot-protection/v1/proxy/:path*"
     },
     {
-      "source": "/((?!api/|sitemap\\.xml|robots\\.txt|favicon\\.svg|og-image\\.png|googlea.*\\.html|assets/|about|blog|faq|privacy|he$|he/).*)",
+      "source": "/((?!api/|sitemap\\.xml|robots\\.txt|llms\\.txt|ai-catalog\\.json|\\.well-known/|favicon\\.svg|og-image\\.png|googlea.*\\.html|assets/|about|blog|faq|privacy|he$|he/).*)",
       "destination": "/index.html"
     }
   ]

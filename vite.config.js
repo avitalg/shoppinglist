@@ -3,6 +3,11 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  build: {
+    // Publish .map files next to hashed bundles so DevTools and Lighthouse
+    // can map minified first-party JS back to the original source.
+    sourcemap: true,
+  },
   plugins: [
     react(),
     VitePWA({

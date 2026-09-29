@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.grocerypair.com/sitemap.xml
+Agentmap: https://www.grocerypair.com/.well-known/ai-catalog.json
