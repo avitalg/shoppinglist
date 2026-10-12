@@ -24,6 +24,187 @@ import { SITE } from "./seoPages.js";
 /** @type {BlogPost[]} */
 export const BLOG_POSTS = [
   {
+    slug: "weekly-basics",
+    path: "/blog/weekly-basics",
+    date: "2026-10-11",
+    en: {
+      title: "Weekly basics | GroceryPair",
+      description:
+        "A short weekly grocery list with five concrete items for each GroceryPair aisle: produce, meat, dairy, bakery, pantry, frozen, drinks, snacks, personal care, and household.",
+      h1: "Weekly basics",
+      lead:
+        "A weekly basics list is a small set of concrete groceries for each aisle, not a menu for the whole month. These are the categories GroceryPair uses in the app. Copy the ones you are actually out of.",
+      publishedLabel: "Published October 11, 2026",
+      sections: [
+        {
+          h2: "What to put on a weekly basics list",
+          paragraphs: [
+            "Each aisle below has five specific items. Skip anything still in the fridge or cupboard. Other is the catch-all in the app for names that do not match an aisle, so it has no staple list of its own.",
+          ],
+        },
+        {
+          h2: "🥦 Produce",
+          paragraphs: [
+            "Buy the fresh items you will eat this week. These five show up in most carts.",
+          ],
+          items: ["Bananas", "Tomatoes", "Cucumbers", "Carrots", "Onions"],
+        },
+        {
+          h2: "🥩 Meat & Fish",
+          paragraphs: [
+            "Pick the proteins you will cook. You do not need all five if the week only has a few meals at home.",
+          ],
+          items: ["Chicken breast", "Ground beef", "Salmon", "Tuna", "Turkey"],
+        },
+        {
+          h2: "🧀 Dairy & Eggs",
+          paragraphs: [
+            "These go fast at breakfast and in cooking. Check the fridge before you add them.",
+          ],
+          items: ["Milk", "Eggs", "Yogurt", "Cheddar cheese", "Butter"],
+        },
+        {
+          h2: "🥖 Bakery",
+          paragraphs: [
+            "Bread and wraps are the weekly bakery staples. Leave off anything still in the bag.",
+          ],
+          items: ["Sliced bread", "Pita", "Bagels", "Tortillas", "Hamburger buns"],
+        },
+        {
+          h2: "🥫 Pantry",
+          paragraphs: [
+            "Pantry goods last longer than produce. Add one only when the package is nearly empty.",
+          ],
+          items: ["Rice", "Pasta", "Olive oil", "Chickpeas", "Oats"],
+        },
+        {
+          h2: "❄️ Frozen",
+          paragraphs: [
+            "Frozen food covers a backup meal and a few things that keep after the fresh produce is gone.",
+          ],
+          items: ["Frozen peas", "Frozen berries", "Ice cream", "Frozen pizza", "Waffles"],
+        },
+        {
+          h2: "🧃 Beverages",
+          paragraphs: [
+            "Drinks are easy to overbuy. Start with what you finish every week.",
+          ],
+          items: ["Water", "Coffee", "Black tea", "Lemonade", "Sparkling water"],
+        },
+        {
+          h2: "🍬 Snacks & Sweets",
+          paragraphs: [
+            "Keep this aisle short. Five favorites are enough for the week.",
+          ],
+          items: ["Chips", "Popcorn", "Dark chocolate", "Pretzels", "Gummy candy"],
+        },
+        {
+          h2: "🧴 Personal Care",
+          paragraphs: [
+            "Personal care is not a weekly food shop. Replace a bottle when it is actually low.",
+          ],
+          items: ["Shampoo", "Toothpaste", "Bar soap", "Deodorant", "Sunscreen"],
+        },
+        {
+          h2: "🧹 Household",
+          paragraphs: [
+            "Cleaning and paper goods belong on the list when you are down to the last roll or bottle.",
+          ],
+          items: ["Toilet paper", "Paper towels", "Laundry detergent", "Trash bags", "Sponges"],
+        },
+      ],
+      cta: "Create a free shared grocery list",
+    },
+    he: {
+      title: "הבסיס השבועי | GroceryPair",
+      description:
+        "רשימת קניות שבועית קצרה עם חמישה פריטים קונקרטיים לכל מדור ב־GroceryPair: ירקות, בשר, חלב, מאפייה, מזווה, קפוא, משקאות, חטיפים, טיפוח ובית.",
+      h1: "הבסיס השבועי",
+      lead:
+        "רשימת בסיס שבועית היא סט קטן של מצרכים קונקרטיים לכל מדור, לא תפריט לחודש שלם. אלה הקטגוריות ש־GroceryPair משתמשת בהן באפליקציה. העתיקו רק את מה שבאמת נגמר.",
+      publishedLabel: "פורסם ב־11 באוקטובר 2026",
+      sections: [
+        {
+          h2: "מה לשים ברשימת בסיס שבועית",
+          paragraphs: [
+            "בכל מדור למטה יש חמישה פריטים ספציפיים. דלגו על מה שעדיין יש במקרר או בארון. «אחר» באפליקציה הוא מדור לשמות שלא מתאימים למדור, ולכן אין לו רשימת בסיס משלו.",
+          ],
+        },
+        {
+          h2: "🥦 ירקות ופירות",
+          paragraphs: [
+            "קנו את הטרי שתאכלו השבוע. חמשת אלה מופיעים ברוב העגלות.",
+          ],
+          items: ["בננות", "עגבניות", "מלפפונים", "גזר", "בצל"],
+        },
+        {
+          h2: "🥩 בשר ודגים",
+          paragraphs: [
+            "בחרו את החלבונים שתבשלו. לא חייבים את כל החמישה אם השבוע יש רק כמה ארוחות בבית.",
+          ],
+          items: ["חזה עוף", "בשר טחון", "סלמון", "טונה", "הודו"],
+        },
+        {
+          h2: "🧀 חלב וביצים",
+          paragraphs: [
+            "אלה נגמרים מהר בארוחת בוקר ובבישול. בדקו את המקרר לפני שמוסיפים אותם.",
+          ],
+          items: ["חלב", "ביצים", "יוגורט", "גבינה צהובה", "חמאה"],
+        },
+        {
+          h2: "🥖 מאפייה",
+          paragraphs: [
+            "לחם ודברים לעטיפה הם הבסיס השבועי במאפייה. הורידו מהרשימה מה שעדיין בשקית.",
+          ],
+          items: ["לחם פרוס", "פיתה", "בייגל", "טורטיות", "לחמניות המבורגר"],
+        },
+        {
+          h2: "🥫 מזווה",
+          paragraphs: [
+            "מצרכי מזווה מחזיקים יותר מירקות. הוסיפו פריט רק כשהאריזה כמעט ריקה.",
+          ],
+          items: ["אורז", "פסטה", "שמן זית", "חומוס", "שיבולת שועל"],
+        },
+        {
+          h2: "❄️ קפוא",
+          paragraphs: [
+            "הקפוא מכסה ארוחת גיבוי וכמה דברים שנשארים אחרי שהתוצרת הטרייה נגמרת.",
+          ],
+          items: ["אפונה קפואה", "פירות יער קפואים", "גלידה", "פיצה קפואה", "וופלים"],
+        },
+        {
+          h2: "🧃 משקאות",
+          paragraphs: [
+            "משקאות קל לקנות יותר מדי. התחילו במה שנגמר אצלכם כל שבוע.",
+          ],
+          items: ["מים", "קפה", "תה שחור", "לימונדה", "מים מוגזים"],
+        },
+        {
+          h2: "🍬 חטיפים",
+          paragraphs: [
+            "השאירו את המדור הזה קצר. חמישה מועדפים מספיקים לשבוע.",
+          ],
+          items: ["צ'יפס", "פופקורן", "שוקולד מריר", "פרצל", "סוכריות גומי"],
+        },
+        {
+          h2: "🧴 טיפוח",
+          paragraphs: [
+            "טיפוח הוא לא קניית אוכל שבועית. מחליפים בקבוק רק כשהוא באמת עומד להיגמר.",
+          ],
+          items: ["שמפו", "משחת שיניים", "סבון", "דאודורנט", "קרם הגנה"],
+        },
+        {
+          h2: "🧹 ניקיון ובית",
+          paragraphs: [
+            "ניקיון ומוצרי נייר עולים לרשימה כשנשארים הגליל או הבקבוק האחרונים.",
+          ],
+          items: ["נייר טואלט", "נייר סופג", "אבקת כביסה", "שקיות אשפה", "ספוגים"],
+        },
+      ],
+      cta: "צרו רשימת קניות משותפת בחינם",
+    },
+  },
+  {
     slug: "grocery-list-for-the-week",
     path: "/blog/grocery-list-for-the-week",
     date: "2026-09-26",

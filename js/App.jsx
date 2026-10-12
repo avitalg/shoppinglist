@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { LS } from "./utils.js";
+import { syncRoomPendingChecks } from "./syncPendingChecks.js";
 import { LanguageContext, useT } from "./i18n.js";
 import JoinScreen  from "./components/JoinScreen.jsx";
 import ListsView   from "./components/ListsView.jsx";
@@ -80,6 +81,21 @@ export default function App() {
   const [cookieSettingsOpen, setCookieSettingsOpen] = useState(false);
   const online = useOnlineStatus();
   const navigateRef = useRef(null);
+
+  useEffect(() => {
+    if (!session?.roomId) return;
+    const flush = () => {
+      if (document.visibilityState === "hidden") return;
+      if (navigator.onLine) void syncRoomPendingChecks(session.roomId);
+    };
+    window.addEventListener("online", flush);
+    document.addEventListener("visibilitychange", flush);
+    flush();
+    return () => {
+      window.removeEventListener("online", flush);
+      document.removeEventListener("visibilitychange", flush);
+    };
+  }, [session?.roomId]);
 
   useEffect(() => {
     document.documentElement.lang = lang;

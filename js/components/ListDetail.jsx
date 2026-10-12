@@ -6,6 +6,13 @@ import {
 } from "../firebase.js";
 import { CATEGORIES, CATEGORY_BY_ID, DEFAULT_CATEGORY, detectCategory } from "../categories.js";
 import { LS } from "../utils.js";
+import {
+  loadPendingChecks,
+  pendingChecksEqual,
+  reconcilePendingChecks,
+  savePendingChecks,
+} from "../pendingChecks.js";
+import { syncPendingChecks } from "../syncPendingChecks.js";
 import { useT, LanguageContext } from "../i18n.js";
 import { trackEvent, mapVoiceError } from "../analytics.js";
 import { useRecordGroceriesEnabled } from "../flags.js";
@@ -217,7 +224,11 @@ function useVoiceInput({ onInterim, onFinal, onError, lang }) {
 export default function ListDetail({ list, session, onBack }) {
   const t    = useT();
   const lang = useContext(LanguageContext);
-  const [liveList,     setLiveList]     = useState(list);
+  const [liveList, setLiveList] = useState(() => {
+    const pending = loadPendingChecks(session.roomId, list.id);
+    const { items } = reconcilePendingChecks(list.items || [], pending);
+    return { ...list, items };
+  });
   const [text,         setText]         = useState("");
   const [note,         setNote]         = useState("");
   const [assignTo,     setAssignTo]     = useState("");
@@ -261,16 +272,28 @@ export default function ListDetail({ list, session, onBack }) {
 
   // ── Effects ────────────────────────────────────────────────────────────────
 
-  /** Live-sync the list document from Firestore. */
+  /** Live-sync the list document from Firestore, keeping unsynced checks on top. */
   useEffect(() => {
     return onSnapshot(
       listRef,
+      { includeMetadataChanges: true },
       snap => {
-        if (snap.exists()) {
-          setLiveList({ id: snap.id, ...snap.data() });
-        } else {
+        if (!snap.exists()) {
           setError(t("listDeleted"));
           onBack();
+          return;
+        }
+        const data = snap.data();
+        const pending = loadPendingChecks(session.roomId, list.id);
+        const reconciled = reconcilePendingChecks(data.items || [], pending);
+        if (!pendingChecksEqual(reconciled.pending, pending)) {
+          savePendingChecks(session.roomId, list.id, reconciled.pending);
+        }
+        setLiveList({ id: snap.id, ...data, items: reconciled.items });
+        // Cache snapshots stay local. Once Firestore is serving the server copy,
+        // push any checks that were saved while offline.
+        if (!snap.metadata.fromCache && Object.keys(reconciled.pending).length > 0) {
+          void syncPendingChecks(session.roomId, list.id);
         }
       },
       () => setError(t("listLostConnection")),
@@ -393,7 +416,7 @@ export default function ListDetail({ list, session, onBack }) {
   }
 
   /** Toggle the checked state of an item by id. */
-  async function toggleCheck(id) {
+  function toggleCheck(id) {
     setError("");
     const items = liveList.items || [];
     const item = items.find(i => i.id === id);
@@ -404,30 +427,26 @@ export default function ListDetail({ list, session, onBack }) {
       return n + (checked ? 0 : 1);
     }, 0);
 
+    // Remember the mark before talking to Firestore. Transactions fail while
+    // offline and cannot be queued, so the local value is what we show and
+    // what we send once the connection is back.
+    const pending = loadPendingChecks(session.roomId, list.id);
+    pending[id] = nextChecked;
+    savePendingChecks(session.roomId, list.id, pending);
+
     setLiveList(prev => ({
       ...prev,
-      items: (prev.items || []).map(i => i.id === id ? { ...i, checked: !i.checked } : i),
+      items: (prev.items || []).map(i => i.id === id ? { ...i, checked: nextChecked } : i),
     }));
-    try {
-      await runTransaction(db, async tx => {
-        const snap = await tx.get(listRef);
-        if (!snap.exists()) throw new Error("List has been deleted.");
-        const nextItems = (snap.data().items || []).map(i =>
-          i.id === id ? { ...i, checked: !i.checked } : i
-        );
-        tx.update(listRef, { items: nextItems });
-      });
-      trackEvent(nextChecked ? "check_item" : "uncheck_item", {
-        category: item.category || "other",
-        unchecked_count: uncheckedCount,
-      });
-    } catch (err) {
-      setLiveList(prev => ({
-        ...prev,
-        items: (prev.items || []).map(i => i.id === id ? { ...i, checked: !i.checked } : i),
-      }));
+    trackEvent(nextChecked ? "check_item" : "uncheck_item", {
+      category: item.category || "other",
+      unchecked_count: uncheckedCount,
+    });
+
+    void syncPendingChecks(session.roomId, list.id).then(result => {
+      if (result?.ok || result?.offline || result?.queued || result?.deleted) return;
       setError(t("updateItemFailed"));
-    }
+    });
   }
 
   /** Remove an item from the list by id. */

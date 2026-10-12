@@ -4,6 +4,7 @@ import ConfirmDialog from "./ConfirmDialog.jsx";
 import { SiteFooter } from "./InfoPage.jsx";
 import { db, collection, doc, onSnapshot, addDoc, deleteDoc, serverTimestamp, query, orderBy } from "../firebase.js";
 import { formatDate, shareViaWhatsApp } from "../utils.js";
+import { loadPendingChecks, reconcilePendingChecks } from "../pendingChecks.js";
 import { useT } from "../i18n.js";
 import { trackEvent } from "../analytics.js";
 
@@ -88,7 +89,11 @@ export default function ListsView({ session, onOpen, onHistory, onLeave, onLists
 
   const active   = lists.filter(l => l.status == null || l.status === "active");
   const archived = lists.filter(l => l.status === "archived");
-  const uncheckedCount = list => (list.items || []).filter(i => !i.checked).length;
+  const uncheckedCount = list => {
+    const pending = loadPendingChecks(session.roomId, list.id);
+    const { items } = reconcilePendingChecks(list.items || [], pending);
+    return items.filter(i => !i.checked).length;
+  };
 
   function shareRoom() {
     const spaceName = session.roomName || session.roomId;
