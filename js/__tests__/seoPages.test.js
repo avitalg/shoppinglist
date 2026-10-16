@@ -82,6 +82,8 @@ describe("blogPosts", () => {
       post.en.sections.forEach((section, index) => {
         const heSection = post.he.sections[index];
         expect(heSection.items?.length ?? 0).toBe(section.items?.length ?? 0);
+        expect(heSection.table?.rows.length ?? 0).toBe(section.table?.rows.length ?? 0);
+        expect(heSection.table?.headers.length ?? 0).toBe(section.table?.headers.length ?? 0);
       });
     }
   });

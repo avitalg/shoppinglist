@@ -1,6 +1,7 @@
 import { SITE } from "./seoPages.js";
 
-/** @typedef {{ h2: string, paragraphs?: string[], items?: string[] }} BlogSection */
+/** @typedef {{ headers: string[], rows: string[][] }} BlogTable */
+/** @typedef {{ h2: string, paragraphs?: string[], items?: string[], table?: BlogTable, note?: string }} BlogSection */
 /** @typedef {{
  *   title: string,
  *   description: string,
@@ -23,6 +24,197 @@ import { SITE } from "./seoPages.js";
 
 /** @type {BlogPost[]} */
 export const BLOG_POSTS = [
+  {
+    slug: "top-7-groceries-every-week",
+    path: "/blog/top-7-groceries-every-week",
+    date: "2026-10-16",
+    en: {
+      title: "The Top 7 Groceries You Need to Buy Every Week | GroceryPair",
+      description:
+        "Seven weekly staples — eggs, vegetables, fruit, dairy, lean protein, whole grains, and beans — that cover most meals and cut both spending and decision fatigue.",
+      h1: "The Top 7 Groceries You Need to Buy Every Week",
+      lead:
+        "A short, fixed list of seven staples covers most of a week's meals and cuts both spending and decision fatigue. Build every shop around these, then add whatever recipes or cravings the week calls for.",
+      publishedLabel: "Published October 16, 2026",
+      sections: [
+        {
+          h2: "Why these seven",
+          paragraphs: [
+            "The seven below were chosen for three reasons: they're nutritious, they're flexible across breakfast, lunch and dinner, and they're cheap enough to buy every week without thinking twice. Most also keep well, so less ends up in the bin.",
+          ],
+        },
+        {
+          h2: "1. Eggs",
+          paragraphs: [
+            "Eggs are the most versatile protein in the kitchen: scrambled for breakfast, hard-boiled for lunch, a fried egg on rice or a quick frittata for dinner. A dozen keeps for weeks in the fridge and costs less per gram of protein than almost any meat.",
+          ],
+        },
+        {
+          h2: "2. Fresh vegetables",
+          paragraphs: [
+            "Cover three bases: leafy greens (spinach, kale or salad leaves), a few everyday vegetables you actually cook (tomatoes, peppers, carrots, broccoli), and onions and garlic, which start almost every savoury dish. Eat the greens early in the week; carrots, cabbage, onions and garlic last much longer.",
+          ],
+        },
+        {
+          h2: "3. Seasonal fruit",
+          paragraphs: [
+            "Bananas, apples, citrus or whatever is in season give you easy snacks and breakfast toppings. Buy a mix of ripe and under-ripe fruit so it doesn't all need eating on the same day.",
+          ],
+        },
+        {
+          h2: "4. Dairy or a dairy alternative",
+          paragraphs: [
+            "Milk, plain yogurt or a fortified plant milk covers breakfast, coffee and cooking. Plain yogurt doubles as a snack, a sauce base and a substitute for sour cream. Add one cheese you like for sandwiches and pasta.",
+          ],
+        },
+        {
+          h2: "5. A lean protein",
+          paragraphs: [
+            "Chicken, fish, tofu or lean mince anchor two or three dinners. Buy what you'll cook in the next few days and freeze the rest in meal-sized portions the day you shop.",
+          ],
+        },
+        {
+          h2: "6. Whole grains",
+          paragraphs: [
+            "Bread, oats, rice or pasta are the base of quick, filling meals. Choose whole-grain versions for more fibre. Oats in particular are cheap, keep for months and make breakfast in five minutes.",
+          ],
+        },
+        {
+          h2: "7. Beans and legumes",
+          paragraphs: [
+            "Canned or dried chickpeas, lentils and beans are cheap protein and fibre that last on the shelf. Use them in salads, stews, soups, hummus or as a meat stretcher in chilli and sauces.",
+          ],
+        },
+        {
+          h2: "Shelf life",
+          note: "Shelf lives are approximate and depend on storage.",
+          table: {
+            headers: ["#", "Staple", "Typical shelf life", "Best for"],
+            rows: [
+              ["1", "Eggs", "3–5 weeks (fridge)", "Any meal"],
+              ["2", "Fresh vegetables", "3 days (greens) to 8 weeks (onions)", "Cooking base, salads, sides"],
+              ["3", "Seasonal fruit", "3–10 days", "Snacks, breakfast"],
+              ["4", "Dairy or alternative", "1–2 weeks (fridge)", "Breakfast, sauces"],
+              ["5", "Lean protein", "1–2 days fresh, 3+ months frozen", "Dinners"],
+              ["6", "Whole grains", "Days (bread) to months (oats, rice)", "Meal base"],
+              ["7", "Beans and legumes", "1–2 years (canned, dried)", "Stews, salads"],
+            ],
+          },
+        },
+        {
+          h2: "Making the list work",
+          items: [
+            "Check before you shop. A two-minute look in the fridge stops you rebuying what you already have.",
+            "Plan three or four dinners, not seven. Leftovers and a pantry meal fill the gaps.",
+            "Use the freezer. Frozen vegetables, fruit and fish are as nutritious as fresh and never go off mid-week.",
+            "Eat the perishables first. Greens and fish early in the week; root vegetables, eggs and beans later.",
+            "Store smart. Keep onions and potatoes apart, wrap greens in a paper towel, and keep bananas away from other fruit.",
+            "Buy store brands for staples. Oats, rice, beans and canned tomatoes rarely differ in quality.",
+          ],
+        },
+        {
+          h2: "The bottom line",
+          paragraphs: [
+            "With these seven in the kitchen, you can always make breakfast, pack a lunch and cook a decent dinner without a special trip. Treat the list as a base, swap items to suit your diet and budget, and add the extras each week's recipes need.",
+          ],
+        },
+      ],
+      cta: "Create a free shared grocery list",
+    },
+    he: {
+      title: "שבעת המצרכים שכדאי לקנות כל שבוע | GroceryPair",
+      description:
+        "שבעה מצרכי בסיס שבועיים — ביצים, ירקות, פירות, חלב, חלבון רזה, דגנים מלאים וקטניות — שמכסים את רוב הארוחות ומקצרים גם הוצאה וגם התלבטות.",
+      h1: "שבעת המצרכים שכדאי לקנות כל שבוע",
+      lead:
+        "רשימה קצרה וקבועה של שבעה מצרכי בסיס מכסה את רוב הארוחות בשבוע, ומקצרת גם את ההוצאה וגם את ההתלבטות. בנו כל קנייה סביב אלה, ואז הוסיפו את מה שמופיע במתכונים או שמתחשק לכם השבוע.",
+      publishedLabel: "פורסם ב־16 באוקטובר 2026",
+      sections: [
+        {
+          h2: "למה דווקא השבעה האלה",
+          paragraphs: [
+            "השבעה למטה נבחרו משלוש סיבות: הם מזינים, הם גמישים לארוחת בוקר, צהריים וערב, והם זולים מספיק כדי לקנות אותם כל שבוע בלי לחשוב פעמיים. רובם גם נשמרים היטב, כך שפחות נזרק לפח.",
+          ],
+        },
+        {
+          h2: "1. ביצים",
+          paragraphs: [
+            "ביצים הן החלבון הכי גמיש במטבח: מקושקשות לארוחת בוקר, קשות לארוחת צהריים, ביצה מטוגנת על אורז או פריטטה מהירה לארוחת ערב. תריסר נשמר שבועות במקרר ועולה פחות לכל גרם חלבון כמעט מכל בשר.",
+          ],
+        },
+        {
+          h2: "2. ירקות טריים",
+          paragraphs: [
+            "כסו שלושה בסיסים: עלים ירוקים (תרד, קייל או עלי סלט), כמה ירקות יומיומיים שבאמת מבשלים (עגבניות, פלפלים, גזר, ברוקולי), ובצל ושום, שמתחילים כמעט כל מנה מלוחה. אכלו את העלים בתחילת השבוע; גזר, כרוב, בצל ושום מחזיקים הרבה יותר.",
+          ],
+        },
+        {
+          h2: "3. פרי עונתי",
+          paragraphs: [
+            "בננות, תפוחים, הדרים או מה שיש בעונה נותנים נשנוש קל ותוספת לארוחת בוקר. קנו תערובת של פרי בשל ופרי שעוד לא הבשיל, כדי שלא הכול יצטרך להיאכל באותו יום.",
+          ],
+        },
+        {
+          h2: "4. מוצרי חלב או תחליף",
+          paragraphs: [
+            "חלב, יוגורט טבעי או משקה צמחי מועשר מכסים ארוחת בוקר, קפה ובישול. יוגורט טבעי משמש גם כנשנוש, כבסיס לרוטב וכתחליף לשמנת חמוצה. הוסיפו גבינה אחת שאוהבים לכריכים ולפסטה.",
+          ],
+        },
+        {
+          h2: "5. חלבון רזה",
+          paragraphs: [
+            "עוף, דג, טופו או בשר טחון רזה מעגנים שתיים או שלוש ארוחות ערב. קנו את מה שתבשלו בימים הקרובים, והקפיאו את השאר במנות ביום הקנייה.",
+          ],
+        },
+        {
+          h2: "6. דגנים מלאים",
+          paragraphs: [
+            "לחם, שיבולת שועל, אורז או פסטה הם הבסיס לארוחות מהירות ומשביעות. בחרו גרסאות מדגן מלא לעוד סיבים. שיבולת שועל במיוחד זולה, נשמרת חודשים, ומכינה ארוחת בוקר בחמש דקות.",
+          ],
+        },
+        {
+          h2: "7. קטניות",
+          paragraphs: [
+            "חומוס, עדשים ושעועית — מקופסה או יבשים — הם חלבון וסיבים זולים שנשמרים על המדף. השתמשו בהם בסלטים, תבשילים, מרקים, כממרח, או כדי למתוח בשר בצ׳ילי וברטבים.",
+          ],
+        },
+        {
+          h2: "חיי מדף",
+          note: "חיי המדף משוערים ותלויים באחסון.",
+          table: {
+            headers: ["#", "מצרך", "חיי מדף אופייניים", "הכי מתאים ל"],
+            rows: [
+              ["1", "ביצים", "3–5 שבועות (מקרר)", "כל ארוחה"],
+              ["2", "ירקות טריים", "3 ימים (עלים) עד 8 שבועות (בצל)", "בסיס לבישול, סלטים, תוספות"],
+              ["3", "פרי עונתי", "3–10 ימים", "נשנושים, ארוחת בוקר"],
+              ["4", "חלב או תחליף", "1–2 שבועות (מקרר)", "ארוחת בוקר, רטבים"],
+              ["5", "חלבון רזה", "1–2 ימים טרי, 3+ חודשים קפוא", "ארוחות ערב"],
+              ["6", "דגנים מלאים", "ימים (לחם) עד חודשים (שיבולת שועל, אורז)", "בסיס לארוחה"],
+              ["7", "קטניות", "1–2 שנים (קופסה, יבש)", "תבשילים, סלטים"],
+            ],
+          },
+        },
+        {
+          h2: "איך לגרום לרשימה לעבוד",
+          items: [
+            "בדקו לפני הקנייה. מבט של שתי דקות במקרר מונע לקנות שוב מה שכבר יש.",
+            "תכננו שלוש או ארבע ארוחות ערב, לא שבע. שאריות וארוחה מהמזווה סוגרות את הפערים.",
+            "השתמשו במקפיא. ירקות, פירות ודגים קפואים מזינים כמו טריים ולא מתקלקלים באמצע השבוע.",
+            "אכלו קודם את מה שמתקלקל. עלים ודגים בתחילת השבוע; ירקות שורש, ביצים וקטניות אחר כך.",
+            "אחסנו נכון. שמרו בצל ותפוחי אדמה בנפרד, עטפו עלים במגבת נייר, והרחיקו בננות מפירות אחרים.",
+            "קנו מותג של הרשת למצרכי בסיס. שיבולת שועל, אורז, שעועית ועגבניות מקופסה כמעט לא נבדלים באיכות.",
+          ],
+        },
+        {
+          h2: "בשורה התחתונה",
+          paragraphs: [
+            "עם השבעה האלה במטבח תמיד אפשר להכין ארוחת בוקר, לארוז צהריים ולבשל ארוחת ערב סבירה בלי יציאה מיוחדת. התייחסו לרשימה כבסיס, החליפו פריטים לפי התזונה והתקציב, והוסיפו את התוספות שכל שבוע דורש.",
+          ],
+        },
+      ],
+      cta: "צרו רשימת קניות משותפת בחינם",
+    },
+  },
   {
     slug: "weekly-basics",
     path: "/blog/weekly-basics",

@@ -67,6 +67,29 @@ export default function BlogArticlePage({ lang, onLangChange, session }) {
                     ))}
                   </ul>
                 ) : null}
+                {section.table ? (
+                  <div className="blog-table-wrap">
+                    <table className="blog-table">
+                      <thead>
+                        <tr>
+                          {section.table.headers.map(header => (
+                            <th key={header} scope="col">{header}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {section.table.rows.map(row => (
+                          <tr key={row[0]}>
+                            {row.map((cell, index) => (
+                              <td key={`${row[0]}-${index}`}>{cell}</td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {section.note ? <p>{section.note}</p> : null}
               </section>
             ))}
           </div>

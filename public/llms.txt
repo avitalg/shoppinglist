@@ -11,6 +11,7 @@ GroceryPair is a free web app. A short room code is the only access control. Sha
 - [About](https://www.grocerypair.com/about): What GroceryPair is and who it is for.
 - [FAQ](https://www.grocerypair.com/faq): Room codes, sharing, offline use, voice input, and how to get started.
 - [Blog](https://www.grocerypair.com/blog): Guides on shared grocery lists and shopping together.
+- [Top 7 groceries every week](https://www.grocerypair.com/blog/top-7-groceries-every-week): Seven staples that cover most of a week's meals.
 - [Weekly basics](https://www.grocerypair.com/blog/weekly-basics): Five concrete groceries for each aisle in the app.
 - [Grocery list for the week](https://www.grocerypair.com/blog/grocery-list-for-the-week): A practical weekly grocery list of essentials you actually need.
 - [Weekly grocery list](https://www.grocerypair.com/blog/weekly-grocery-list): An aisle-by-aisle weekly shopping checklist.

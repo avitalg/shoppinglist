@@ -696,6 +696,34 @@
   box-sizing: border-box;
 }
 
+.site-page-main .blog-table-wrap {
+  overflow-x: auto;
+  margin-top: 4px;
+}
+
+.site-page-main .blog-table {
+  width: 100%;
+  min-width: 28rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.site-page-main .blog-table th,
+.site-page-main .blog-table td {
+  text-align: start;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.site-page-main .blog-table th {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--gray);
+}
+
 .blog-post-aside {
   display: none;
 }
