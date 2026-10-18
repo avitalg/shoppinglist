@@ -72,6 +72,15 @@ describe("blogPosts", () => {
     expect(ld["@type"]).toBe("BlogPosting");
     expect(ld.url).toBe(`${SITE}${post.path}`);
     expect(ld.headline).toBe(post.en.h1);
+
+    const families = getBlogPost("shared-grocery-list-for-families");
+    expect(families.path).toBe("/blog/shared-grocery-list-for-families");
+    expect(families.en.title.length).toBeLessThanOrEqual(60);
+    expect(families.en.description.length).toBeLessThanOrEqual(155);
+    expect(families.en.lead.toLowerCase()).toContain("shared grocery list");
+    const graph = blogPostJsonLd(families)["@graph"];
+    expect(graph.map(node => node["@type"])).toEqual(["BlogPosting", "FAQPage"]);
+    expect(graph[1].mainEntity.length).toBeGreaterThanOrEqual(5);
   });
 
   it("keeps EN and HE article bodies in sync by section count", () => {
@@ -84,6 +93,9 @@ describe("blogPosts", () => {
         expect(heSection.items?.length ?? 0).toBe(section.items?.length ?? 0);
         expect(heSection.table?.rows.length ?? 0).toBe(section.table?.rows.length ?? 0);
         expect(heSection.table?.headers.length ?? 0).toBe(section.table?.headers.length ?? 0);
+        expect(heSection.after?.length ?? 0).toBe(section.after?.length ?? 0);
+        expect(heSection.faqs?.length ?? 0).toBe(section.faqs?.length ?? 0);
+        expect(heSection.links?.length ?? 0).toBe(section.links?.length ?? 0);
       });
     }
   });

@@ -196,6 +196,9 @@ function blogPostBody(post) {
         ? `<table><thead><tr>${section.table.headers.map(header => `<th>${esc(header)}</th>`).join("")}</tr></thead><tbody>${section.table.rows.map(row => `<tr>${row.map(cell => `<td>${esc(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table>`
         : ""}
       ${section.note ? `<p>${esc(section.note)}</p>` : ""}
+      ${(section.after ?? []).map(paragraph => `<p>${esc(paragraph)}</p>`).join("\n")}
+      ${(section.faqs ?? []).map(faq => `<h3>${esc(faq.q)}</h3><p>${esc(faq.a)}</p>`).join("\n")}
+      ${(section.links ?? []).map(link => `<p><a href="${esc(link.href)}">${esc(link.label)}</a></p>`).join("\n")}
     `;
   const enSections = en.sections.map(renderSection).join("\n");
   const heSections = he.sections.map(renderSection).join("\n");

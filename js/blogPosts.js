@@ -1,7 +1,9 @@
 import { SITE } from "./seoPages.js";
 
+/** @typedef {{ q: string, a: string }} BlogFaq */
+/** @typedef {{ href: string, label: string }} BlogLink */
 /** @typedef {{ headers: string[], rows: string[][] }} BlogTable */
-/** @typedef {{ h2: string, paragraphs?: string[], items?: string[], table?: BlogTable, note?: string }} BlogSection */
+/** @typedef {{ h2: string, paragraphs?: string[], items?: string[], table?: BlogTable, note?: string, after?: string[], faqs?: BlogFaq[], links?: BlogLink[] }} BlogSection */
 /** @typedef {{
  *   title: string,
  *   description: string,
@@ -24,6 +26,241 @@ import { SITE } from "./seoPages.js";
 
 /** @type {BlogPost[]} */
 export const BLOG_POSTS = [
+  {
+    slug: "shared-grocery-list-for-families",
+    path: "/blog/shared-grocery-list-for-families",
+    date: "2026-10-18",
+    en: {
+      title: "Free Shared Grocery List for Families | GroceryPair",
+      description:
+        "Stop double-buying groceries. Share one free grocery list with your whole family, synced in real time. Set it up in 2 minutes.",
+      h1: "Stop Buying 3 Jars of Mayo: The Free Way Families Share One Grocery List",
+      lead:
+        "You open the fridge and there they are: three jars of mayonnaise. One from you, one from your partner, and one from the teenager who thought you were out. Meanwhile, nobody bought eggs. Sound familiar? When everyone shops from memory, a note, or a group chat, a shared grocery list is the simple fix.",
+      publishedLabel: "Published October 18, 2026",
+      sections: [
+        {
+          h2: "The hidden cost of not sharing a grocery list",
+          paragraphs: [
+            "A few duplicate jars may seem harmless, but uncoordinated shopping adds up fast. None of this happens because your family doesn't care. It happens because the information lives in five different heads instead of one shared place.",
+          ],
+          items: [
+            "Wasted money: buying items you already have, week after week.",
+            "Wasted food: extra milk, bread, and produce go bad before anyone uses them.",
+            "Extra trips: one forgotten ingredient means a second drive, or takeout instead of dinner.",
+            "Everyday friction: \"I told you we needed coffee\" is not a fun conversation at 7 a.m.",
+          ],
+        },
+        {
+          h2: "4 ways families share a grocery list (and which one actually works)",
+          paragraphs: [
+            "Most families have tried at least one of these. Here's how they stack up.",
+          ],
+          table: {
+            headers: ["Method", "Real-time updates", "Everyone can edit", "Works in the store", "Cost"],
+            rows: [
+              ["Paper list on the fridge", "No", "Only at home", "Only if you remember to take it", "Free"],
+              ["Family group chat", "Sort of", "Yes, but it gets buried", "Hard to scroll through", "Free"],
+              ["Phone notes app", "No, or clunky sharing", "Usually one owner", "Yes", "Free"],
+              ["GroceryPair", "Yes, instantly", "Yes", "Yes, check off as you shop", "Free"],
+            ],
+          },
+          after: [
+            "The paper list is classic, but it stays on the fridge while you're standing in aisle 7.",
+            "The group chat feels convenient until \"get bananas\" is buried under 30 memes and a photo of the dog.",
+            "A notes app works for one person. Sharing it between family members is often slow or confusing.",
+            "A shared grocery list solves all three: one list, updated live, in everyone's pocket. When your partner adds eggs at home, you see them at the store. When you check off mayo, nobody else buys a second jar.",
+          ],
+        },
+        {
+          h2: "How to set up a free shared grocery list in 2 minutes",
+          paragraphs: [
+            "You don't need another subscription. GroceryPair is a free shared shopping list in the browser. Here's how a family gets on one list.",
+          ],
+          items: [
+            "Create a room. Open GroceryPair, name the space something everyone recognizes, and you get a short room code. No account.",
+            "Invite your family. Send the code, or share it on WhatsApp. They join with the code. Nothing to register.",
+            "Add a list. Tap + List and name it Home Groceries. Everyone adds items as they run out.",
+            "Shop together, even when apart. Whoever is at the store sees the latest list and checks items off as they go.",
+            "Watch it update live. Anyone at home can add a forgotten item while you're still in the aisle.",
+          ],
+          after: [
+            "That's it. No credit card, no premium plan. GroceryPair is free.",
+          ],
+        },
+        {
+          h2: "6 tips to make your shared grocery list actually stick",
+          paragraphs: [
+            "An app only helps if the family uses it. These habits make a family grocery list app automatic.",
+          ],
+          items: [
+            "Make one simple rule. If you finish it, add it.",
+            "Pick a list captain. One person does a quick look before the big shop.",
+            "Group items by store section. Produce, dairy, and pantry together means a faster trip.",
+            "Keep separate lists for separate stores. One for the supermarket, one for the pharmacy.",
+            "Let the kids join in. Older kids can add snack requests once, instead of asking twelve times.",
+            "Check the list before you leave. Ten seconds saves a second trip.",
+          ],
+        },
+        {
+          h2: "Frequently asked questions",
+          faqs: [
+            {
+              q: "Is GroceryPair really free?",
+              a: "Yes. GroceryPair is free to use, with no subscription and no ads in the list.",
+            },
+            {
+              q: "Can my whole family see updates in real time?",
+              a: "Yes. When anyone adds or checks off an item, the change shows up for everyone in the room.",
+            },
+            {
+              q: "Does everyone need to create an account?",
+              a: "No. Family members join with the room code. There is nothing to register.",
+            },
+            {
+              q: "Can I use a shared grocery list with my partner or roommates too?",
+              a: "Yes. The same room works for couples, roommates, and anyone who shops for the same home. It is a grocery list app for couples as well as families.",
+            },
+            {
+              q: "Can I have more than one shared list?",
+              a: "Yes. A room can hold separate lists for groceries, household supplies, and different stores.",
+            },
+            {
+              q: "What's the best way to share a grocery list with family?",
+              a: "Use one free shared grocery list that everyone can edit. It stays on your phone at the store, and it updates while you shop. That is the simplest way to share a grocery list.",
+            },
+          ],
+        },
+        {
+          h2: "One list. One jar of mayo. Zero stress.",
+          paragraphs: [
+            "Your family doesn't need more reminders, sticky notes, or group-chat chaos. You need one place where everyone sees what's needed and what's already been bought.",
+            "With GroceryPair, the shared grocery list is free, instant, and in your pocket. Set it up tonight, and the next fridge check might have the right number of mayo jars.",
+          ],
+          links: [
+            { href: "/", label: "Create your free shared grocery list" },
+            { href: "/blog/share-grocery-list-with-partner", label: "How to share a grocery list with your partner" },
+          ],
+        },
+      ],
+      cta: "Create your free shared grocery list",
+    },
+    he: {
+      title: "רשימת קניות משותפת חינם למשפחות | GroceryPair",
+      description:
+        "מפסיקים לקנות כפול. רשימת קניות אחת חינם לכל המשפחה, מסונכרנת בזמן אמת. ההקמה לוקחת שתי דקות.",
+      h1: "תפסיקו לקנות 3 צנצנות מיונז: הדרך החינמית לרשימת קניות אחת",
+      lead:
+        "פותחים את המקרר ושם הן: שלוש צנצנות מיונז. אחת שלך, אחת של בן או בת הזוג, ואחת של המתבגר שחשב שנגמר. וביצים? אף אחד לא קנה. מוכר? כשכל אחד קונה לפי זיכרון, פתק או קבוצת וואטסאפ, רשימת קניות משותפת היא הפתרון הפשוט.",
+      publishedLabel: "פורסם ב־18 באוקטובר 2026",
+      sections: [
+        {
+          h2: "המחיר הנסתר של קניות בלי רשימה משותפת",
+          paragraphs: [
+            "כמה צנצנות כפולות נראות שוליות, אבל קניות לא מתואמות מצטברות מהר. זה לא קורה כי למשפחה לא אכפת. זה קורה כי המידע יושב בחמישה ראשים במקום במקום אחד משותף.",
+          ],
+          items: [
+            "כסף מבוזבז: קונים שוב מה שכבר יש, שבוע אחרי שבוע.",
+            "אוכל מבוזבז: חלב, לחם וירקות נוספים מתקלקלים לפני שמישהו משתמש בהם.",
+            "נסיעות מיותרות: מצרך אחד שנשכח אומר עוד נסיעה לסופר, או טייק אווי במקום ארוחת ערב.",
+            "חיכוך יומיומי: «אמרתי לך שצריך קפה» זו לא שיחה נעימה בשבע בבוקר.",
+          ],
+        },
+        {
+          h2: "4 דרכים לשתף רשימת קניות (ואיזו באמת עובדת)",
+          paragraphs: [
+            "רוב המשפחות ניסו לפחות אחת מהן. כך הן עומדות זו מול זו.",
+          ],
+          table: {
+            headers: ["שיטה", "עדכון בזמן אמת", "כולם יכולים לערוך", "עובד בסופר", "עלות"],
+            rows: [
+              ["פתק על המקרר", "לא", "רק בבית", "רק אם זוכרים לקחת אותו", "חינם"],
+              ["קבוצה משפחתית", "בערך", "כן, אבל זה נקבר", "קשה לגלול", "חינם"],
+              ["פתקים בטלפון", "לא, או שיתוף מסורבל", "בדרך כלל בעלים אחד", "כן", "חינם"],
+              ["GroceryPair", "כן, מיידית", "כן", "כן, מסמנים תוך כדי קנייה", "חינם"],
+            ],
+          },
+          after: [
+            "הפתק על המקרר קלאסי, אבל הוא נשאר על המקרר בזמן שאתם במעבר 7.",
+            "הקבוצה נוחה עד ש«תביא בננות» נקבר מתחת ל־30 ממים ותמונה של הכלב.",
+            "אפליקציית פתקים עובדת לאדם אחד. שיתוף בין בני המשפחה לרוב איטי או מבלבל.",
+            "רשימת קניות משותפת פותרת את שלושתן: רשימה אחת, מתעדכנת בשידור חי, בכיס של כולם. כשבן או בת הזוג מוסיפים ביצים בבית, רואים אותן בסופר. כשמסמנים מיונז, אף אחד לא קונה צנצנת שנייה.",
+          ],
+        },
+        {
+          h2: "איך מקימים רשימת קניות משותפת חינם בשתי דקות",
+          paragraphs: [
+            "לא צריך עוד מנוי. GroceryPair היא רשימת קניות משותפת חינמית בדפדפן. כך משפחה עולה על רשימה אחת.",
+          ],
+          items: [
+            "יוצרים חדר. פותחים את GroceryPair, נותנים שם שכולם מזהים, ומקבלים קוד חדר קצר. בלי חשבון.",
+            "מזמינים את המשפחה. שולחים את הקוד, או משתפים בוואטסאפ. מצטרפים עם הקוד. אין מה להירשם.",
+            "מוסיפים רשימה. לוחצים על «רשימה +» וקוראים לה מצרכים לבית. כל אחד מוסיף פריטים כשהם נגמרים.",
+            "קונים ביחד, גם כשלא ביחד. מי שבסופר רואה את הרשימה העדכנית ומסמן פריטים תוך כדי.",
+            "רואים את העדכון בשידור חי. מי שנשאר בבית יכול להוסיף מצרך שנשכח בזמן שאתם עדיין במעבר.",
+          ],
+          after: [
+            "זהו. בלי כרטיס אשראי ובלי מסלול פרימיום. GroceryPair חינמית.",
+          ],
+        },
+        {
+          h2: "6 הרגלים כדי שהרשימה המשותפת באמת תישאר",
+          paragraphs: [
+            "אפליקציה עוזרת רק אם המשפחה משתמשת בה. ההרגלים האלה הופכים אותה לאוטומטית.",
+          ],
+          items: [
+            "כלל אחד פשוט. אם גמרתם, מוסיפים לרשימה.",
+            "בוחרים אחראי לרשימה. אדם אחד עושה מבט קצר לפני הקנייה הגדולה.",
+            "מקבצים לפי מחלקה. ירקות, חלב ומזווה ביחד מקצרים את הסיבוב.",
+            "רשימה נפרדת לכל חנות. אחת לסופר, אחת לבית המרקחת.",
+            "נותנים גם לילדים להצטרף. ילדים גדולים מוסיפים חטיפים פעם אחת, במקום לבקש שתים־עשרה.",
+            "בודקים את הרשימה לפני שיוצאים. עשר שניות חוסכות נסיעה שנייה.",
+          ],
+        },
+        {
+          h2: "שאלות נפוצות",
+          faqs: [
+            {
+              q: "GroceryPair באמת חינמית?",
+              a: "כן. GroceryPair חינמית לשימוש, בלי מנוי ובלי פרסומות ברשימה.",
+            },
+            {
+              q: "כל המשפחה רואה עדכונים בזמן אמת?",
+              a: "כן. כשמישהו מוסיף פריט או מסמן אותו, השינוי מופיע אצל כולם בחדר.",
+            },
+            {
+              q: "כולם צריכים ליצור חשבון?",
+              a: "לא. בני המשפחה מצטרפים עם קוד החדר. אין הרשמה.",
+            },
+            {
+              q: "אפשר להשתמש ברשימה משותפת גם עם בן או בת זוג או עם שותפים לדירה?",
+              a: "כן. אותו חדר מתאים לזוגות, לשותפים ולכל מי שקונה לאותו בית.",
+            },
+            {
+              q: "אפשר יותר מרשימה משותפת אחת?",
+              a: "כן. בחדר אפשר להחזיק רשימות נפרדות למכולת, למוצרי בית ולחנויות שונות.",
+            },
+            {
+              q: "מה הדרך הכי טובה לשתף רשימת קניות עם המשפחה?",
+              a: "רשימת קניות משותפת אחת שכולם יכולים לערוך. היא בטלפון בסופר, והיא מתעדכנת תוך כדי קנייה.",
+            },
+          ],
+        },
+        {
+          h2: "רשימה אחת. צנצנת מיונז אחת. בלי לחץ.",
+          paragraphs: [
+            "המשפחה לא צריכה עוד תזכורות, פתקים או כאוס בקבוצה. צריך מקום אחד שבו כולם רואים מה חסר ומה כבר נקנה.",
+            "ב־GroceryPair רשימת הקניות המשותפת חינמית, מיידית, ובכיס. מקימים אותה הערב, ובבדיקה הבאה של המקרר אולי יהיה בדיוק המספר הנכון של צנצנות מיונז.",
+          ],
+          links: [
+            { href: "/", label: "צרו רשימת קניות משותפת בחינם" },
+            { href: "/blog/share-grocery-list-with-partner", label: "איך לשתף רשימת קניות עם בן או בת הזוג" },
+          ],
+        },
+      ],
+      cta: "צרו רשימת קניות משותפת בחינם",
+    },
+  },
   {
     slug: "top-7-groceries-every-week",
     path: "/blog/top-7-groceries-every-week",
@@ -1176,8 +1413,7 @@ export function blogIndexJsonLd() {
 
 export function blogPostJsonLd(post) {
   const en = post.en;
-  return {
-    "@context": "https://schema.org",
+  const article = {
     "@type": "BlogPosting",
     headline: en.h1,
     description: en.description,
@@ -1204,5 +1440,24 @@ export function blogPostJsonLd(post) {
       name: "GroceryPair Blog",
       url: `${SITE}${BLOG_SEO.path}`,
     },
+  };
+  const faqs = en.sections.flatMap(section => section.faqs ?? []);
+  if (!faqs.length) {
+    return { "@context": "https://schema.org", ...article };
+  }
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      article,
+      {
+        "@type": "FAQPage",
+        url: `${SITE}${post.path}`,
+        mainEntity: faqs.map(faq => ({
+          "@type": "Question",
+          name: faq.q,
+          acceptedAnswer: { "@type": "Answer", text: faq.a },
+        })),
+      },
+    ],
   };
 }

@@ -90,6 +90,24 @@ export default function BlogArticlePage({ lang, onLangChange, session }) {
                   </div>
                 ) : null}
                 {section.note ? <p>{section.note}</p> : null}
+                {(section.after ?? []).map((paragraph, index) => (
+                  <p key={`${section.h2}-after-${index}`}>{paragraph}</p>
+                ))}
+                {section.faqs?.map(faq => (
+                  <div key={faq.q}>
+                    <h3>{faq.q}</h3>
+                    <p>{faq.a}</p>
+                  </div>
+                ))}
+                {section.links?.length ? (
+                  <ul className="blog-links">
+                    {section.links.map(link => (
+                      <li key={link.href}>
+                        <Link to={link.href}>{link.label}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </section>
             ))}
           </div>
