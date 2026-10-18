@@ -10,7 +10,7 @@ export const TRANSLATIONS = {
     // ── JoinScreen ──────────────────────────────────────────────────────────
     tagline:            "Shop together in real time. Share one list, everyone sees every change.",
     homeEyebrow:        "Free · No sign-up · Real time",
-    homeHeadline:       "The shopping list your family actually shares.",
+    homeHeadline:       "The free shopping list your family actually shares.",
     homeLead:           "Create a room, send a short code, and everyone sees adds and check-offs instantly — at home or in the store.",
     homeNoAccount:      "No accounts. Hebrew and English. Works on any phone or computer.",
     homeStartTitle:     "Start a room",

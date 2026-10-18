@@ -2,7 +2,7 @@ export const SITE = "https://www.grocerypair.com";
 
 export const HOME_SEO = {
   path: "/",
-  title: "GroceryPair – Shared Shopping List App",
+  title: "GroceryPair – Free Shared Shopping List App",
   description:
     "Free shared shopping list app for families. Create a room, share a code, and shop together in real time — everyone sees every change instantly. רשימת קניות משותפת בזמן אמת למשפחות.",
   ogTitle: "GroceryPair – Free Shared Shopping List App",
