@@ -187,7 +187,7 @@ function blogPostBody(post) {
   const en = post.en;
   const he = post.he;
   const renderSection = section => `
-      <h2>${esc(section.h2)}</h2>
+      <h2${section.id ? ` id="${esc(section.id)}"` : ""}>${esc(section.h2)}</h2>
       ${(section.paragraphs ?? []).map(p => `<p>${esc(p)}</p>`).join("\n")}
       ${section.items?.length
         ? `<ul>${section.items.map(item => `<li>${esc(item)}</li>`).join("")}</ul>`

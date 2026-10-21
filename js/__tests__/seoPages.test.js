@@ -81,6 +81,18 @@ describe("blogPosts", () => {
     const graph = blogPostJsonLd(families)["@graph"];
     expect(graph.map(node => node["@type"])).toEqual(["BlogPosting", "FAQPage"]);
     expect(graph[1].mainEntity.length).toBeGreaterThanOrEqual(5);
+
+    const tips = getBlogPost("grocery-shopping-tips");
+    expect(tips.path).toBe("/blog/grocery-shopping-tips");
+    expect(tips.en.title.length).toBeLessThanOrEqual(60);
+    expect(tips.en.description.length).toBeLessThanOrEqual(155);
+    expect(tips.en.h1.toLowerCase()).toContain("grocery shopping tips");
+    expect(tips.en.lead.toLowerCase()).toContain("grocery shopping tips");
+    expect(tips.en.sections.some(section => section.h2.toLowerCase().includes("grocery shopping tips"))).toBe(true);
+    expect(tips.en.sections.some(section => section.h2.toLowerCase().includes("how to save money on groceries"))).toBe(true);
+    expect(tips.en.sections.some(section => section.h2.toLowerCase().includes("grocery shopping on a budget"))).toBe(true);
+    const tipsGraph = blogPostJsonLd(tips)["@graph"];
+    expect(tipsGraph.map(node => node["@type"])).toEqual(["BlogPosting", "FAQPage"]);
   });
 
   it("keeps EN and HE article bodies in sync by section count", () => {

@@ -7,6 +7,19 @@ import "./InfoPage.css";
 
 const BLOG_POST_LD_ID = "blog-post-jsonld";
 
+function ArticleLink({ link }) {
+  const external = link.href.startsWith("http");
+  const jump = link.href.startsWith("#");
+  if (external || jump) {
+    return (
+      <a href={link.href} {...(external ? { rel: "noopener noreferrer" } : {})}>
+        {link.label}
+      </a>
+    );
+  }
+  return <Link to={link.href}>{link.label}</Link>;
+}
+
 export default function BlogArticlePage({ lang, onLangChange, session }) {
   const t = useT();
   const { slug } = useParams();
@@ -55,7 +68,11 @@ export default function BlogArticlePage({ lang, onLangChange, session }) {
         <div className="blog-post-body">
           <div className="blog-article">
             {locale.sections.map(section => (
-              <section key={section.h2}>
+              <section
+                key={section.h2}
+                id={section.id}
+                className={section.callout ? "blog-callout" : undefined}
+              >
                 <h2>{section.h2}</h2>
                 {(section.paragraphs ?? []).map((paragraph, index) => (
                   <p key={`${section.h2}-${index}`}>{paragraph}</p>
@@ -103,7 +120,7 @@ export default function BlogArticlePage({ lang, onLangChange, session }) {
                   <ul className="blog-links">
                     {section.links.map(link => (
                       <li key={link.href}>
-                        <Link to={link.href}>{link.label}</Link>
+                        <ArticleLink link={link} />
                       </li>
                     ))}
                   </ul>

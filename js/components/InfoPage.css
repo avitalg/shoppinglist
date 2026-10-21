@@ -651,6 +651,13 @@
   gap: 12px;
 }
 
+.site-page-main .blog-callout {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: #f0fdf4;
+  border: 1px solid rgba(22, 163, 74, 0.22);
+}
+
 .site-page-main .blog-article h2 {
   font-size: 1.15rem;
   font-weight: 800;

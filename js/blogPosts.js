@@ -3,7 +3,7 @@ import { SITE } from "./seoPages.js";
 /** @typedef {{ q: string, a: string }} BlogFaq */
 /** @typedef {{ href: string, label: string }} BlogLink */
 /** @typedef {{ headers: string[], rows: string[][] }} BlogTable */
-/** @typedef {{ h2: string, paragraphs?: string[], items?: string[], table?: BlogTable, note?: string, after?: string[], faqs?: BlogFaq[], links?: BlogLink[] }} BlogSection */
+/** @typedef {{ h2: string, id?: string, callout?: boolean, paragraphs?: string[], items?: string[], table?: BlogTable, note?: string, after?: string[], faqs?: BlogFaq[], links?: BlogLink[] }} BlogSection */
 /** @typedef {{
  *   title: string,
  *   description: string,
@@ -26,6 +26,459 @@ import { SITE } from "./seoPages.js";
 
 /** @type {BlogPost[]} */
 export const BLOG_POSTS = [
+  {
+    slug: "grocery-shopping-tips",
+    path: "/blog/grocery-shopping-tips",
+    date: "2026-10-21",
+    en: {
+      title: "Grocery Shopping Tips: 15 Smart Ways to Spend Less in 2026",
+      description:
+        "15 grocery shopping tips that cut your bill without cutting good food: plan smarter, read unit prices, beat store tricks, and waste less. Free checklist.",
+      h1: "15 Grocery Shopping Tips to Spend Less and Eat Better",
+      lead:
+        "Your grocery bill is one of the few big expenses you control every single week. The right grocery shopping tips won't have you clipping coupons for hours or living on rice and beans. They give you a simple system: plan before you go, shop with a few rules in the store, and waste less once you're home.",
+      publishedLabel: "Published October 21, 2026",
+      sections: [
+        {
+          h2: "Quick answer",
+          id: "quick-answer",
+          callout: true,
+          paragraphs: [
+            "The most effective grocery shopping tips are to plan meals around what you already have, shop with a list and a budget, compare unit prices, choose store brands and seasonal or frozen produce, avoid shopping hungry, and use up leftovers.",
+          ],
+        },
+        {
+          h2: "On this page",
+          links: [
+            { href: "#before", label: "Before you shop" },
+            { href: "#budget", label: "Grocery shopping on a budget" },
+            { href: "#store", label: "In the store" },
+            { href: "#after", label: "After you shop" },
+            { href: "#checklist", label: "Grocery shopping tips checklist" },
+            { href: "#faq", label: "Frequently asked questions" },
+          ],
+        },
+        {
+          h2: "Why it pays to shop smarter in 2026",
+          paragraphs: [
+            "Grocery prices are still climbing, just unevenly. USDA's Economic Research Service expects food-at-home prices to rise about 2.4% in 2026, but the averages hide big swings by aisle. Eggs are forecast to fall roughly 29%, dairy is nearly flat, and fats and oils are slightly cheaper. Sugar and sweets, fresh vegetables, and seafood are all up close to 6%.",
+            "These figures are a U.S. forecast in dollars, reported in October 2026 from USDA ERS. They are not Israeli shelf prices. The takeaway still travels: smart grocery shopping in 2026 is less about cutting everything and more about knowing which aisles moved and adjusting the cart.",
+          ],
+        },
+        {
+          h2: "Before you shop: how to save money on groceries",
+          id: "before",
+          paragraphs: [
+            "Most of the savings happen before you leave the house. A meal plan, a list, and a look through the kitchen stop the duplicate jar and the extra trip.",
+          ],
+        },
+        {
+          h2: "1. Shop your kitchen first",
+          paragraphs: [
+            "Before writing a single item down, check the fridge, freezer, and pantry. Build two or three of the week's meals around what needs using up. This is the fastest way to stop buying a third jar of cumin or a duplicate bag of pasta.",
+            "Open the fridge first, then the freezer, then the pantry. Note anything that expires in the next few days and give it a job: spinach into a pasta, leftover chicken into a soup, yogurt into breakfast. Those meals come off the list before you add anything new.",
+          ],
+        },
+        {
+          h2: "2. How to make a grocery list",
+          paragraphs: [
+            "Plan dinners for the week, plus easy breakfasts and lunches. Then write the list grouped by store section: produce, dairy, meat, pantry, frozen. A grouped list keeps you moving and makes it harder to wander. Leave one line for a treat so the list feels realistic, not punishing.",
+            "Write the list from the meal plan, not from memory while you walk the aisles. If breakfast is oats and lunch is leftovers, those ingredients are already decided. The list is only the gap between that plan and what is already at home.",
+          ],
+        },
+        {
+          h2: "3. Grocery shopping on a budget",
+          id: "budget",
+          paragraphs: [
+            "Look at the last four weeks of grocery spending and set a target a little below the average. Writing the number at the top of the list changes how you shop. If you are grocery shopping on a budget for a family, note each trip so you can see where the money goes.",
+          ],
+        },
+        {
+          h2: "4. Know your buy prices",
+          paragraphs: [
+            "Pick 10 to 15 items you buy constantly, such as chicken, coffee, olive oil, and cereal, and note a price you consider a good deal. When one of them hits that price, stock up. When it doesn't, buy only what you need this week.",
+          ],
+        },
+        {
+          h2: "5. Check flyers and your store's app",
+          paragraphs: [
+            "Spend five minutes with the weekly ad and digital coupons before you go. Load offers to your loyalty app, then adjust the meal plan to match what is on sale, not the other way around.",
+          ],
+        },
+        {
+          h2: "In the store: beat the traps",
+          id: "store",
+          paragraphs: [
+            "The store is designed to slow you down. A few rules keep the cart close to the list.",
+          ],
+        },
+        {
+          h2: "6. Never shop hungry",
+          paragraphs: [
+            "Hunger makes everything look essential, and rushing makes you grab convenience items at a premium. Eat a snack before you go, and shop when you have about 30 calm minutes.",
+          ],
+        },
+        {
+          h2: "7. Unit price comparison",
+          paragraphs: [
+            "The shelf label shows a price per ounce, pound, liter, or count. Use it every time. Family size and two-for deals are often not the cheapest option per unit. This one habit catches more overspending than any coupon.",
+            "Do the comparison in the aisle, not in your head later. A 500 gram box at $4 is 80 cents per 100 grams. A 1 kilogram box at $7 is 70 cents. The bigger box wins only if you will finish it. If half will stale, the smaller box is the cheaper meal.",
+          ],
+        },
+        {
+          h2: "8. Choose store brands",
+          paragraphs: [
+            "Store-brand staples such as flour, sugar, canned tomatoes, spices, frozen vegetables, and cleaning supplies are often made to the same standard as name brands for less money. Try one store brand each trip and keep the ones you like.",
+            "Start with items where the brand is mostly the package: canned tomatoes, oats, frozen peas, sugar, and dish soap. If the family likes them, that swap stays. If a name-brand coffee or yogurt is the one everyone actually eats, keep that one and save somewhere else.",
+          ],
+        },
+        {
+          h2: "9. Look high and low",
+          paragraphs: [
+            "The most expensive brands usually sit at eye level. Glance at the top and bottom shelves, where cheaper and store-brand products often live. Be skeptical of end-of-aisle displays too: they are prime placement, not always a discount.",
+          ],
+        },
+        {
+          h2: "10. Go frozen, canned, and seasonal for produce",
+          paragraphs: [
+            "With fresh vegetable prices rising faster than the average this year, frozen and canned produce are smart swaps. They are packed ripe, last for months, and cut food waste. For fresh produce, buy what is in season. In a U.S. fall that means apples, pears, squash, sweet potatoes, and cabbage.",
+            "Use frozen vegetables in soups, stews, and fried rice, where texture matters less than in a raw salad. Keep one fresh item you will eat in the next two days, and let the freezer cover the rest of the week. That split is often cheaper than a cart of fresh produce that wilts.",
+          ],
+        },
+        {
+          h2: "11. Lean on cheaper proteins",
+          paragraphs: [
+            "Build some meals around the proteins whose prices are falling or holding steady this year: eggs, dairy, beans, lentils, canned tuna, and chicken thighs. They stretch a budget further than beef or seafood. Two or three meatless dinners a week add up.",
+            "A pot of lentils or chickpeas can be the meal, or it can stretch a smaller amount of meat through a sauce. Eggs cover breakfast and a fast dinner. You do not have to drop beef entirely. You only need it off the default.",
+          ],
+        },
+        {
+          h2: "12. Buy in bulk only what you'll use",
+          paragraphs: [
+            "Bulk buying saves money on shelf-stable items you use constantly: rice, oats, dried beans, frozen chicken, toilet paper. It costs money when the extra spoils. Ask whether you will finish it before it goes bad.",
+            "A good bulk buy has a low unit price and a place to store it. A bad one is a giant pack of berries or bread because it looked cheaper per unit and then molded. If you cannot name the meals that will use it, leave it.",
+          ],
+        },
+        {
+          h2: "13. Skip pre-cut and pre-made when you can",
+          paragraphs: [
+            "Pre-chopped vegetables, shredded cheese, marinated meats, and salad kits carry a convenience markup. If time matters more than money this week, that is a fair trade. If not, five minutes with a knife saves a few dollars every trip.",
+          ],
+        },
+        {
+          h2: "After you shop: waste less",
+          id: "after",
+          paragraphs: [
+            "The bill is not finished at the checkout. Food that gets eaten is the food you actually paid for.",
+          ],
+        },
+        {
+          h2: "14. Store food so it lasts",
+          paragraphs: [
+            "Put new groceries behind older ones so the older items get used first. Freeze bread, meat, and ripe bananas you will not get to in time. Wash and prep produce soon after shopping so it is ready to grab, not forgotten.",
+          ],
+        },
+        {
+          h2: "15. Plan a leftovers night and track what you toss",
+          paragraphs: [
+            "Make one night a week a use-it-up night: fried rice, frittatas, soups, and grain bowls take almost anything. For two weeks, jot down what you throw away. You will see which items to buy less of next time.",
+            "The toss list is more useful than a vague promise to waste less. If salad greens show up twice, buy a smaller bag or switch that meal to frozen spinach. If bread shows up, freeze half the loaf the day you shop.",
+          ],
+        },
+        {
+          h2: "Your grocery shopping tips checklist",
+          id: "checklist",
+          items: [
+            "Checked the fridge, freezer, and pantry",
+            "Planned meals for the week",
+            "Wrote a list grouped by store section",
+            "Set a budget for this trip",
+            "Loaded coupons and checked the weekly ad",
+            "Ate before leaving",
+            "Compared unit prices in the store",
+            "Tried at least one store-brand swap",
+            "Put new groceries behind older ones at home",
+          ],
+        },
+        {
+          h2: "Frequently asked questions",
+          id: "faq",
+          faqs: [
+            {
+              q: "How can I save money on groceries fast?",
+              a: "Start with a meal plan built around what you already own, shop with a list and a set budget, and compare unit prices. Those three habits deliver the biggest savings in the first week.",
+            },
+            {
+              q: "How do I make a grocery list that actually works?",
+              a: "Write it from the meal plan, not from memory, and group items by store section. Keep a running list so you add a staple the moment it runs low.",
+            },
+            {
+              q: "Is it cheaper to buy frozen vegetables than fresh?",
+              a: "Often, yes, especially out of season. Frozen vegetables are nutritionally close to fresh and create less waste because they keep for months.",
+            },
+            {
+              q: "How often should you go grocery shopping?",
+              a: "Once a week works best for most households. Fewer trips mean fewer impulse buys, with one short midweek stop for milk or fresh produce if you need it.",
+            },
+            {
+              q: "Are store brands as good as name brands?",
+              a: "For many staples they are very close in quality. Test them one item at a time and keep the swaps that pass your taste test.",
+            },
+            {
+              q: "How do I stick to grocery shopping on a budget?",
+              a: "Put the week's number at the top of the list, shop from that list, and review what you tossed. Grocery shopping on a budget gets easier once the number is visible before you walk in.",
+            },
+          ],
+        },
+        {
+          h2: "The bottom line",
+          paragraphs: [
+            "Smart grocery shopping is a system, not a sacrifice. Plan before you go, follow a few rules in the store, and make sure what you buy gets eaten. Start with three tips this week: shop the kitchen, make a list, and check unit prices. Add the rest as they become habits.",
+          ],
+          links: [
+            { href: "/blog/grocery-list-for-the-week", label: "Weekly grocery list" },
+            { href: "/blog/weekly-basics", label: "Pantry staples for the week" },
+            { href: "/blog/top-7-groceries-every-week", label: "Seven groceries to buy every week" },
+            { href: "/blog/shared-grocery-list-for-families", label: "Free shared grocery list for families" },
+          ],
+        },
+        {
+          h2: "Sources",
+          paragraphs: [
+            "Price figures above are the USDA Economic Research Service 2026 food-at-home forecast, as reported in October 2026.",
+          ],
+          links: [
+            { href: "https://www.ers.usda.gov/data-products/food-price-outlook/", label: "USDA ERS Food Price Outlook" },
+          ],
+        },
+      ],
+      cta: "Create a free shared grocery list",
+    },
+    he: {
+      title: "טיפים לקניות בסופר: 15 דרכים לחסוך ב־2026",
+      description:
+        "15 טיפים לקניות שמקטינים את החשבון בלי לוותר על אוכל טוב: תכנון, מחיר ליחידה, פחות בזבוז, ורשימת בדיקה.",
+      h1: "15 טיפים לקניות בסופר: להוציא פחות ולאכול טוב",
+      lead:
+        "חשבון הסופר הוא אחת ההוצאות הגדולות שאפשר לשלוט בהן כל שבוע. טיפים לקניות בסופר לא דורשים לגזור קופונים שעות או לחיות על אורז. הם נותנים שיטה פשוטה: לתכנן לפני שיוצאים, כמה כללים בחנות, ופחות בזבוז בבית.",
+      publishedLabel: "פורסם ב־21 באוקטובר 2026",
+      sections: [
+        {
+          h2: "תשובה קצרה",
+          id: "quick-answer",
+          callout: true,
+          paragraphs: [
+            "הטיפים שעובדים: לבנות ארוחות ממה שכבר יש, לקנות עם רשימה ותקציב, להשוות מחיר ליחידה, לבחור מותג של הרשת ותוצרת עונתית או קפואה, לא לקנות רעבים, ולנצל שאריות.",
+          ],
+        },
+        {
+          h2: "בעמוד הזה",
+          links: [
+            { href: "#before", label: "לפני הקנייה" },
+            { href: "#budget", label: "קניות בתקציב" },
+            { href: "#store", label: "בחנות" },
+            { href: "#after", label: "אחרי הקנייה" },
+            { href: "#checklist", label: "רשימת בדיקה" },
+            { href: "#faq", label: "שאלות נפוצות" },
+          ],
+        },
+        {
+          h2: "למה שווה לקנות חכם יותר ב־2026",
+          paragraphs: [
+            "מחירי המזון עדיין עולים, אבל לא באופן אחיד. שירות המחקר הכלכלי של משרד החקלאות האמריקאי צופה עלייה של כ־2.4% במחירי מזון לבית ב־2026, והממוצע מסתיר פערים בין מחלקות. ביצים צפויות לרדת בכ־29%, מוצרי חלב כמעט יציבים, ושמנים מעט זולים יותר. סוכר וממתקים, ירקות טריים ופירות ים עולים קרוב ל־6%.",
+            "אלה תחזיות אמריקאיות בדולרים, כפי שדווחו באוקטובר 2026. אלה לא מחירי מדף בישראל. העיקרון כן רלוונטי: קנייה חכמה היא לא לחתוך הכול, אלא לדעת אילו מחלקות זזו ולהתאים את העגלה.",
+          ],
+        },
+        {
+          h2: "לפני הקנייה: איך לחסוך בסופר",
+          id: "before",
+          paragraphs: [
+            "רוב החיסכון קורה לפני שיוצאים מהבית. תכנון ארוחות, רשימה, ומבט במטבח עוצרים את הצנצנת הכפולה ואת הנסיעה המיותרת.",
+          ],
+        },
+        {
+          h2: "1. קודם בודקים מה יש בבית",
+          paragraphs: [
+            "לפני שכותבים פריט אחד, בודקים מקרר, מקפיא ומזווה. בונים שתיים או שלוש ארוחות סביב מה שצריך להיגמר. זו הדרך המהירה להפסיק לקנות צנצנת שלישית של כמון או שקית נוספת של פסטה.",
+            "פותחים קודם את המקרר, אחר כך את המקפיא, ולבסוף את המזווה. כל מה שפג תוקף בימים הקרובים מקבל תפקיד: תרד לפסטה, עוף שנשאר למרק, יוגורט לארוחת בוקר. הארוחות האלה יורדות מהרשימה לפני שמוסיפים משהו חדש.",
+          ],
+        },
+        {
+          h2: "2. איך בונים רשימת קניות",
+          paragraphs: [
+            "מתכננים ארוחות ערב לשבוע, ועוד ארוחות בוקר וצהריים פשוטות. אחר כך כותבים את הרשימה לפי מחלקה: ירקות, חלב, בשר, מזווה, קפוא. רשימה מקובצת מונעת שיטוט. משאירים שורה אחת לפינוק כדי שהרשימה תהיה מציאותית.",
+            "כותבים את הרשימה מתכנון הארוחות, לא מהזיכרון במעבר. אם ארוחת הבוקר היא שיבולת שועל והצהריים הם שאריות, המצרכים כבר נקבעו. הרשימה היא רק הפער בין התכנון למה שכבר יש בבית.",
+          ],
+        },
+        {
+          h2: "3. קניות בסופר לפי תקציב",
+          id: "budget",
+          paragraphs: [
+            "מסתכלים על ארבעת השבועות האחרונים וקובעים יעד קצת מתחת לממוצע. מספר בראש הרשימה משנה את איך שקונים. אם קונים למשפחה לפי תקציב, רושמים כל סיבוב כדי לראות לאן הכסף הולך.",
+          ],
+        },
+        {
+          h2: "4. יודעים מה מחיר טוב",
+          paragraphs: [
+            "בוחרים 10 עד 15 מוצרים שקונים כל הזמן, כמו עוף, קפה, שמן זית ודגני בוקר, ורושמים מחיר שנחשב עסקה. כשאחד מהם מגיע למחיר, ממלאים. כשלא, קונים רק את מה שצריך השבוע.",
+          ],
+        },
+        {
+          h2: "5. בודקים מבצעים ואפליקציית הרשת",
+          paragraphs: [
+            "חמש דקות על המבצע השבועי והקופונים הדיגיטליים לפני שיוצאים. טוענים הטבות לכרטיס המועדון, ומתאימים את תכנון הארוחות למה שבמבצע, לא להפך.",
+          ],
+        },
+        {
+          h2: "בחנות: לא ליפול למלכודות",
+          id: "store",
+          paragraphs: [
+            "החנות בנויה להאט אתכם. כמה כללים שומרים את העגלה קרובה לרשימה.",
+          ],
+        },
+        {
+          h2: "6. לא קונים רעבים",
+          paragraphs: [
+            "רעב גורם להכול להיראות הכרחי, וחיפזון גורם לתפוס מוצרי נוחות במחיר גבוה. אוכלים משהו קטן לפני שיוצאים, וקונים כשיש בערך 30 דקות רגועות.",
+          ],
+        },
+        {
+          h2: "7. משווים מחיר ליחידה",
+          paragraphs: [
+            "המדף מציג מחיר ל־100 גרם, לקילו, לליטר או ליחידה. משתמשים בו כל פעם. אריזה משפחתית ומבצע «שניים ב־» הם לא תמיד הזולים ביותר ליחידה. ההרגל הזה תופס יותר בזבוז מכל קופון.",
+            "משווים במעבר, לא אחר כך בראש. קופסה של 500 גרם ב־15 ש״ח היא 3 ש״ח ל־100 גרם. קופסה של קילו ב־26 ש״ח היא 2.60 ש״ח. הגדולה זולה יותר רק אם באמת מסיימים אותה. אם חצי יתייבש, הקטנה היא הארוחה הזולה.",
+          ],
+        },
+        {
+          h2: "8. בוחרים מותג של הרשת",
+          paragraphs: [
+            "מוצרי בסיס של הרשת, כמו קמח, סוכר, עגבניות מקופסה, תבלינים, ירקות קפואים וחומרי ניקיון, לרוב עומדים באותו סטנדרט במחיר נמוך יותר. מנסים מוצר אחד בכל סיבוב ומשאירים את מה שטעים.",
+            "מתחילים ממוצרים שהמותג הוא בעיקר האריזה: עגבניות מקופסה, שיבולת שועל, אפונה קפואה, סוכר וסבון כלים. אם המשפחה אוהבת, ההחלפה נשארת. אם קפה או יוגורט של מותג מסוים הם מה שכולם באמת אוכלים, משאירים אותם וחוסכים במקום אחר.",
+          ],
+        },
+        {
+          h2: "9. מסתכלים למעלה ולמטה",
+          paragraphs: [
+            "המותגים היקרים בדרך כלל בגובה העיניים. שווה להציץ במדף העליון ובתחתון, שם יושבים לרוב המוצרים הזולים יותר. גם קצוות המעבר הם מיקום בולט, לא תמיד הנחה.",
+          ],
+        },
+        {
+          h2: "10. קפוא, שימורים ועונתי לירקות ופירות",
+          paragraphs: [
+            "כשמחירי הירקות הטריים עולים מהר מהממוצע, קפוא ושימורים הם החלפה חכמה. הם נארזים בשלים, נשמרים חודשים, ומקטינים בזבוז. בטרי, קונים מה שבעונה.",
+            "ירקות קפואים נכנסים למרק, לתבשיל ולאורז מטוגן, במקומות שהמרקם פחות חשוב מסלט חי. משאירים פריט טרי אחד שייאכל ביומיים הקרובים, והמקפיא מכסה את שאר השבוע. החלוקה הזו לרוב זולה יותר מעגלה של ירקות טריים שנובלים.",
+          ],
+        },
+        {
+          h2: "11. נשענים על חלבונים זולים יותר",
+          paragraphs: [
+            "בונים חלק מהארוחות סביב חלבונים שמחירם יורד או יציב: ביצים, מוצרי חלב, שעועית, עדשים, טונה וירכיים של עוף. הם מותחים תקציב יותר מבקר או דגים. שתיים או שלוש ארוחות בלי בשר בשבוע מצטברות.",
+            "סיר עדשים או חומוס יכול להיות הארוחה, או למתוח כמות קטנה יותר של בשר ברוטב. ביצים מכסות ארוחת בוקר וארוחת ערב מהירה. לא חייבים לוותר על בקר. רק לא צריך שהוא יהיה ברירת המחדל.",
+          ],
+        },
+        {
+          h2: "12. קונים בכמות רק מה שבאמת נגמר",
+          paragraphs: [
+            "קנייה בכמות חוסכת על מוצרים יבשים שמשתמשים בהם כל הזמן: אורז, שיבולת שועל, שעועית יבשה, עוף קפוא, נייר טואלט. היא עולה כסף כשהעודף מתקלקל. שואלים אם נסיים את זה לפני שיתקלקל.",
+            "קנייה טובה בכמות היא מחיר נמוך ליחידה ומקום לאחסן. קנייה גרועה היא מגש ענק של פירות יער או לחם כי נראה זול ליחידה ואז התעפש. אם אי אפשר לנקוב בארוחות שישתמשו בזה, משאירים על המדף.",
+          ],
+        },
+        {
+          h2: "13. מוותרים על חתוך ומוכן כשאפשר",
+          paragraphs: [
+            "ירקות חתוכים, גבינה מגוררת, בשר במרינדה וערכות סלט נושאים תוספת נוחות. אם השבוע הזמן חשוב מהכסף, זו עסקה הוגנת. אם לא, חמש דקות עם סכין חוסכות כמה שקלים בכל סיבוב.",
+          ],
+        },
+        {
+          h2: "אחרי הקנייה: פחות בזבוז",
+          id: "after",
+          paragraphs: [
+            "החשבון לא נגמר בקופה. אוכל שנאכל הוא האוכל שבאמת שילמתם עליו.",
+          ],
+        },
+        {
+          h2: "14. מאחסנים כך שהאוכל יחזיק",
+          paragraphs: [
+            "שמים קניות חדשות מאחורי הישנות, כדי שהישן ייאכל קודם. מקפיאים לחם, בשר ובננות בשלות שלא יספיקו. שוטפים ומכינים ירקות זמן קצר אחרי הקנייה כדי שיהיו מוכנים, לא נשכחים.",
+          ],
+        },
+        {
+          h2: "15. ערב שאריות, ורושמים מה זורקים",
+          paragraphs: [
+            "קובעים ערב אחד בשבוע לניצול: אורז מטוגן, פריטטה, מרק וקערות דגנים לוקחים כמעט הכול. שבועיים רושמים מה נזרק. מהר רואים ממה לקנות פחות בפעם הבאה.",
+            "רשימת מה שנזרק שימושית יותר מהבטחה כללית לבזבז פחות. אם עלי סלט מופיעים פעמיים, קונים שקית קטנה יותר או מחליפים את הארוחה לתרד קפוא. אם לחם מופיע, מקפיאים חצי כיכר ביום הקנייה.",
+          ],
+        },
+        {
+          h2: "רשימת הבדיקה לקניות",
+          id: "checklist",
+          items: [
+            "בדקתי מקרר, מקפיא ומזווה",
+            "תכננתי ארוחות לשבוע",
+            "כתבתי רשימה לפי מחלקות",
+            "קבעתי תקציב לסיבוב הזה",
+            "טענתי קופונים ובדקתי את המבצע השבועי",
+            "אכלתי לפני שיצאתי",
+            "השוויתי מחיר ליחידה בחנות",
+            "ניסיתי לפחות מוצר אחד של הרשת",
+            "שמתי קניות חדשות מאחורי הישנות בבית",
+          ],
+        },
+        {
+          h2: "שאלות נפוצות",
+          id: "faq",
+          faqs: [
+            {
+              q: "איך חוסכים בסופר מהר?",
+              a: "מתחילים בתכנון ארוחות ממה שכבר יש, קונים עם רשימה ותקציב, ומשווים מחיר ליחידה. שלושת ההרגלים האלה נותנים את החיסכון הגדול בשבוע הראשון.",
+            },
+            {
+              q: "איך בונים רשימת קניות שבאמת עובדת?",
+              a: "כותבים אותה מתכנון הארוחות, לא מהזיכרון, ומקבצים לפי מחלקה. שומרים רשימה רצה ומוסיפים מוצר בסיס ברגע שהוא נגמר.",
+            },
+            {
+              q: "ירקות קפואים זולים יותר מטריים?",
+              a: "לעיתים קרובות כן, במיוחד מחוץ לעונה. ירקות קפואים קרובים בערך תזונתי לטריים ויוצרים פחות בזבוז כי הם נשמרים חודשים.",
+            },
+            {
+              q: "כל כמה זמן כדאי לעשות קניות?",
+              a: "פעם בשבוע מתאים לרוב הבתים. פחות סיבובים אומרים פחות קניות דחף, עם עצירה קצרה באמצע השבוע לחלב או לירק טרי אם צריך.",
+            },
+            {
+              q: "מותג של הרשת טוב כמו מותג מוכר?",
+              a: "בהרבה מוצרי בסיס האיכות קרובה. בודקים פריט־פריט ומשאירים את מה שעובר את מבחן הטעם.",
+            },
+            {
+              q: "איך נשארים בתקציב קניות?",
+              a: "שמים את המספר השבועי בראש הרשימה, קונים לפי הרשימה, ובודקים מה נזרק. קניות לפי תקציב נהיות קלות יותר כשהמספר גלוי לפני שנכנסים לחנות.",
+            },
+          ],
+        },
+        {
+          h2: "בשורה התחתונה",
+          paragraphs: [
+            "קניות חכמות הן שיטה, לא ויתור. מתכננים לפני שיוצאים, שומרים על כמה כללים בחנות, ודואגים שמה שקניתם ייאכל. השבוע מתחילים בשלושה: לבדוק מה יש בבית, לכתוב רשימה, ולהשוות מחיר ליחידה. את השאר מוסיפים כשהם הופכים להרגל.",
+          ],
+          links: [
+            { href: "/blog/grocery-list-for-the-week", label: "רשימת קניות לשבוע" },
+            { href: "/blog/weekly-basics", label: "מצרכי מזווה לשבוע" },
+            { href: "/blog/top-7-groceries-every-week", label: "שבעה מצרכים לקנות כל שבוע" },
+            { href: "/blog/shared-grocery-list-for-families", label: "רשימת קניות משותפת חינם למשפחה" },
+          ],
+        },
+        {
+          h2: "מקורות",
+          paragraphs: [
+            "נתוני המחיר למעלה הם תחזית משרד החקלאות האמריקאי למזון לבית ב־2026, כפי שדווחה באוקטובר 2026.",
+          ],
+          links: [
+            { href: "https://www.ers.usda.gov/data-products/food-price-outlook/", label: "תחזית מחירי המזון של USDA ERS" },
+          ],
+        },
+      ],
+      cta: "צרו רשימת קניות משותפת בחינם",
+    },
+  },
   {
     slug: "shared-grocery-list-for-families",
     path: "/blog/shared-grocery-list-for-families",
