@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { LS } from "./utils.js";
 import { syncRoomPendingChecks } from "./syncPendingChecks.js";
 import { LanguageContext, useT } from "./i18n.js";
+import { isHePath, localizedPath } from "./seoPages.js";
 import JoinScreen  from "./components/JoinScreen.jsx";
 import ListsView   from "./components/ListsView.jsx";
 import ListDetail  from "./components/ListDetail.jsx";
@@ -70,7 +71,8 @@ export default function App() {
   const [lists,   setLists]   = useState([]);   // shared cache for deep-linked list detail
   const [lang,    setLang]    = useState(() => {
     const path = window.location.pathname;
-    if (path === "/he" || path === "/he/") return "he";
+    if (isHePath(path)) return "he";
+    if (path === "/blog" || path.startsWith("/blog/")) return "en";
     const saved = LS.get("fc_lang", null);
     if (saved) return saved;
     return navigator.language?.startsWith("he") ? "he" : "en";
@@ -148,10 +150,8 @@ export default function App() {
 
   function handleLangChange(newLang) {
     const path = window.location.pathname;
-    const onHome = path === "/" || path === "/he";
-    const next = newLang === "he" ? "/he" : "/";
-    const moveHome = onHome && path !== next;
-    if (newLang === lang && !moveHome) return;
+    const next = localizedPath(path, newLang);
+    if (newLang === lang && path === next) return;
     trackEvent("change_language", {
       from: lang,
       to: newLang,
@@ -159,7 +159,7 @@ export default function App() {
     });
     LS.set("fc_lang", newLang);
     setLang(newLang);
-    if (moveHome) navigateRef.current?.(next);
+    if (next !== path) navigateRef.current?.(next);
   }
 
   function handleJoin(sessionData) {
@@ -192,6 +192,7 @@ export default function App() {
       }}>
         <BrowserRouter>
           <CaptureNavigate navigateRef={navigateRef} />
+          <SyncLangFromPath setLang={setLang} />
           <GoogleAnalytics />
           {analyticsOn && <Analytics />}
           <OfflineBanner online={online} />
@@ -250,6 +251,20 @@ export default function App() {
             path="/privacy"
             element={
               <PrivacyPage lang={lang} onLangChange={handleLangChange} session={session} />
+            }
+          />
+
+          <Route
+            path="/he/blog"
+            element={
+              <BlogIndexPage lang={lang} onLangChange={handleLangChange} session={session} />
+            }
+          />
+
+          <Route
+            path="/he/blog/:slug"
+            element={
+              <BlogArticlePage lang={lang} onLangChange={handleLangChange} session={session} />
             }
           />
 
@@ -315,6 +330,24 @@ export default function App() {
 function CaptureNavigate({ navigateRef }) {
   const navigate = useNavigate();
   navigateRef.current = navigate;
+  return null;
+}
+
+function SyncLangFromPath({ setLang }) {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (isHePath(pathname)) {
+      LS.set("fc_lang", "he");
+      setLang("he");
+      return;
+    }
+    if (pathname === "/blog" || pathname.startsWith("/blog/")) {
+      LS.set("fc_lang", "en");
+      setLang("en");
+    }
+  }, [pathname, setLang]);
+
   return null;
 }
 

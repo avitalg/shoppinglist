@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useT } from "../i18n.js";
-import { privacyJsonLd } from "../seoPages.js";
+import { privacyJsonLd, marketingHomePath } from "../seoPages.js";
 import { MarketingPage, usePageMeta } from "./InfoPage.jsx";
 import "./InfoPage.css";
 
@@ -25,7 +25,7 @@ export default function PrivacyPage({ lang, onLangChange, session }) {
     path: "/privacy",
     lang,
   });
-  const homeTo = session ? "/lists" : "/";
+  const homeTo = marketingHomePath(session, lang);
   const ctaLabel = session ? t("backToLists") : t("aboutCta");
 
   useEffect(() => {

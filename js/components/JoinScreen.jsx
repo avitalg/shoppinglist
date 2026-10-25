@@ -1,12 +1,12 @@
 import { useState, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./JoinScreen.css";
 import "./ListDetail.css";
 import { db, doc, getDoc } from "../firebase.js";
 import { genCode, LS } from "../utils.js";
 import { useT, LanguageContext } from "../i18n.js";
 import { CATEGORIES, CATEGORY_BY_ID } from "../categories.js";
-import { HOME_SEO } from "../seoPages.js";
+import { HOME_SEO, PILLAR_SLUG, SHARED_LIST_SLUG, blogPostPath, pageHreflang } from "../seoPages.js";
 import { trackEvent } from "../analytics.js";
 import { SiteFooter, SiteHeader, usePageMeta } from "./InfoPage.jsx";
 
@@ -217,6 +217,7 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
     description: seo.description,
     path: seo.path,
     lang: hebrewHome ? "he" : "en",
+    hreflang: pageHreflang("/", "/he"),
   });
   const [lastRoom,  setLastRoom]  = useState(() => LS.get("fc_last_room", null));
   const [spaceName, setSpaceName] = useState("");
@@ -380,7 +381,11 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
           <ul className="home-feature-grid">
             <li>
               <span className="home-feature-icon" aria-hidden="true">🛒</span>
-              <span className="home-feature-text">{t("homeFeatureSync")}</span>
+              <span className="home-feature-text">
+                <Link to={blogPostPath(SHARED_LIST_SLUG, hebrewHome ? "he" : "en")}>
+                  {t("homeFeatureSync")}
+                </Link>
+              </span>
             </li>
             <li>
               <span className="home-feature-icon" aria-hidden="true">🥦</span>
@@ -391,6 +396,18 @@ export default function JoinScreen({ onJoin, lang, onLangChange }) {
               <span className="home-feature-text">{t("homeFeatureOffline")}</span>
             </li>
           </ul>
+        </section>
+
+        <section className="home-guide" aria-labelledby="home-guide-title">
+          <p className="home-eyebrow">{t("blogNav")}</p>
+          <h2 id="home-guide-title">{t("homeGuideTitle")}</h2>
+          <p className="home-lead">{t("homeGuideLead")}</p>
+          <Link
+            to={blogPostPath(PILLAR_SLUG, hebrewHome ? "he" : "en")}
+            className="home-guide-link"
+          >
+            {t("homeGuideLink")}
+          </Link>
         </section>
       </main>
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useT } from "../i18n.js";
-import { faqJsonLd } from "../seoPages.js";
+import { faqJsonLd, marketingHomePath } from "../seoPages.js";
 import { trackEvent } from "../analytics.js";
 import { MarketingPage, usePageMeta } from "./InfoPage.jsx";
 import "./InfoPage.css";
@@ -17,7 +17,7 @@ export default function FaqPage({ lang, onLangChange, session }) {
     path: "/faq",
     lang,
   });
-  const homeTo = session ? "/lists" : "/";
+  const homeTo = marketingHomePath(session, lang);
 
   useEffect(() => {
     if (!Array.isArray(faqs)) return;

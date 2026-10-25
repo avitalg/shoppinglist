@@ -696,6 +696,15 @@
   margin: 0;
 }
 
+.site-page-main .blog-article p a,
+.site-page-main .blog-article li a,
+.blog-post-lead a {
+  color: var(--green-d);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .site-page-main .blog-checklist {
   list-style: none;
   margin: 4px 0 0;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useT } from "../i18n.js";
-import { aboutJsonLd } from "../seoPages.js";
+import { aboutJsonLd, marketingHomePath } from "../seoPages.js";
 import { MarketingPage, usePageMeta } from "./InfoPage.jsx";
 import "./InfoPage.css";
 
@@ -15,7 +15,7 @@ export default function AboutPage({ lang, onLangChange, session }) {
     path: "/about",
     lang,
   });
-  const homeTo = session ? "/lists" : "/";
+  const homeTo = marketingHomePath(session, lang);
 
   useEffect(() => {
     document.getElementById(ABOUT_LD_ID)?.remove();

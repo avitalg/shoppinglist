@@ -2,7 +2,9 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  SITE, HOME_SEO, PAGE_SEO, FAQ_ITEMS, faqJsonLd, aboutJsonLd, privacyJsonLd,
+  SITE, HOME_SEO, PAGE_SEO, FAQ_ITEMS, PILLAR_SLUG, SHARED_LIST_SLUG, faqJsonLd,
+  aboutJsonLd, privacyJsonLd, blogIndexHreflang, blogIndexPath, blogPostHreflang,
+  blogPostPath, parseRichText, resolveBlogHref,
 } from "../js/seoPages.js";
 import {
   BLOG_POSTS, BLOG_SEO, blogIndexJsonLd, blogPostJsonLd,
@@ -152,69 +154,58 @@ function privacyBody() {
     </main>`;
 }
 
-function blogIndexBody() {
-  const en = BLOG_SEO.en;
-  const he = BLOG_SEO.he;
-  const enPosts = BLOG_POSTS.map(post => {
-    const locale = post.en;
+function richHtml(text, lang) {
+  return parseRichText(text).map(part => {
+    if (!part.href) return esc(part.text);
+    const href = resolveBlogHref(part.href, lang, part.exact);
+    return `<a href="${esc(href)}">${esc(part.text)}</a>`;
+  }).join("");
+}
+
+function blogIndexBody(lang) {
+  const seo = lang === "he" ? BLOG_SEO.he : BLOG_SEO.en;
+  const home = lang === "he" ? "/he" : "/";
+  const posts = BLOG_POSTS.map(post => {
+    const locale = lang === "he" ? post.he : post.en;
     return `<article>
-      <h2><a href="${esc(post.path)}">${esc(locale.h1)}</a></h2>
-      <p>${esc(locale.description)}</p>
-    </article>`;
-  }).join("\n");
-  const hePosts = BLOG_POSTS.map(post => {
-    const locale = post.he;
-    return `<article>
-      <h2><a href="${esc(post.path)}">${esc(locale.h1)}</a></h2>
+      <h2><a href="${esc(blogPostPath(post.slug, lang))}">${esc(locale.h1)}</a></h2>
       <p>${esc(locale.description)}</p>
     </article>`;
   }).join("\n");
   return `
     <main>
-      <h1>${esc(en.h1)}</h1>
-      <p>${esc(en.lead)}</p>
-      ${enPosts}
-      <section lang="he" dir="rtl">
-        <h2>${esc(he.h1)}</h2>
-        <p>${esc(he.lead)}</p>
-        ${hePosts}
-      </section>
-      <p><a href="/">GroceryPair</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a></p>
+      <h1>${esc(seo.h1)}</h1>
+      <p>${esc(seo.lead)}</p>
+      ${posts}
+      <p><a href="${home}">GroceryPair</a> · <a href="/about">About</a> · <a href="${esc(blogIndexPath(lang))}">Blog</a> · <a href="/faq">FAQ</a></p>
     </main>`;
 }
 
-function blogPostBody(post) {
-  const en = post.en;
-  const he = post.he;
+function blogPostBody(post, lang) {
+  const locale = lang === "he" ? post.he : post.en;
+  const home = lang === "he" ? "/he" : "/";
   const renderSection = section => `
       <h2${section.id ? ` id="${esc(section.id)}"` : ""}>${esc(section.h2)}</h2>
-      ${(section.paragraphs ?? []).map(p => `<p>${esc(p)}</p>`).join("\n")}
+      ${(section.paragraphs ?? []).map(p => `<p>${richHtml(p, lang)}</p>`).join("\n")}
       ${section.items?.length
-        ? `<ul>${section.items.map(item => `<li>${esc(item)}</li>`).join("")}</ul>`
+        ? `<ul>${section.items.map(item => `<li>${richHtml(item, lang)}</li>`).join("")}</ul>`
         : ""}
       ${section.table
         ? `<table><thead><tr>${section.table.headers.map(header => `<th>${esc(header)}</th>`).join("")}</tr></thead><tbody>${section.table.rows.map(row => `<tr>${row.map(cell => `<td>${esc(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table>`
         : ""}
-      ${section.note ? `<p>${esc(section.note)}</p>` : ""}
-      ${(section.after ?? []).map(paragraph => `<p>${esc(paragraph)}</p>`).join("\n")}
-      ${(section.faqs ?? []).map(faq => `<h3>${esc(faq.q)}</h3><p>${esc(faq.a)}</p>`).join("\n")}
-      ${(section.links ?? []).map(link => `<p><a href="${esc(link.href)}">${esc(link.label)}</a></p>`).join("\n")}
+      ${section.note ? `<p>${richHtml(section.note, lang)}</p>` : ""}
+      ${(section.after ?? []).map(paragraph => `<p>${richHtml(paragraph, lang)}</p>`).join("\n")}
+      ${(section.faqs ?? []).map(faq => `<h3>${esc(faq.q)}</h3><p>${richHtml(faq.a, lang)}</p>`).join("\n")}
+      ${(section.links ?? []).map(link => `<p><a href="${esc(resolveBlogHref(link.href, lang, link.exact))}">${esc(link.label)}</a></p>`).join("\n")}
     `;
-  const enSections = en.sections.map(renderSection).join("\n");
-  const heSections = he.sections.map(renderSection).join("\n");
+  const sections = locale.sections.map(renderSection).join("\n");
   return `
     <main>
-      <h1>${esc(en.h1)}</h1>
-      <p>${esc(en.lead)}</p>
-      ${enSections}
-      <p><a href="/">${esc(en.cta)}</a></p>
-      <section lang="he" dir="rtl">
-        <h2>${esc(he.h1)}</h2>
-        <p>${esc(he.lead)}</p>
-        ${heSections}
-        <p><a href="/">${esc(he.cta)}</a></p>
-      </section>
-      <p><a href="/blog">Blog</a> · <a href="/">GroceryPair</a></p>
+      <h1>${esc(locale.h1)}</h1>
+      <p>${richHtml(locale.lead, lang)}</p>
+      ${sections}
+      <p><a href="${home}">${esc(locale.cta)}</a></p>
+      <p><a href="${esc(blogIndexPath(lang))}">${esc(lang === "he" ? BLOG_SEO.he.h1 : "Blog")}</a> · <a href="${home}">GroceryPair</a></p>
     </main>`;
 }
 
@@ -240,7 +231,9 @@ function hebrewHomeBody() {
     <main lang="he" dir="rtl">
       <h1>${esc(he.h1)}</h1>
       <p>${esc(he.description)}</p>
-      <p><a href="/he">GroceryPair</a> · <a href="/about">About</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a></p>
+      <p><a href="${esc(blogPostPath(SHARED_LIST_SLUG, "he"))}">${esc(BLOG_POSTS.find(post => post.slug === SHARED_LIST_SLUG).he.h1)}</a></p>
+      <p><a href="${esc(blogPostPath(PILLAR_SLUG, "he"))}">${esc(BLOG_POSTS.find(post => post.slug === PILLAR_SLUG).he.h1)}</a></p>
+      <p><a href="/he">GroceryPair</a> · <a href="/about">About</a> · <a href="/he/blog">Blog</a> · <a href="/faq">FAQ</a></p>
     </main>`;
 }
 
@@ -305,20 +298,46 @@ const pages = [
   },
   {
     file: "blog/index.html",
-    path: BLOG_SEO.path,
+    path: blogIndexPath("en"),
     title: BLOG_SEO.en.title,
     description: BLOG_SEO.en.description,
-    jsonLd: blogIndexJsonLd(),
-    body: blogIndexBody(),
+    jsonLd: blogIndexJsonLd("en"),
+    htmlLang: "en",
+    hreflang: blogIndexHreflang(),
+    body: blogIndexBody("en"),
   },
-  ...BLOG_POSTS.map(post => ({
-    file: `blog/${post.slug}/index.html`,
-    path: post.path,
-    title: post.en.title,
-    description: post.en.description,
-    jsonLd: blogPostJsonLd(post),
-    body: blogPostBody(post),
-  })),
+  {
+    file: "he/blog/index.html",
+    path: blogIndexPath("he"),
+    title: BLOG_SEO.he.title,
+    description: BLOG_SEO.he.description,
+    jsonLd: blogIndexJsonLd("he"),
+    htmlLang: "he",
+    hreflang: blogIndexHreflang(),
+    body: blogIndexBody("he"),
+  },
+  ...BLOG_POSTS.flatMap(post => [
+    {
+      file: `blog/${post.slug}/index.html`,
+      path: blogPostPath(post.slug, "en"),
+      title: post.en.title,
+      description: post.en.description,
+      jsonLd: blogPostJsonLd(post, "en"),
+      htmlLang: "en",
+      hreflang: blogPostHreflang(post.slug),
+      body: blogPostBody(post, "en"),
+    },
+    {
+      file: `he/blog/${post.slug}/index.html`,
+      path: blogPostPath(post.slug, "he"),
+      title: post.he.title,
+      description: post.he.description,
+      jsonLd: blogPostJsonLd(post, "he"),
+      htmlLang: "he",
+      hreflang: blogPostHreflang(post.slug),
+      body: blogPostBody(post, "he"),
+    },
+  ]),
 ];
 
 const shell = await readFile(join(dist, "index.html"), "utf8");

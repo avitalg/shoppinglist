@@ -1,5 +1,86 @@
 export const SITE = "https://www.grocerypair.com";
 
+export function isHePath(pathname = "") {
+  return pathname === "/he" || pathname.startsWith("/he/");
+}
+
+export function marketingHomePath(session, lang) {
+  if (session) return "/lists";
+  return lang === "he" ? "/he" : "/";
+}
+
+export function pageHreflang(enPath, hePath) {
+  return {
+    en: `${SITE}${enPath}`,
+    he: `${SITE}${hePath}`,
+    "x-default": `${SITE}${enPath}`,
+  };
+}
+
+export const PILLAR_SLUG = "grocery-shopping-tips";
+export const SHARED_LIST_SLUG = "shared-shopping-list";
+
+const RICH_LINK = /\[([^\]]+)\]\((!?)([^)\s]+)\)/g;
+
+export function parseRichText(text) {
+  const value = String(text ?? "");
+  const parts = [];
+  let last = 0;
+  const re = new RegExp(RICH_LINK.source, "g");
+  let match;
+  while ((match = re.exec(value)) !== null) {
+    if (match.index > last) parts.push({ text: value.slice(last, match.index) });
+    parts.push({ text: match[1], href: match[3], exact: match[2] === "!" });
+    last = match.index + match[0].length;
+  }
+  if (last < value.length) parts.push({ text: value.slice(last) });
+  return parts.length ? parts : [{ text: value }];
+}
+
+export function stripRichText(text) {
+  return String(text ?? "").replace(RICH_LINK, "$1");
+}
+
+export function resolveBlogHref(href, lang, exact = false) {
+  return exact ? href : localizeHref(href, lang);
+}
+
+export function blogIndexPath(lang = "en") {
+  return lang === "he" ? "/he/blog" : "/blog";
+}
+
+export function blogPostPath(slug, lang = "en") {
+  return lang === "he" ? `/he/blog/${slug}` : `/blog/${slug}`;
+}
+
+export function localizeHref(href, lang = "en") {
+  if (!href || lang !== "he" || href.startsWith("http") || href.startsWith("#")) {
+    return href;
+  }
+  if (href === "/") return "/he";
+  if (href === "/blog" || href.startsWith("/blog/")) return `/he${href}`;
+  return href;
+}
+
+export function blogIndexHreflang() {
+  return pageHreflang(blogIndexPath("en"), blogIndexPath("he"));
+}
+
+export function blogPostHreflang(slug) {
+  return pageHreflang(blogPostPath(slug, "en"), blogPostPath(slug, "he"));
+}
+
+/** Map a public URL to the same page in `lang`. App routes without a pair stay put. */
+export function localizedPath(pathname, lang) {
+  const he = lang === "he";
+  const clean = pathname.replace(/\/+$/, "") || "/";
+  if (clean === "/" || clean === "/he") return he ? "/he" : "/";
+  if (clean === "/blog" || clean === "/he/blog") return he ? "/he/blog" : "/blog";
+  const article = clean.match(/^\/(?:he\/)?blog\/([^/]+)$/);
+  if (article) return he ? `/he/blog/${article[1]}` : `/blog/${article[1]}`;
+  return pathname;
+}
+
 export const HOME_SEO = {
   path: "/",
   title: "GroceryPair – Free Shared Shopping List App",

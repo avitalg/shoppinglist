@@ -1,7 +1,7 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useContext, useEffect, useId, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useT } from "../i18n.js";
-import { SITE } from "../seoPages.js";
+import { LanguageContext, useT } from "../i18n.js";
+import { SITE, blogIndexPath } from "../seoPages.js";
 import { useCookieConsent } from "./CookieBar.jsx";
 import "./InfoPage.css";
 
@@ -9,7 +9,11 @@ import "./InfoPage.css";
  * Sets document title, description, canonical, Open Graph, Twitter, and hreflang.
  * Restores the previous values on unmount.
  */
-export function usePageMeta({ title, description, path, lang = "en" }) {
+export function usePageMeta({ title, description, path, lang = "en", hreflang }) {
+  const hreflangEn = hreflang?.en;
+  const hreflangHe = hreflang?.he;
+  const hreflangDefault = hreflang?.["x-default"];
+
   useEffect(() => {
     const url = `${SITE}${path}`;
     const locale = lang === "he" ? "he_IL" : "en_US";
@@ -39,13 +43,14 @@ export function usePageMeta({ title, description, path, lang = "en" }) {
 
     const alts = [...document.querySelectorAll('link[rel="alternate"][hreflang]')];
     const prevAlts = alts.map(link => link.getAttribute("href"));
-    const homeLang = path === "/" || path === "/he";
+    const pairs = hreflangEn
+      ? { en: hreflangEn, he: hreflangHe, "x-default": hreflangDefault }
+      : path === "/" || path === "/he"
+        ? { he: `${SITE}/he`, en: `${SITE}/`, "x-default": `${SITE}/` }
+        : null;
     alts.forEach(link => {
       const code = link.getAttribute("hreflang");
-      const href = homeLang
-        ? (code === "he" ? `${SITE}/he` : `${SITE}/`)
-        : url;
-      link.setAttribute("href", href);
+      link.setAttribute("href", pairs?.[code] ?? url);
     });
 
     return () => {
@@ -58,7 +63,7 @@ export function usePageMeta({ title, description, path, lang = "en" }) {
         if (prevAlts[i] != null) link.setAttribute("href", prevAlts[i]);
       });
     };
-  }, [title, description, path, lang]);
+  }, [title, description, path, lang, hreflangEn, hreflangHe, hreflangDefault]);
 }
 
 export function LangSwitcher({ lang, onLangChange }) {
@@ -115,9 +120,15 @@ export function SiteHeader({ lang, onLangChange, homeTo = "/" }) {
     };
   }, [menuOpen]);
 
+  const blogTo = blogIndexPath(lang);
+
   function navClass(path) {
-    const active = path === "/blog"
-      ? pathname.startsWith("/blog")
+    const blogActive = pathname === "/blog"
+      || pathname === "/he/blog"
+      || pathname.startsWith("/blog/")
+      || pathname.startsWith("/he/blog/");
+    const active = path === "/blog" || path === "/he/blog"
+      ? blogActive
       : pathname === path;
     return active ? "is-active" : undefined;
   }
@@ -136,7 +147,7 @@ export function SiteHeader({ lang, onLangChange, homeTo = "/" }) {
         <Link to="/about" className={navClass("/about")} onClick={() => setMenuOpen(false)}>
           {t("aboutNav")}
         </Link>
-        <Link to="/blog" className={navClass("/blog")} onClick={() => setMenuOpen(false)}>
+        <Link to={blogTo} className={navClass(blogTo)} onClick={() => setMenuOpen(false)}>
           {t("blogNav")}
         </Link>
         <Link to="/faq" className={navClass("/faq")} onClick={() => setMenuOpen(false)}>
@@ -164,6 +175,7 @@ export function SiteHeader({ lang, onLangChange, homeTo = "/" }) {
 
 export function SiteFooter() {
   const t = useT();
+  const lang = useContext(LanguageContext);
   const { openSettings, regime, regionReady } = useCookieConsent();
   const showPrivacyChoice = regionReady && regime !== "other";
   const privacyChoiceLabel = regime === "us" ? t("doNotSellNav") : t("cookieNav");
@@ -172,7 +184,7 @@ export function SiteFooter() {
     <nav className="site-footer-links" aria-label={t("footerNav")}>
       <Link to="/about">{t("aboutNav")}</Link>
       <span aria-hidden="true">·</span>
-      <Link to="/blog">{t("blogNav")}</Link>
+      <Link to={blogIndexPath(lang)}>{t("blogNav")}</Link>
       <span aria-hidden="true">·</span>
       <Link to="/faq">{t("faqNav")}</Link>
       <span aria-hidden="true">·</span>

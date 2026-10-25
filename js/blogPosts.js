@@ -1,4 +1,4 @@
-import { SITE } from "./seoPages.js";
+import { SITE, blogIndexPath, blogPostPath, stripRichText } from "./seoPages.js";
 
 /** @typedef {{ q: string, a: string }} BlogFaq */
 /** @typedef {{ href: string, label: string }} BlogLink */
@@ -27,6 +27,269 @@ import { SITE } from "./seoPages.js";
 /** @type {BlogPost[]} */
 export const BLOG_POSTS = [
   {
+    slug: "shared-shopping-list",
+    path: "/blog/shared-shopping-list",
+    date: "2026-10-25",
+    en: {
+      title: "Shared Shopping List: The Complete 2026 Guide | GroceryPair",
+      description:
+        "One shopping list for your whole household, synced in real time. Learn who it's for, which methods work, and how to set up a free shared list in 2 minutes.",
+      h1: "Shared Shopping List: How to Run One List for Your Whole Household",
+      lead:
+        "You're standing in the dairy aisle. You text home: \"Do we need milk?\" No answer. You buy it anyway. At home there are already two cartons in the fridge, because your partner bought milk yesterday.",
+      publishedLabel: "Published October 25, 2026",
+      sections: [
+        {
+          h2: "What is a shared shopping list?",
+          id: "what",
+          paragraphs: [
+            "A shared shopping list fixes this. It's one list that everyone in the household can see and edit, and it updates the moment someone adds or checks off an item. This guide covers who it helps, the four common ways to share a list, how to set one up for free, and the habits that make it stick.",
+            "A shared shopping list is one grocery list that several people use at the same time from their own phones. When one person adds \"eggs\" at home, the person at the store sees it instantly. When the shopper checks off \"eggs,\" everyone at home sees that too.",
+            "A good shared list has three things:",
+          ],
+          items: [
+            "Real-time sync. Changes appear on every phone within seconds, with no refresh or resend.",
+            "Check-off. Items are crossed off as they go into the cart, so nobody buys the same thing twice.",
+            "Easy access. Everyone can join quickly, including grandparents, teenagers and roommates who won't install five apps.",
+          ],
+        },
+        {
+          h2: "Who needs a shared shopping list?",
+          id: "who",
+          paragraphs: [
+            "Couples. Two people, two schedules, one fridge. A shared list ends the \"I thought you were buying it\" conversation. See our guide to [sharing a grocery list with your partner](/blog/share-grocery-list-with-partner) in real time.",
+            "Families. Kids finish the cereal and nobody writes it down. With a shared list, anyone in the house can add an item the moment it runs out. Read how [families share one grocery list](/blog/shared-grocery-list-for-families).",
+            "Roommates. A shared list shows what the apartment needs (toilet paper, dish soap, coffee) and who already bought it. That makes splitting costs fairer.",
+            "Events and gatherings. Hosting a birthday, a holiday dinner or a weekend trip? One list for everyone bringing food stops you from ending up with four bags of chips and no drinks.",
+          ],
+        },
+        {
+          h2: "4 ways to share a shopping list, compared",
+          id: "methods",
+          table: {
+            headers: ["Method", "Real-time sync", "Check-off for everyone", "Works for non-tech family members", "Best for"],
+            rows: [
+              ["Paper list on the fridge", "No", "No", "Yes", "People who always shop together"],
+              ["Text or WhatsApp messages", "No", "No (messages get buried)", "Yes", "Quick one-off requests"],
+              ["Shared notes app (Google Keep, Apple Notes, Reminders)", "Mostly", "Yes", "Needs the same ecosystem or an account", "Households that already use the same platform"],
+              ["Dedicated shared shopping list app", "Yes", "Yes", "Yes, if joining is simple", "Any household that shops separately"],
+            ],
+          },
+          after: [
+            "Paper and messages work until two people shop on the same day. Notes apps are better, but they're built for notes, not shopping, and everyone usually needs the same account type or device. A dedicated app is built for one job: one list, live on every phone.",
+          ],
+        },
+        {
+          h2: "How to set up a free shared shopping list in 2 minutes",
+          id: "setup",
+          paragraphs: [
+            "Here's how it works with GroceryPair, which is free and needs no sign-up:",
+          ],
+          items: [
+            "Create a room. Open GroceryPair and create a new list. You'll get a short room code.",
+            "Share the code. Send it to your partner, kids or roommates over WhatsApp or text.",
+            "They join. They open GroceryPair, enter the code, and they're in. No account and no password.",
+            "Start adding. Type items, or use voice input when your hands are full.",
+            "Shop together, separately. Whoever goes to the store checks items off. Everyone else sees it live.",
+          ],
+          after: [
+            "The list works offline too. If your supermarket has no signal, keep checking items off and it syncs when you're back online.",
+          ],
+          links: [
+            { href: "/", label: "Create your free shared shopping list →" },
+          ],
+        },
+        {
+          h2: "7 habits that make a shared list work",
+          id: "habits",
+          items: [
+            "Add it when you finish it. The moment the last egg is used, add eggs. Don't wait for \"list day.\"",
+            "Be specific. \"Yogurt\" leads to the wrong yogurt. \"Greek yogurt, plain, 500 g\" doesn't.",
+            "Check off in the store, not at home. That way everyone knows it's actually in the cart.",
+            "Keep one list per household. A second \"just for me\" list brings the duplicate buying back.",
+            "Group by aisle. Produce, dairy, bakery and frozen in that order make a faster trip. Our [grocery shopping tips](/blog/grocery-shopping-tips) cover more.",
+            "Keep a weekly baseline. Add your staples every week so nobody forgets the basics. Start with our [weekly grocery list](/blog/weekly-grocery-list).",
+            "Clear checked items after each trip. A clean list makes it obvious what's still needed.",
+          ],
+        },
+        {
+          h2: "How a shared list saves money",
+          id: "money",
+          paragraphs: [
+            "The biggest saving is simple: you stop buying things twice. Duplicate purchases of milk, bread, sauces and snacks add up quickly for busy households. A shared list also cuts impulse buys, because you shop from a list everyone agreed on instead of from memory. And fewer forgotten items means fewer extra trips back to the store.",
+          ],
+        },
+        {
+          h2: "Frequently asked questions",
+          id: "faq",
+          faqs: [
+            {
+              q: "Is there a free shared shopping list app?",
+              a: "Yes. GroceryPair is free and needs no sign-up. You create a room, share the code, and everyone sees the same list.",
+            },
+            {
+              q: "Can I share a shopping list between iPhone and Android?",
+              a: "Yes. GroceryPair works on any device, so an iPhone and an Android phone can share the same list.",
+            },
+            {
+              q: "Does a shared shopping list work offline?",
+              a: "GroceryPair does. Changes made offline sync automatically when you reconnect.",
+            },
+            {
+              q: "How many people can share one list?",
+              a: "As many as you invite with the room code: a couple, a family or a whole apartment of roommates.",
+            },
+            {
+              q: "Is GroceryPair available in Hebrew?",
+              a: "Yes. The app supports Hebrew and English, so bilingual households can use one list. [Read this guide in Hebrew](!/he/blog/shared-shopping-list).",
+            },
+          ],
+        },
+        {
+          h2: "One list, everyone in sync",
+          id: "close",
+          paragraphs: [
+            "A shared shopping list is the simplest fix for double-buying, forgotten items and \"did you get the milk?\" texts. Set one up today and see how much smoother your next shop is.",
+          ],
+          links: [
+            { href: "/", label: "Start your free shared shopping list →" },
+            { href: "/faq", label: "More questions? See the GroceryPair FAQ." },
+          ],
+        },
+      ],
+      cta: "Create your free shared shopping list",
+    },
+    he: {
+      title: "רשימת קניות משותפת: המדריך המלא ל-2026 | GroceryPair",
+      description:
+        "רשימת קניות אחת לכל הבית, מסונכרנת בזמן אמת. למי זה מתאים, אילו שיטות עובדות, ואיך מקימים רשימה משותפת בחינם בשתי דקות.",
+      h1: "רשימת קניות משותפת: איך מנהלים רשימה אחת לכל הבית",
+      lead:
+        "אתם עומדים מול המקרר במחלקת החלב בסופר ושולחים הודעה הביתה: \"צריך חלב?\" אין תשובה. אתם קונים בכל זאת. בבית מחכות כבר שתי קרטוניות, כי בן הזוג קנה חלב אתמול.",
+      publishedLabel: "פורסם ב־25 באוקטובר 2026",
+      sections: [
+        {
+          h2: "מה זו רשימת קניות משותפת?",
+          id: "what",
+          paragraphs: [
+            "רשימת קניות משותפת פותרת את זה. זו רשימה אחת שכל בני הבית רואים ועורכים, והיא מתעדכנת ברגע שמישהו מוסיף פריט או מסמן שקנה אותו. במדריך הזה תמצאו למי זה מתאים, ארבע שיטות נפוצות לשתף רשימה, איך מקימים אחת בחינם, ואילו הרגלים גורמים לה לעבוד.",
+            "רשימת קניות משותפת היא רשימה אחת שכמה אנשים משתמשים בה באותו זמן, כל אחד מהטלפון שלו. כשמישהו מוסיף \"ביצים\" בבית, מי שבסופר רואה את זה מיד. כשהקונה מסמן \"ביצים\", כל מי שבבית רואה את זה גם.",
+            "רשימה משותפת טובה צריכה שלושה דברים:",
+          ],
+          items: [
+            "סנכרון בזמן אמת. כל שינוי מופיע בכל הטלפונים תוך שניות.",
+            "סימון פריטים. מסמנים כל פריט שנכנס לעגלה, כך שאף אחד לא קונה פעמיים.",
+            "הצטרפות קלה. כולם מצטרפים מהר, גם סבתא, גם הילדים וגם השותפים לדירה.",
+          ],
+        },
+        {
+          h2: "למי מתאימה רשימת קניות משותפת?",
+          id: "who",
+          paragraphs: [
+            "לזוגות. שני לוחות זמנים ומקרר אחד. רשימה משותפת מסיימת את ה\"חשבתי שאתה קונה\". קראו [איך לשתף רשימת קניות עם בן/בת הזוג](/blog/share-grocery-list-with-partner) בזמן אמת.",
+            "למשפחות. הילדים גמרו את הקורנפלקס ואף אחד לא רשם. עם רשימה משותפת כל אחד בבית מוסיף פריט ברגע שהוא נגמר. קראו [איך משפחות משתפות רשימת קניות אחת](/blog/shared-grocery-list-for-families).",
+            "לשותפים לדירה. רואים מה הדירה צריכה (נייר טואלט, סבון כלים, קפה) ומי כבר קנה. ככה גם קל יותר לחלק את ההוצאות בהגינות.",
+            "לשבת, חגים ואירועים. ארוחת שישי אצל ההורים, סדר פסח או טיול סוף שבוע? רשימה אחת לכל מי שמביא אוכל, ולא מגיעים עם ארבע שקיות במבה ובלי שתייה.",
+          ],
+        },
+        {
+          h2: "4 דרכים לשתף רשימת קניות",
+          id: "methods",
+          table: {
+            headers: ["שיטה", "סנכרון בזמן אמת", "סימון פריטים לכולם", "מתאים לכל בני המשפחה", "מתאים ל-"],
+            rows: [
+              ["פתק על המקרר", "לא", "לא", "כן", "מי שתמיד קונה ביחד"],
+              ["הודעות בוואטסאפ", "לא", "לא (ההודעות נקברות)", "כן", "בקשה חד-פעמית"],
+              ["אפליקציית פתקים משותפת (Google Keep, פתקים של אפל)", "בדרך כלל", "כן", "דורש אותה מערכת או חשבון", "בית שכולם בו על אותה פלטפורמה"],
+              ["אפליקציה ייעודית לרשימת קניות משותפת", "כן", "כן", "כן, אם ההצטרפות פשוטה", "כל בית שקונים בו בנפרד"],
+            ],
+          },
+          after: [
+            "קבוצת הוואטסאפ המשפחתית עובדת עד שהרשימה נקברת מתחת לתמונות ולהודעות \"מי אוסף את הילדים?\". אפליקציית פתקים טובה יותר, אבל היא לא נבנתה לקניות. אפליקציה ייעודית עושה דבר אחד: רשימה אחת, חיה בכל הטלפונים.",
+          ],
+        },
+        {
+          h2: "איך מקימים רשימת קניות משותפת בחינם בשתי דקות",
+          id: "setup",
+          paragraphs: [
+            "כך זה עובד ב-GroceryPair, בחינם ובלי הרשמה:",
+          ],
+          items: [
+            "יוצרים חדר. פותחים את GroceryPair ויוצרים רשימה חדשה. מקבלים קוד חדר קצר.",
+            "שולחים את הקוד. שולחים אותו לבן הזוג, לילדים או לשותפים בוואטסאפ.",
+            "הם מצטרפים. פותחים את GroceryPair, מקלידים את הקוד, וזהו. בלי חשבון ובלי סיסמה.",
+            "מוסיפים פריטים. מקלידים, או משתמשים בהקלטה קולית כשהידיים מלאות.",
+            "קונים ביחד, כל אחד לחוד. מי שבסופר מסמן, וכל השאר רואים בזמן אמת.",
+          ],
+          after: [
+            "הרשימה עובדת גם בלי אינטרנט. אין קליטה בסופר? ממשיכים לסמן, והכול מסתנכרן כשחוזרת הקליטה.",
+          ],
+          links: [
+            { href: "/", label: "צרו רשימת קניות משותפת בחינם ←" },
+          ],
+        },
+        {
+          h2: "7 הרגלים שגורמים לרשימה המשותפת לעבוד",
+          id: "habits",
+          items: [
+            "מוסיפים ברגע שנגמר. הביצה האחרונה נגמרה? מוסיפים ביצים מיד.",
+            "מדייקים. \"יוגורט\" מביא את היוגורט הלא נכון. \"יוגורט יווני 5%, 500 גרם\" לא.",
+            "מסמנים בסופר, לא בבית. ככה כולם יודעים שזה באמת בעגלה.",
+            "רשימה אחת לכל הבית. רשימה פרטית נוספת מחזירה את הקניות הכפולות.",
+            "מסדרים לפי מחלקות. ירקות, מוצרי חלב, מאפים וקפואים, בסדר הזה. עוד [טיפים לקניות בסופר](/blog/grocery-shopping-tips).",
+            "שומרים בסיס שבועי. מוסיפים את המוצרים הקבועים כל שבוע. התחילו מ[רשימת הקניות השבועית](/blog/weekly-grocery-list).",
+            "מנקים פריטים מסומנים אחרי כל קנייה. רשימה נקייה מראה בבירור מה עוד חסר.",
+          ],
+        },
+        {
+          h2: "איך רשימה משותפת חוסכת כסף",
+          id: "money",
+          paragraphs: [
+            "החיסכון הגדול פשוט: מפסיקים לקנות פעמיים. חלב, לחם, רטבים וחטיפים כפולים מצטברים מהר. רשימה משותפת גם מצמצמת קניות דחף, כי קונים לפי רשימה שכולם הסכימו עליה. ופחות פריטים שנשכחו פירושו פחות נסיעות חוזרות לסופר.",
+          ],
+        },
+        {
+          h2: "שאלות נפוצות",
+          id: "faq",
+          faqs: [
+            {
+              q: "יש אפליקציה חינמית לרשימת קניות משותפת?",
+              a: "כן. GroceryPair חינמית ולא דורשת הרשמה. יוצרים חדר, שולחים קוד, וכולם רואים את אותה רשימה.",
+            },
+            {
+              q: "אפשר לשתף רשימה בין אייפון לאנדרואיד?",
+              a: "כן. GroceryPair עובדת בכל מכשיר, כך שאייפון ואנדרואיד משתפים את אותה רשימה.",
+            },
+            {
+              q: "הרשימה עובדת בלי אינטרנט?",
+              a: "כן. שינויים שנעשו בלי חיבור מסתנכרנים אוטומטית כשחוזרים לרשת.",
+            },
+            {
+              q: "כמה אנשים יכולים לשתף רשימה אחת?",
+              a: "כמה שתזמינו עם קוד החדר: זוג, משפחה או דירת שותפים שלמה.",
+            },
+            {
+              q: "האפליקציה בעברית?",
+              a: "כן. GroceryPair תומכת בעברית ובאנגלית. [Read this guide in English](!/blog/shared-shopping-list).",
+            },
+          ],
+        },
+        {
+          h2: "רשימה אחת, כולם מסונכרנים",
+          id: "close",
+          paragraphs: [
+            "רשימת קניות משותפת היא הדרך הפשוטה ביותר לסיים עם קניות כפולות, מוצרים שנשכחו והודעות \"קנית חלב?\". הקימו אחת היום.",
+          ],
+          links: [
+            { href: "/", label: "התחילו רשימת קניות משותפת בחינם ←" },
+            { href: "/faq", label: "עוד שאלות? בשאלות הנפוצות של GroceryPair." },
+          ],
+        },
+      ],
+      cta: "צרו רשימת קניות משותפת בחינם",
+    },
+  },
+  {
     slug: "grocery-shopping-tips",
     path: "/blog/grocery-shopping-tips",
     date: "2026-10-21",
@@ -36,7 +299,7 @@ export const BLOG_POSTS = [
         "15 grocery shopping tips that cut your bill without cutting good food: plan smarter, read unit prices, beat store tricks, and waste less. Free checklist.",
       h1: "15 Grocery Shopping Tips to Spend Less and Eat Better",
       lead:
-        "Your grocery bill is one of the few big expenses you control every single week. The right grocery shopping tips won't have you clipping coupons for hours or living on rice and beans. They give you a simple system: plan before you go, shop with a few rules in the store, and waste less once you're home.",
+        "Your grocery bill is one of the few big expenses you control every single week. The right grocery shopping tips won't have you clipping coupons for hours or living on rice and beans. They give you a simple system: plan before you go, shop with a few rules in the store, and waste less once you're home. If you shop with other people, start from our [shared shopping list](/blog/shared-shopping-list) guide.",
       publishedLabel: "Published October 21, 2026",
       sections: [
         {
@@ -260,7 +523,7 @@ export const BLOG_POSTS = [
         "15 טיפים לקניות שמקטינים את החשבון בלי לוותר על אוכל טוב: תכנון, מחיר ליחידה, פחות בזבוז, ורשימת בדיקה.",
       h1: "15 טיפים לקניות בסופר: להוציא פחות ולאכול טוב",
       lead:
-        "חשבון הסופר הוא אחת ההוצאות הגדולות שאפשר לשלוט בהן כל שבוע. טיפים לקניות בסופר לא דורשים לגזור קופונים שעות או לחיות על אורז. הם נותנים שיטה פשוטה: לתכנן לפני שיוצאים, כמה כללים בחנות, ופחות בזבוז בבית.",
+        "חשבון הסופר הוא אחת ההוצאות הגדולות שאפשר לשלוט בהן כל שבוע. טיפים לקניות בסופר לא דורשים לגזור קופונים שעות או לחיות על אורז. הם נותנים שיטה פשוטה: לתכנן לפני שיוצאים, כמה כללים בחנות, ופחות בזבוז בבית. אם קונים עם עוד אנשים, התחילו ממדריך [רשימת קניות משותפת](/blog/shared-shopping-list).",
       publishedLabel: "פורסם ב־21 באוקטובר 2026",
       sections: [
         {
@@ -489,7 +752,7 @@ export const BLOG_POSTS = [
         "Stop double-buying groceries. Share one free grocery list with your whole family, synced in real time. Set it up in 2 minutes.",
       h1: "Stop Buying 3 Jars of Mayo: The Free Way Families Share One Grocery List",
       lead:
-        "You open the fridge and there they are: three jars of mayonnaise. One from you, one from your partner, and one from the teenager who thought you were out. Meanwhile, nobody bought eggs. Sound familiar? When everyone shops from memory, a note, or a group chat, a shared grocery list is the simple fix.",
+        "You open the fridge and there they are: three jars of mayonnaise. One from you, one from your partner, and one from the teenager who thought you were out. Meanwhile, nobody bought eggs. Sound familiar? When everyone shops from memory, a note, or a group chat, a shared grocery list is the simple fix. Start with our [shared shopping list](/blog/shared-shopping-list) guide.",
       publishedLabel: "Published October 18, 2026",
       sections: [
         {
@@ -604,7 +867,7 @@ export const BLOG_POSTS = [
         "מפסיקים לקנות כפול. רשימת קניות אחת חינם לכל המשפחה, מסונכרנת בזמן אמת. ההקמה לוקחת שתי דקות.",
       h1: "תפסיקו לקנות 3 צנצנות מיונז: הדרך החינמית לרשימת קניות אחת",
       lead:
-        "פותחים את המקרר ושם הן: שלוש צנצנות מיונז. אחת שלך, אחת של בן או בת הזוג, ואחת של המתבגר שחשב שנגמר. וביצים? אף אחד לא קנה. מוכר? כשכל אחד קונה לפי זיכרון, פתק או קבוצת וואטסאפ, רשימת קניות משותפת היא הפתרון הפשוט.",
+        "פותחים את המקרר ושם הן: שלוש צנצנות מיונז. אחת שלך, אחת של בן או בת הזוג, ואחת של המתבגר שחשב שנגמר. וביצים? אף אחד לא קנה. מוכר? כשכל אחד קונה לפי זיכרון, פתק או קבוצת וואטסאפ, [רשימת קניות משותפת](/blog/shared-shopping-list) היא הפתרון הפשוט.",
       publishedLabel: "פורסם ב־18 באוקטובר 2026",
       sections: [
         {
@@ -724,7 +987,7 @@ export const BLOG_POSTS = [
         "Seven weekly staples — eggs, vegetables, fruit, dairy, lean protein, whole grains, and beans — that cover most meals and cut both spending and decision fatigue.",
       h1: "The Top 7 Groceries You Need to Buy Every Week",
       lead:
-        "A short, fixed list of seven staples covers most of a week's meals and cuts both spending and decision fatigue. Build every shop around these, then add whatever recipes or cravings the week calls for.",
+        "A short, fixed list of seven staples covers most of a week's meals and cuts both spending and decision fatigue. Build every shop around these, then add whatever recipes or cravings the week calls for. Keep those staples on a [shared shopping list](/blog/shared-shopping-list) so everyone sees them.",
       publishedLabel: "Published October 16, 2026",
       sections: [
         {
@@ -817,7 +1080,7 @@ export const BLOG_POSTS = [
         "שבעה מצרכי בסיס שבועיים — ביצים, ירקות, פירות, חלב, חלבון רזה, דגנים מלאים וקטניות — שמכסים את רוב הארוחות ומקצרים גם הוצאה וגם התלבטות.",
       h1: "שבעת המצרכים שכדאי לקנות כל שבוע",
       lead:
-        "רשימה קצרה וקבועה של שבעה מצרכי בסיס מכסה את רוב הארוחות בשבוע, ומקצרת גם את ההוצאה וגם את ההתלבטות. בנו כל קנייה סביב אלה, ואז הוסיפו את מה שמופיע במתכונים או שמתחשק לכם השבוע.",
+        "רשימה קצרה וקבועה של שבעה מצרכי בסיס מכסה את רוב הארוחות בשבוע, ומקצרת גם את ההוצאה וגם את ההתלבטות. בנו כל קנייה סביב אלה, ואז הוסיפו את מה שמופיע במתכונים או שמתחשק לכם השבוע. שימו אותם ב[רשימת קניות משותפת](/blog/shared-shopping-list) כדי שכולם יראו.",
       publishedLabel: "פורסם ב־16 באוקטובר 2026",
       sections: [
         {
@@ -915,7 +1178,7 @@ export const BLOG_POSTS = [
         "A short weekly grocery list with five concrete items for each GroceryPair aisle: produce, meat, dairy, bakery, pantry, frozen, drinks, snacks, personal care, and household.",
       h1: "Weekly basics",
       lead:
-        "A weekly basics list is a small set of concrete groceries for each aisle, not a menu for the whole month. These are the categories GroceryPair uses in the app. Copy the ones you are actually out of.",
+        "A weekly basics list is a small set of concrete groceries for each aisle, not a menu for the whole month. These are the categories GroceryPair uses in the app. Copy the ones you are actually out of onto a [shared shopping list](/blog/shared-shopping-list) so the household stays in sync.",
       publishedLabel: "Published October 11, 2026",
       sections: [
         {
@@ -1003,7 +1266,7 @@ export const BLOG_POSTS = [
         "רשימת קניות שבועית קצרה עם חמישה פריטים קונקרטיים לכל מדור ב־GroceryPair: ירקות, בשר, חלב, מאפייה, מזווה, קפוא, משקאות, חטיפים, טיפוח ובית.",
       h1: "הבסיס השבועי",
       lead:
-        "רשימת בסיס שבועית היא סט קטן של מצרכים קונקרטיים לכל מדור, לא תפריט לחודש שלם. אלה הקטגוריות ש־GroceryPair משתמשת בהן באפליקציה. העתיקו רק את מה שבאמת נגמר.",
+        "רשימת בסיס שבועית היא סט קטן של מצרכים קונקרטיים לכל מדור, לא תפריט לחודש שלם. אלה הקטגוריות ש־GroceryPair משתמשת בהן באפליקציה. העתיקו רק את מה שבאמת נגמר אל [רשימת קניות משותפת](/blog/shared-shopping-list) כדי שהבית יישאר מסונכרן.",
       publishedLabel: "פורסם ב־11 באוקטובר 2026",
       sections: [
         {
@@ -1096,7 +1359,7 @@ export const BLOG_POSTS = [
         "A practical grocery list for the week: produce, dairy, eggs, bread, a few proteins, and pantry basics. Buy only what you are running low on or plan to use.",
       h1: "Grocery List for the Week: Simple Essentials You Actually Need",
       lead:
-        "A practical weekly grocery list usually includes fresh produce, milk and dairy, eggs, bread, a few protein sources, and basic foods for the meals you plan to make. You don't need to buy every item every week. Check your fridge and pantry first, then add only what you are actually running low on or plan to use.",
+        "A practical weekly grocery list usually includes fresh produce, milk and dairy, eggs, bread, a few protein sources, and basic foods for the meals you plan to make. You don't need to buy every item every week. Check your fridge and pantry first, then add only what you are actually running low on or plan to use. A [shared shopping list](/blog/shared-shopping-list) keeps that weekly list in everyone's pocket.",
       publishedLabel: "Published September 26, 2026",
       sections: [
         {
@@ -1237,7 +1500,7 @@ export const BLOG_POSTS = [
         "רשימת קניות מעשית לשבוע: ירקות ופירות, חלב, ביצים, לחם, כמה חלבונים ובסיס למזווה. קונים רק מה שאוזל או מה שמתכננים להשתמש בו.",
       h1: "רשימת קניות לשבוע: המצרכים הפשוטים שבאמת צריך",
       lead:
-        "רשימת קניות שבועית מעשית כוללת בדרך כלל ירקות ופירות טריים, חלב ומוצרי חלב, ביצים, לחם, כמה מקורות חלבון, ומזונות בסיסיים לארוחות שמתכננים להכין. לא צריך לקנות כל פריט כל שבוע. קודם בודקים מה יש במקרר ובמזווה, ואז מוסיפים רק מה שבאמת אוזל או מה שמתכוונים להשתמש בו.",
+        "רשימת קניות שבועית מעשית כוללת בדרך כלל ירקות ופירות טריים, חלב ומוצרי חלב, ביצים, לחם, כמה מקורות חלבון, ומזונות בסיסיים לארוחות שמתכננים להכין. לא צריך לקנות כל פריט כל שבוע. קודם בודקים מה יש במקרר ובמזווה, ואז מוסיפים רק מה שבאמת אוזל או מה שמתכוונים להשתמש בו. [רשימת קניות משותפת](/blog/shared-shopping-list) משאירה את הרשימה השבועית בכיס של כולם.",
       publishedLabel: "פורסם ב־26 בספטמבר 2026",
       sections: [
         {
@@ -1383,7 +1646,7 @@ export const BLOG_POSTS = [
         "A practical weekly grocery list and grocery checklist organized by aisle — fruits, protein, dairy, pantry, cleaning, and more. Use it as your weekly shopping list or printable grocery list template.",
       h1: "The Ultimate Weekly Grocery List: What to Buy Every Week",
       lead:
-        "A solid weekly grocery list turns “what do we need?” into a quick aisle-by-aisle grocery checklist. Use this weekly shopping list as a reusable baseline — then add, skip, or tweak items for your household. It’s also a handy printable grocery list template if you still like paper at the store.",
+        "A solid weekly grocery list turns “what do we need?” into a quick aisle-by-aisle grocery checklist. Use this weekly shopping list as a reusable baseline — then add, skip, or tweak items for your household. It’s also a handy printable grocery list template if you still like paper at the store. Turn the checklist into a [shared shopping list](/blog/shared-shopping-list) so everyone can edit it.",
       publishedLabel: "Published September 16, 2026",
       sections: [
         {
@@ -1547,7 +1810,7 @@ export const BLOG_POSTS = [
         "רשימת קניות שבועית מעשית ורשימת בדיקה לפי מחלקות — פירות, חלבון, חלב, מזווה, ניקיון ועוד. השתמשו בה כרשימת קניות שבועית או כתבנית להדפסה.",
       h1: "רשימת הקניות השבועית המושלמת: מה לקנות כל שבוע",
       lead:
-        "רשימת קניות שבועית טובה הופכת את «מה חסר?» לבדיקה מהירה לפי מחלקות. השתמשו ברשימה הזו כבסיס קבוע — הוסיפו, דלגו או התאימו לפי הבית שלכם. היא גם תבנית נוחה להדפסה אם עדיין אוהבים נייר בסופר.",
+        "רשימת קניות שבועית טובה הופכת את «מה חסר?» לבדיקה מהירה לפי מחלקות. השתמשו ברשימה הזו כבסיס קבוע — הוסיפו, דלגו או התאימו לפי הבית שלכם. היא גם תבנית נוחה להדפסה אם עדיין אוהבים נייר בסופר. הפכו את הרשימה ל[רשימת קניות משותפת](/blog/shared-shopping-list) כדי שכולם יוכלו לערוך.",
       publishedLabel: "פורסם ב־16 בספטמבר 2026",
       sections: [
         {
@@ -1716,7 +1979,7 @@ export const BLOG_POSTS = [
         "Stop texting grocery lists back and forth. Learn how a real-time shared grocery list helps couples shop together, divide the aisle, and stay in sync at the store.",
       h1: "How to Share a Grocery List With Your Partner in Real Time",
       lead:
-        "If you and your partner still send grocery lists over text or Notes, you already know the pattern: duplicate milk, missing eggs, and a mid-aisle “did we need butter?” call. A shared grocery list that updates in real time keeps one list for both of you — whether you shop together or split the trip.",
+        "If you and your partner still send grocery lists over text or Notes, you already know the pattern: duplicate milk, missing eggs, and a mid-aisle “did we need butter?” call. A shared grocery list that updates in real time keeps one list for both of you — whether you shop together or split the trip. For the bigger picture, read the [shared shopping list](/blog/shared-shopping-list) guide.",
       publishedLabel: "Published September 16, 2026",
       sections: [
         {
@@ -1769,7 +2032,7 @@ export const BLOG_POSTS = [
         "די מלשלוח רשימות קניות בהודעות. כך רשימת קניות משותפת בזמן אמת עוזרת לזוגות לקנות ביחד, לחלק משימות ולהישאר מסונכרנים בסופר.",
       h1: "איך לשתף רשימת קניות עם בן/בת הזוג בזמן אמת",
       lead:
-        "אם עדיין שולחים רשימות בוואטסאפ או בפתקים, אתם מכירים את התבנית: חלב כפול, ביצים ששכחו, ושיחת «צריך חמאה?» באמצע הסופר. רשימת קניות משותפת שמתעדכנת בזמן אמת משאירה רשימה אחת לשניכם — בין אם קונים ביחד או מחלקים את הסיבוב.",
+        "אם עדיין שולחים רשימות בוואטסאפ או בפתקים, אתם מכירים את התבנית: חלב כפול, ביצים ששכחו, ושיחת «צריך חמאה?» באמצע הסופר. רשימת קניות משותפת שמתעדכנת בזמן אמת משאירה רשימה אחת לשניכם — בין אם קונים ביחד או מחלקים את הסיבוב. לתמונה המלאה, קראו את מדריך [רשימת קניות משותפת](/blog/shared-shopping-list).",
       publishedLabel: "פורסם ב־16 בספטמבר 2026",
       sections: [
         {
@@ -1821,6 +2084,7 @@ export const BLOG_POSTS = [
 
 export const BLOG_SEO = {
   path: "/blog",
+  hePath: "/he/blog",
   en: {
     title: "GroceryPair Blog – Shared Grocery Lists & Couples Shopping Tips",
     description:
@@ -1841,39 +2105,45 @@ export function getBlogPost(slug) {
   return BLOG_POSTS.find(post => post.slug === slug) ?? null;
 }
 
-export function blogIndexJsonLd() {
+export function blogIndexJsonLd(lang = "en") {
+  const seo = lang === "he" ? BLOG_SEO.he : BLOG_SEO.en;
+  const path = blogIndexPath(lang);
   return {
     "@context": "https://schema.org",
     "@type": "Blog",
-    name: BLOG_SEO.en.h1,
-    url: `${SITE}${BLOG_SEO.path}`,
-    description: BLOG_SEO.en.description,
-    inLanguage: ["en", "he"],
-    blogPost: BLOG_POSTS.map(post => ({
-      "@type": "BlogPosting",
-      headline: post.en.h1,
-      url: `${SITE}${post.path}`,
-      datePublished: post.date,
-      description: post.en.description,
-    })),
+    name: seo.h1,
+    url: `${SITE}${path}`,
+    description: seo.description,
+    inLanguage: lang,
+    blogPost: BLOG_POSTS.map(post => {
+      const locale = lang === "he" ? post.he : post.en;
+      return {
+        "@type": "BlogPosting",
+        headline: locale.h1,
+        url: `${SITE}${blogPostPath(post.slug, lang)}`,
+        datePublished: post.date,
+        description: locale.description,
+      };
+    }),
     isPartOf: {
       "@type": "WebApplication",
       name: "GroceryPair",
-      url: `${SITE}/`,
+      url: lang === "he" ? `${SITE}/he` : `${SITE}/`,
     },
   };
 }
 
-export function blogPostJsonLd(post) {
-  const en = post.en;
+export function blogPostJsonLd(post, lang = "en") {
+  const locale = lang === "he" ? post.he : post.en;
+  const path = blogPostPath(post.slug, lang);
   const article = {
     "@type": "BlogPosting",
-    headline: en.h1,
-    description: en.description,
+    headline: locale.h1,
+    description: locale.description,
     datePublished: post.date,
     dateModified: post.date,
-    url: `${SITE}${post.path}`,
-    inLanguage: ["en", "he"],
+    url: `${SITE}${path}`,
+    inLanguage: lang,
     author: {
       "@type": "Organization",
       name: "GroceryPair",
@@ -1886,15 +2156,15 @@ export function blogPostJsonLd(post) {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE}${post.path}`,
+      "@id": `${SITE}${path}`,
     },
     isPartOf: {
       "@type": "Blog",
       name: "GroceryPair Blog",
-      url: `${SITE}${BLOG_SEO.path}`,
+      url: `${SITE}${blogIndexPath(lang)}`,
     },
   };
-  const faqs = en.sections.flatMap(section => section.faqs ?? []);
+  const faqs = locale.sections.flatMap(section => section.faqs ?? []);
   if (!faqs.length) {
     return { "@context": "https://schema.org", ...article };
   }
@@ -1904,11 +2174,11 @@ export function blogPostJsonLd(post) {
       article,
       {
         "@type": "FAQPage",
-        url: `${SITE}${post.path}`,
+        url: `${SITE}${path}`,
         mainEntity: faqs.map(faq => ({
           "@type": "Question",
-          name: faq.q,
-          acceptedAnswer: { "@type": "Answer", text: faq.a },
+          name: stripRichText(faq.q),
+          acceptedAnswer: { "@type": "Answer", text: stripRichText(faq.a) },
         })),
       },
     ],

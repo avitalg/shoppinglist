@@ -1,10 +1,21 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, it, expect } from "vitest";
 import {
-  aboutJsonLd, faqJsonLd, privacyJsonLd, FAQ_ITEMS, HOME_SEO, PAGE_SEO, SITE,
+  aboutJsonLd, faqJsonLd, privacyJsonLd, FAQ_ITEMS, HOME_SEO, PAGE_SEO, PILLAR_SLUG,
+  SHARED_LIST_SLUG, SITE, blogIndexHreflang, blogIndexPath, blogPostHreflang,
+  blogPostPath, isHePath, localizeHref, localizedPath, pageHreflang, parseRichText,
+  stripRichText,
 } from "../seoPages.js";
 import {
   BLOG_POSTS, BLOG_SEO, blogIndexJsonLd, blogPostJsonLd, getBlogPost,
 } from "../blogPosts.js";
+
+const sitemap = readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), "../../public/sitemap.xml"),
+  "utf8",
+);
 
 describe("seoPages", () => {
   it("uses grocerypair.com as the canonical site", () => {
@@ -45,6 +56,49 @@ describe("seoPages", () => {
 });
 
 describe("blogPosts", () => {
+  it("splits English and Hebrew onto separate blog URLs", () => {
+    expect(BLOG_SEO.path).toBe("/blog");
+    expect(BLOG_SEO.hePath).toBe("/he/blog");
+    expect(blogIndexPath("en")).toBe("/blog");
+    expect(blogIndexPath("he")).toBe("/he/blog");
+    expect(blogPostPath(PILLAR_SLUG, "en")).toBe("/blog/grocery-shopping-tips");
+    expect(blogPostPath(PILLAR_SLUG, "he")).toBe("/he/blog/grocery-shopping-tips");
+    expect(localizeHref("/blog/weekly-basics", "he")).toBe("/he/blog/weekly-basics");
+    expect(localizeHref("/", "he")).toBe("/he");
+    expect(localizeHref("/blog/weekly-basics", "en")).toBe("/blog/weekly-basics");
+    expect(isHePath("/he/blog/grocery-shopping-tips")).toBe(true);
+    expect(localizedPath("/blog/grocery-shopping-tips", "he")).toBe("/he/blog/grocery-shopping-tips");
+    expect(localizedPath("/he/blog", "en")).toBe("/blog");
+    expect(pageHreflang("/blog/grocery-shopping-tips", "/he/blog/grocery-shopping-tips")).toEqual({
+      en: `${SITE}/blog/grocery-shopping-tips`,
+      he: `${SITE}/he/blog/grocery-shopping-tips`,
+      "x-default": `${SITE}/blog/grocery-shopping-tips`,
+    });
+    expect(blogPostHreflang(PILLAR_SLUG).he).toBe(`${SITE}/he/blog/grocery-shopping-tips`);
+    expect(blogIndexHreflang()["x-default"]).toBe(`${SITE}/blog`);
+    expect(blogPostPath(SHARED_LIST_SLUG, "en")).toBe("/blog/shared-shopping-list");
+    expect(blogPostPath(SHARED_LIST_SLUG, "he")).toBe("/he/blog/shared-shopping-list");
+    expect(stripRichText("Start with our [shared shopping list](/blog/shared-shopping-list) guide.")).toBe(
+      "Start with our shared shopping list guide.",
+    );
+    expect(parseRichText("Read this [in Hebrew](!/he/blog/shared-shopping-list).")[1]).toEqual({
+      text: "in Hebrew",
+      href: "/he/blog/shared-shopping-list",
+      exact: true,
+    });
+  });
+
+  it("lists every Hebrew blog URL in the sitemap with the article date", () => {
+    expect(sitemap).toContain(`<loc>${SITE}/he/blog</loc>`);
+    for (const post of BLOG_POSTS) {
+      const heUrl = `${SITE}${blogPostPath(post.slug, "he")}`;
+      expect(sitemap).toContain(`<loc>${heUrl}</loc>`);
+      expect(sitemap).toMatch(
+        new RegExp(`<loc>${heUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</loc>\\s*<lastmod>${post.date}</lastmod>`),
+      );
+    }
+  });
+
   it("exposes a blog index and grocery articles", () => {
     expect(BLOG_SEO.path).toBe("/blog");
     expect(BLOG_POSTS.length).toBeGreaterThanOrEqual(2);
@@ -93,6 +147,45 @@ describe("blogPosts", () => {
     expect(tips.en.sections.some(section => section.h2.toLowerCase().includes("grocery shopping on a budget"))).toBe(true);
     const tipsGraph = blogPostJsonLd(tips)["@graph"];
     expect(tipsGraph.map(node => node["@type"])).toEqual(["BlogPosting", "FAQPage"]);
+
+    const heTips = blogPostJsonLd(tips, "he");
+    expect(heTips["@graph"][0].url).toBe(`${SITE}/he/blog/grocery-shopping-tips`);
+    expect(heTips["@graph"][0].inLanguage).toBe("he");
+    expect(heTips["@graph"][0].headline).toBe(tips.he.h1);
+    expect(blogIndexJsonLd("he").url).toBe(`${SITE}/he/blog`);
+
+    const hub = getBlogPost("shared-shopping-list");
+    expect(hub).toBeTruthy();
+    expect(hub.path).toBe("/blog/shared-shopping-list");
+    expect(hub.en.title).toBe("Shared Shopping List: The Complete 2026 Guide | GroceryPair");
+    expect(hub.en.title.length).toBeLessThanOrEqual(60);
+    expect(hub.en.description.length).toBeLessThanOrEqual(155);
+    expect(hub.en.h1.toLowerCase()).toContain("shared shopping list");
+    expect(hub.en.sections[0].paragraphs.join(" ").toLowerCase()).toContain("shared shopping list");
+    const hubGraph = blogPostJsonLd(hub)["@graph"];
+    expect(hubGraph.map(node => node["@type"])).toEqual(["BlogPosting", "FAQPage"]);
+    expect(hubGraph[1].mainEntity.length).toBe(5);
+    const hubHrefs = hub.en.sections.flatMap(section => [
+      ...(section.links ?? []).map(link => link.href),
+      ...(section.paragraphs ?? []),
+      ...(section.items ?? []),
+      ...(section.faqs ?? []).map(faq => faq.a),
+    ]).join(" ");
+    expect(hubHrefs).toContain("/");
+    expect(hubHrefs).toContain("/blog/shared-grocery-list-for-families");
+    expect(hubHrefs).toContain("/blog/share-grocery-list-with-partner");
+    expect(hubHrefs).toContain("/blog/weekly-grocery-list");
+    expect(hubHrefs).toContain("/blog/grocery-shopping-tips");
+    expect(hubHrefs).toContain("/faq");
+    expect(hub.en.sections.filter(section => section.links?.some(link => link.href === "/")).length).toBe(2);
+  });
+
+  it("points every existing post at the shared shopping list hub", () => {
+    for (const post of BLOG_POSTS) {
+      if (post.slug === SHARED_LIST_SLUG) continue;
+      expect(post.en.lead).toContain("/blog/shared-shopping-list");
+      expect(post.he.lead).toContain("/blog/shared-shopping-list");
+    }
   });
 
   it("keeps EN and HE article bodies in sync by section count", () => {
